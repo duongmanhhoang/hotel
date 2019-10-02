@@ -57,32 +57,32 @@
                                 </div>
                             </div>
                         </li>
-                        {{--<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click"--}}
-                            {{--m-menu-link-redirect="1" aria-haspopup="true">--}}
-                            {{--<a href="javascript:;" class="m-menu__link m-menu__toggle">--}}
-                                {{--<i class="m-menu__link-icon flaticon-user"></i>--}}
-                                {{--<span class="m-menu__link-text">{{ $admin->full_name }}</span>--}}
-                                {{--<i class="m-menu__hor-arrow la la-angle-down"></i>--}}
-                                {{--<i class="m-menu__ver-arrow la la-angle-right"></i>--}}
-                            {{--</a>--}}
-                            {{--<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">--}}
-                                {{--<span class="m-menu__arrow m-menu__arrow--adjust"></span>--}}
-                                {{--<ul class="m-menu__subnav">--}}
-                                    {{--<li class="m-menu__item" aria-haspopup="true">--}}
-                                        {{--<a href="{{ route('admin.users.edit', $admin->id) }}" class="m-menu__link ">--}}
-                                            {{--<i class="m-menu__link-icon flaticon-file"></i>--}}
-                                            {{--<span class="m-menu__link-text">{{ __('messages.Profile') }}</span>--}}
-                                        {{--</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li class="m-menu__item text-center" aria-haspopup="true">--}}
-                                        {{--<form id="logout-form" action="{{ route('client.logout') }}" method="POST">--}}
-                                            {{--@csrf--}}
-                                            {{--<button class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">{{ __('messages.Log_out') }}</button>--}}
-                                        {{--</form>--}}
-                                    {{--</li>--}}
-                                {{--</ul>--}}
-                            {{--</div>--}}
-                        {{--</li>--}}
+                        <li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click"
+                            m-menu-link-redirect="1" aria-haspopup="true">
+                            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon flaticon-user"></i>
+                                <span class="m-menu__link-text">{{ $admin->full_name }}</span>
+                                <i class="m-menu__hor-arrow la la-angle-down"></i>
+                                <i class="m-menu__ver-arrow la la-angle-right"></i>
+                            </a>
+                            <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">
+                                <span class="m-menu__arrow m-menu__arrow--adjust"></span>
+                                <ul class="m-menu__subnav">
+                                    <li class="m-menu__item" aria-haspopup="true">
+                                        <a href="" class="m-menu__link ">
+                                            <i class="m-menu__link-icon flaticon-file"></i>
+                                            <span class="m-menu__link-text">{{ __('messages.Profile') }}</span>
+                                        </a>
+                                    </li>
+                                    <li class="m-menu__item text-center" aria-haspopup="true">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">{{ __('messages.Log_out') }}</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         {{--<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel">--}}
                             {{--<a href="{!! route('client.index') !!}" class="m-dropdown__toggle btn btn-primary"><i--}}
                                         {{--class="m-menu__link-icon fa fa-home"></i></a>--}}
@@ -127,7 +127,7 @@
                                     {{--</li>--}}
                                 {{--</ul>--}}
                             {{--</div>--}}
-                        {{--</li>--}}
+                        </li>
                     </ul>
                 </div>
             </div>
