@@ -1,0 +1,20 @@
+{
+  "name": "hotel",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Dương Mạnh Hoàng <manhhoang3151996@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/duongmanhhoang/hotel",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "metronic": "https://github.com/duongmanhhoang/metronic.git"
+  }
+}
