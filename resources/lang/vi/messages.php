@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'Sign_in' => 'Đăng nhập',
+    'Remember_me' => 'Lưu phiên đăng nhập',
+    'Forget_password' => 'Quên mật khảu?',
+    'Enter_Email' => 'Nhập email',
+    'Enter_password' => 'Nhập mật khẩu',
+
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
         'email' => 'Vui lòng nhập đúng định dạng email',

@@ -32,7 +32,7 @@ class LoginController extends Controller
 
     public function login()
     {
-        if (Auth::check() || Cookie::get('remember_token')) {
+        if (Auth::check()) {
             return redirect()->back();
         }
 
@@ -41,24 +41,21 @@ class LoginController extends Controller
 
     public function submitLogin(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $remember = false;
+        if ($request->remember == 'on') {
+            $remember = true;
+        }
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'is_active' => 1], $remember)) {
             $user = Auth::user();
-            if ($request->remember == 'on') {
-                $minutes = 50000;
-                $cookie_data = [];
-                $cookie_data['remember_token'] = $user->remember_token;
-                $cookie_data['id'] = $user->id;
-                Cookie::queue(Cookie::make('remember_token', json_encode($cookie_data), $minutes));
-            }
             if ($user->role_id == config('common.roles.member')) {
-                return redirect(route('client.index'));
+                return redirect(route('index'));
             } else {
                 return redirect(route('admin.index'));
             }
         } else {
-            $request->session()->flash('errors');
+            $request->session()->flash('login-error');
 
-            return redirect(route('client.login'));
+            return redirect(route('login'));
         }
     }
 

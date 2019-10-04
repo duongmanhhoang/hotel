@@ -36,7 +36,8 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                            <a href="" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                            <a href="{{ route('admin.languages.create') }}"
+                                               class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                                                 <span><i class="la la-plus"></i> Thêm</span>
                                             </a>
                                             <div class="m-separator m-separator--dashed d-xl-none"></div>
@@ -59,27 +60,34 @@
                                     @foreach ($languages as $language)
                                         <tr>
                                             <td>{{ $i }}</td>
-                                            <td><img src="{{ asset($language->flag) }}"></td>
+                                            <td><img
+                                                    src="{{ asset(config('common.uploads.languages')) . '/' . $language->flag }}">
+                                            </td>
                                             <td>
                                                 {{ $language->name }}
                                             </td>
                                             <td>{{ $language->short }}</td>
-{{--                                            <td>--}}
-{{--                                                <a href="{{ route('admin.locations.edit', $location->id) }}"--}}
-{{--                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"--}}
-{{--                                                   title="{{ __('messages.Edit') }}"><i class="la la-edit"></i></a>--}}
-{{--                                                <form method="post"--}}
-{{--                                                      action="{{ route('admin.locations.destroy', $location->id) }}"--}}
-{{--                                                      class="form_content" id="form-delete-{{ $location->id }}">--}}
-{{--                                                    {{ method_field('DELETE') }}--}}
-{{--                                                    @csrf--}}
-{{--                                                    <button id="{{ $location->id }}" type="submit"--}}
-{{--                                                            class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill btn-submit"--}}
-{{--                                                            title="{{ __('messages.Delete') }}">--}}
-{{--                                                        <i class="la la-trash"></i>--}}
-{{--                                                    </button>--}}
-{{--                                                </form>--}}
-{{--                                            </td>--}}
+                                            <td>{{ $language->status ? 'Kích hoạt' : 'Chưa kích hoạt' }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.languages.edit', $language->id) }}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                   title="Chỉnh sửa">
+                                                    <i class="la la-edit"></i>
+                                                </a>
+                                                @if ($language->status)
+                                                    <a href="{{ route('admin.languages.deactive', $language->id) }}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Hủy kích hoạt">
+                                                        <i class="la la-ban"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('admin.languages.active', $language->id) }}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Kích hoạt">
+                                                        <i class="la la-check"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
                                         </tr>
                                         @php ($i++)
                                     @endforeach

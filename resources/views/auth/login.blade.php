@@ -12,8 +12,8 @@
                         </a>
                     </div>
                     <div class="m-login__signin">
-                        @if (session('login-errors'))
-                            <b class="text-danger">{{ __('messages.Wrong_pass_or_email') }}</b>
+                        @if (session('login-error'))
+                            <b class="text-danger">Tên đăng nhập hoặc mật khẩu không đúng</b>
                         @endif
                         <form class="m-login__form m-form" action="{{ route('submitLogin') }}" method="post">
                             @csrf
