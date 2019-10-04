@@ -18,4 +18,13 @@ return [
     'pagination' => [
         'default' => 10,
     ],
+    'images' => [
+        'default' => 'images/default.png'
+    ],
+    'uploads' => [
+        'languages' => '/uploads/languages',
+    ],
+    'languages' => [
+        'default' => 1,
+    ]
 ];

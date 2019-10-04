@@ -10,4 +10,8 @@ Route::prefix('languages')->name('languages.')->middleware('checkSuperAdmin')->g
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/edit/{id}', $controller . 'edit')->name('edit');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
+    Route::get('/deactive/{id}', $controller . 'deactive')->name('deactive');
+    Route::get('/active/{id}', $controller . 'active')->name('active');
 });

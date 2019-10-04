@@ -55,7 +55,7 @@ abstract class EloquentRepository
 
     public function findOrFail($id)
     {
-        return $this->_model > $this->findOrFail($id);
+        return $this->_model->findOrFail($id);
     }
 
     public function first()
@@ -113,7 +113,7 @@ abstract class EloquentRepository
     {
         return $this->_model->where($column, '=', $object)->orderBy('id', 'desc')->get();
     }
-    
+
     public function wherewhere($column1, $object1, $column2, $object2)
     {
         return $this->_model->where($column1, '=', $object1)->where($column2, '=', $object2)->orderBy('id', 'desc')->get();

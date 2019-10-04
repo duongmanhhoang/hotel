@@ -34,22 +34,23 @@
                             m-menu-link-redirect="1" aria-haspopup="true">
                             <div class="m-dropdown m-dropdown--inline m-dropdown--arrow" m-dropdown-toggle="hover"
                                  aria-expanded="true">
-                                {{--<a href="javascript:;"--}}
-                                   {{--class="m-dropdown__toggle btn btn-primary dropdown-toggle">{{ $current_language->name }}</a>--}}
+                                <a href="javascript:;" class="m-dropdown__toggle btn btn-primary dropdown-toggle">
+                                    {{ $current_language->name }}
+                                </a>
                                 <div class="m-dropdown__wrapper">
                                     <span class="m-dropdown__arrow m-dropdown__arrow--left"></span>
                                     <div class="m-dropdown__inner">
                                         <div class="m-dropdown__body">
                                             <div class="m-dropdown__content">
                                                 <ul class="m-nav">
-                                                    {{--@foreach ($header_languages as $header_language)--}}
-                                                        {{--<li class="m-nav__item">--}}
-                                                            {{--<a href="{{ route('client.changeLanguage', $header_language->id) }}"--}}
-                                                               {{--class="m-nav__link">--}}
-                                                                {{--<span class="m-nav__link-text">{{ $header_language->name }}</span>--}}
-                                                            {{--</a>--}}
-                                                        {{--</li>--}}
-                                                    {{--@endforeach--}}
+                                                    @foreach ($header_languages as $header_language)
+                                                        <li class="m-nav__item">
+                                                            <a href="{{ route('changeLanguage', $header_language->id) }}"
+                                                               class="m-nav__link">
+                                                                <span class="m-nav__link-text">{{ $header_language->name }}</span>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
                                                 </ul>
                                             </div>
                                         </div>
@@ -71,13 +72,13 @@
                                     <li class="m-menu__item" aria-haspopup="true">
                                         <a href="" class="m-menu__link ">
                                             <i class="m-menu__link-icon flaticon-file"></i>
-                                            <span class="m-menu__link-text">{{ __('messages.Profile') }}</span>
+                                            <span class="m-menu__link-text">Thông tin cá nhân</span>
                                         </a>
                                     </li>
                                     <li class="m-menu__item text-center" aria-haspopup="true">
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
-                                            <button class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">{{ __('messages.Log_out') }}</button>
+                                            <button class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">Đăng xuất</button>
                                         </form>
                                     </li>
                                 </ul>
