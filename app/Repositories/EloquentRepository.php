@@ -2,6 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\Language;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+
 abstract class EloquentRepository
 {
     protected $_model;
@@ -142,5 +147,40 @@ abstract class EloquentRepository
     public function where($column, $operation, $value)
     {
         return $this->_model->where($column, $operation, $value);
+    }
+
+    public function findByLang($id)
+    {
+        $data = $this->_model->where('lang_id', session('locale'))->where('lang_parent_id', $id)->first();
+        if (is_null($data)) {
+            Session::put('locale', config('common.languages.default'));
+
+            return false;
+        }
+
+        return $data;
+    }
+
+    public function checkOriginal($id)
+    {
+        $data = $this->_model->find($id);
+        if (is_null($data)) {
+            return false;
+        }
+        if ($data->lang_parent_id != 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getTranslateId($parent_id)
+    {
+        $vi = Language::find(config('common.languages.default'))->id;
+        $translated = $this->_model->where('lang_parent_id', $parent_id)->pluck('lang_id')->toArray();
+        array_push($translated, $vi);
+        $needTranslate = Language::whereNotIn('id', $translated)->get();
+
+        return $needTranslate;
     }
 }

@@ -15,9 +15,14 @@ class LanguageController extends Controller
         $this->languageRepository = $languageRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $languages = $this->languageRepository->paginate(config('common.pagination.default'));
+        $keword = $request->keyword;
+        if (!is_null($keword)) {
+            $languages = $this->languageRepository->search('name', $keword, config('common.pagination.default'));
+        } else {
+            $languages = $this->languageRepository->paginate(config('common.pagination.default'));
+        }
         $data = compact(
             'languages'
         );
@@ -68,7 +73,7 @@ class LanguageController extends Controller
     public function deactive(Request $request, $id)
     {
         if ($id == config('common.languages.default')) {
-            $request->session()->flash('error' , 'Không thể hủy ngôn ngữ mặc định');
+            $request->session()->flash('error', 'Không thể hủy ngôn ngữ mặc định');
 
             return redirect()->back();
         }
@@ -76,7 +81,7 @@ class LanguageController extends Controller
             $request->session()->forget('locale');
         };
         $this->languageRepository->update($id, ['status' => false]);
-        $request->session()->flash('success' , 'Hủy kích hoạt thành công');
+        $request->session()->flash('success', 'Hủy kích hoạt thành công');
 
         return redirect()->back();
     }
@@ -84,7 +89,7 @@ class LanguageController extends Controller
     public function active(Request $request, $id)
     {
         $this->languageRepository->update($id, ['status' => true]);
-        $request->session()->flash('success' , 'Kích hoạt thành công');
+        $request->session()->flash('success', 'Kích hoạt thành công');
 
         return redirect()->back();
     }
