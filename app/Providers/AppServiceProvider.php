@@ -49,8 +49,8 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with('current_language', $current_language);
 
-            //List active languages
-            $header_languages = Language::where('status', 1)->get();
+            //List languages
+            $header_languages = Language::all();
             $view->with('header_languages', $header_languages);
         });
     }
