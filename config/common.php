@@ -26,5 +26,8 @@ return [
     ],
     'languages' => [
         'default' => 1,
+    ],
+    'categories' => [
+        'default_parent_id' => 0
     ]
 ];

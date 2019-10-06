@@ -12,11 +12,16 @@ class Category extends Model
 
     public function language()
     {
-        return $this->belongsTo('App\Models\Language');
+        return $this->belongsTo('App\Models\Language', 'lang_id', 'id');
     }
 
     public function posts()
     {
         return $this->hasMany('App\Model\Post');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo($this);
     }
 }

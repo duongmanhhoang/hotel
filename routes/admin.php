@@ -5,14 +5,6 @@ Route::get('/', function () {
 
 })->name('index');
 
-Route::group(['prefix' => 'category'], function() {
-    Route::get('/', 'Admin\CategoryController@getCategory')->name('category.list');
-    Route::get('/post', 'Admin\CategoryController@addView')->name('category.postView');
-    Route::post('/post', 'Admin\CategoryController@postCategory')->name('category.postAction');
-    Route::get('/edit/{id}', 'Admin\CategoryController@editView')->name('category.editView');
-    Route::post('/edit/{id}', 'Admin\CategoryController@postEdit')->name('category.editAction');
-    Route::delete('/delete/{id}', 'Admin\CategoryController@deleteCategory')->name('category.delete');
-});
 
 /**Ngôn ngữ */
 Route::prefix('languages')->name('languages.')->middleware('checkSuperAdmin')->group(function () {
@@ -38,4 +30,19 @@ Route::prefix('locations')->name('locations.')->group(function () {
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+});
+
+/** Danh mục */
+Route::group(['prefix' => 'category'], function() {
+
+});
+
+Route::prefix('category')->name('category.')->group(function () {
+    $controller = 'Admin\CategoryController@';
+    Route::get('/', $controller . 'getCategory')->name('list');
+    Route::get('/post', $controller . 'addView')->name('postView');
+    Route::post('/post', $controller . 'postCategory')->name('postAction');
+    Route::get('/edit/{id}', $controller . 'editView')->name('editView');
+    Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
 });

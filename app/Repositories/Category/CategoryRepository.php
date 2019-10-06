@@ -2,19 +2,29 @@
 
 namespace App\Repositories\Category;
 
-use App\Repositories\EloquentRepository;
 use App\Models\Category;
 use App\Models\Post;
+use App\Repositories\EloquentRepository;
 
-class CategoryRepository extends EloquentRepository {
-
+class CategoryRepository extends EloquentRepository
+{
     public function getModel()
     {
-       return Category::class;
+        return Category::class;
     }
 
-    public function getCategory($input) {
-        $result = $this->_model->get();
+    public function categoriesAll($id)
+    {
+        $result = $this->_model->where('id', '<>', $id)->orderBy('id', 'desc')->get();
+
+        return $result;
+    }
+
+    public function getCategory($input)
+    {
+        $paginate = config('common.pagination.default');
+
+        $result = $this->_model->with('parent', 'language')->paginate($paginate);
 
         return $result;
     }
@@ -40,14 +50,12 @@ class CategoryRepository extends EloquentRepository {
         $result = $this->find($id);
 
         $posts = Post::where('category_id', $id);
-
-        $posts->update(['category_id', null]);
+        $posts->update(['category_id' => null]);
 
         $result->delete($id);
 
         return !!$result;
     }
-
 
 
 }
