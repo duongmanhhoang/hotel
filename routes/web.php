@@ -18,3 +18,5 @@ Route::get('/', function () {
 Route::get('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/login', 'Auth\LoginController@submitLogin')->name('submitLogin');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('/change-language/{id}', 'LanguageController@change')->name('changeLanguage');

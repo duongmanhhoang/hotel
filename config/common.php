@@ -14,5 +14,17 @@ return [
     'login' => [
         'background' => 'bower_components/metronic/app/media/img/bg/bg-2.jpg',
         'logo' => 'bower_components/metronic/app/media/img//logos/logo-1.png',
+    ],
+    'pagination' => [
+        'default' => 10,
+    ],
+    'images' => [
+        'default' => 'images/default.png'
+    ],
+    'uploads' => [
+        'languages' => '/uploads/languages',
+    ],
+    'languages' => [
+        'default' => 1,
     ]
 ];
