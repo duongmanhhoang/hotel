@@ -21,6 +21,16 @@ class UsersTableSeeder extends Seeder
                 'address' => 'Hà Nội',
                 'remember_token' => bcrypt(uniqid()),
                 'is_active' => config('common.active.is_active'),
+            ],
+            [
+                'role_id' => config('common.roles.super_admin'),
+                'email' => 'maiduynghia87@gmail.com',
+                'password' => bcrypt('12345678'),
+                'full_name' => 'Super Admin',
+                'phone' => '0969200973',
+                'address' => 'Thanh Hóa',
+                'remember_token' => bcrypt(uniqid()),
+                'is_active' => config('common.active.is_active'),
             ]
         ];
 
