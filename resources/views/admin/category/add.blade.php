@@ -1,6 +1,5 @@
 @extends('admin.layouts.master')
 @section('content')
-    @php $route = isset($data) ? route('admin.category.editAction', ['id' => $data->id]) : route('admin.category.postAction') @endphp
 
     <div class="m-content">
         <div class="row">
@@ -10,7 +9,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Thêm ngôn ngữ
+                                    Thêm danh mục
                                 </h3>
                             </div>
                         </div>
@@ -31,22 +30,39 @@
                                     <div class="form-group m-form__group">
                                         <label>Tên <b class="text-danger">*</b></label>
                                         <input type="text" class="form-control m-input" name="name"
-                                               value="{{ $data->name ?? old('name') }}">
+                                               value="{{ $data->name ?? $dataTranslate->name ?? old('name') }}">
                                         @if ($errors->has('name'))
                                             <b class="text-danger">{{ $errors->first('name') }}</b>
                                         @endif
                                     </div>
-                                    <div class="form-group m-form__group">
-                                        <label>Default</label>
-                                        <div class="bs-select">
-                                            <select class="bs-select form-control" tabindex="-98" name="parent_id">
-                                                <option value="{{ null }}"></option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ isset($data) && $data->parent_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
+
+                                    @if(!isset($dataTranslate))
+                                        <div class="form-group m-form__group">
+                                            <label>Danh mục cha</label>
+                                            <div class="bs-select">
+                                                <select class="bs-select form-control" tabindex="-98" name="parent_id">
+                                                    <option value="{{ 0 }}"></option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" {{ isset($data) && $data->parent_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
+
+                                    @if(isset($language))
+                                        <div class="form-group m-form__group">
+                                            <label>Ngôn ngữ</label>
+                                            <div class="bs-select">
+                                                <select class="bs-select form-control" tabindex="-98" name="lang_id">
+                                                    @foreach($language as $value)
+                                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Tạo</button>
                                     </div>

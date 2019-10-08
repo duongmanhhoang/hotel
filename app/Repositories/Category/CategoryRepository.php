@@ -24,7 +24,7 @@ class CategoryRepository extends EloquentRepository
     {
         $paginate = config('common.pagination.default');
 
-        $result = $this->_model->with('parent', 'language')->paginate($paginate);
+        $result = $this->_model->with('parent', 'language', 'parentTranslate', 'childrenTranslate')->paginate($paginate);
 
         return $result;
     }
@@ -57,5 +57,13 @@ class CategoryRepository extends EloquentRepository
         return !!$result;
     }
 
+    public function categoryTranslate($id, $input)
+    {
+        $input['lang_parent_id'] = $id;
+
+        $result = $this->_model->create($input);
+
+        return $result;
+    }
 
 }

@@ -44,5 +44,7 @@ Route::prefix('category')->name('category.')->group(function () {
     Route::post('/post', $controller . 'postCategory')->name('postAction');
     Route::get('/edit/{id}', $controller . 'editView')->name('editView');
     Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
+    Route::get('/translate-category/{categoryId}', $controller . 'addView')->name('categoryTranslateView');
+    Route::post('/translate-category/{categoryId}', $controller . 'categoryTranslate')->name('categoryTranslate');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
 });

@@ -24,4 +24,14 @@ class Category extends Model
     {
         return $this->belongsTo($this);
     }
+
+    public function parentTranslate()
+    {
+        return $this->belongsTo($this, 'lang_parent_id');
+    }
+
+    public function childrenTranslate()
+    {
+        return $this->hasMany($this, 'lang_parent_id');
+    }
 }

@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\PostCategoryRequest;
 use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Language\LanguageRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
 
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(
+        CategoryRepository $categoryRepository,
+        LanguageRepository $languageRepository
+    )
     {
         $this->categoryRepo = $categoryRepository;
+        $this->languageRepo = $languageRepository;
         $this->baseLang = config('common.languages.default');
         $this->defaultParentId = config('common.categories.default_parent_id');
     }
@@ -27,11 +32,16 @@ class CategoryController extends Controller
         return view('admin.category.index', compact('data'));
     }
 
-    public function addView()
+    public function addView($categoryId = false)
     {
         $categories  = $this->categoryRepo->categoriesAll(null);
+        $dataTranslate = $categoryId != false ? $this->categoryRepo->find($categoryId) : null;
+        $route = $categoryId != false ? route('admin.category.categoryTranslate', ['categoryId' => $dataTranslate->id]) : route('admin.category.postAction');
+        $language = $this->languageRepo->getLanguage();
 
-        return view('admin.category.add', compact('categories'));
+        $compact = compact('categories', 'dataTranslate', 'language', 'route');
+
+        return view('admin.category.add', $compact);
     }
 
     public function postCategory(PostCategoryRequest $request)
@@ -53,8 +63,11 @@ class CategoryController extends Controller
     {
         $data = $this->categoryRepo->find($id);
         $categories  = $this->categoryRepo->categoriesAll($id);
-        
-        return view('admin.category.add', compact('data', 'categories'));
+        $route = route('admin.category.editAction', ['id' => $id]);
+
+        $compact = compact('data', 'categories', 'route');
+
+        return view('admin.category.add', $compact);
     }
 
     public function postEdit(PostCategoryRequest $request)
@@ -80,5 +93,13 @@ class CategoryController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function categoryTranslate(Request $request, $categoryId)
+    {
+        $input = $request->all();
+        $this->categoryRepo->categoryTranslate($categoryId, $input);
+
+        return redirect()->route('admin.category.list');
     }
 }

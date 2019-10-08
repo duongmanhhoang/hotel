@@ -69,6 +69,12 @@
                                                     <i class="la la-edit"></i>
                                                 </a>
 
+                                                <a href="{{ route('admin.category.categoryTranslateView', $value->id) }}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                   title="Ngôn Ngữ">
+                                                    <i class="la la-file-word-o"></i>
+                                                </a>
+
                                                 <form id="form-{{ $value->id }}" method="post"
                                                       action="{{ route('admin.category.delete', $value->id) }}" class="float-left">
                                                     @csrf
