@@ -20,4 +20,21 @@ class Location extends Model
     {
         return $this->hasMany(Location::class, 'lang_parent_id');
     }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
+
+    public function listRoomsNumber()
+    {
+        return $this->hasManyThrough(
+            ListRoomNumber::class,
+            Room::class,
+            'location_id',
+            'room_id',
+            'id',
+            'id'
+        );
+    }
 }

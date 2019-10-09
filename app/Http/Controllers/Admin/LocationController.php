@@ -126,6 +126,7 @@ class LocationController extends Controller
         } else {
             $request->session()->flash('error', 'Có lỗi xảy ra');
         }
+
         return redirect()->back();
     }
 
