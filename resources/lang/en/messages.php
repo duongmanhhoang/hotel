@@ -6,6 +6,8 @@ return [
     'Forget_password' => 'Forget your password?',
     'Enter_Email' => 'Enter Email',
     'Enter_password' => 'Enter Password',
+    'currency' => '$',
+    'star' => 'star',
 
     'validation' => [
     'required' => 'Must fill this field',
