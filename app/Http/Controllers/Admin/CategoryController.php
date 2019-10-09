@@ -27,9 +27,12 @@ class CategoryController extends Controller
     {
         $input = $request->all();
 
+        $request->session()->put('params.search.category', $input['name']);
+        $nameSearch = $input['name'];
+
         $data = $this->categoryRepo->getCategory($input);
 
-        return view('admin.category.index', compact('data'));
+        return view('admin.category.index', compact('data', 'nameSearch'));
     }
 
     public function addView($categoryId = false)

@@ -5,6 +5,7 @@ namespace App\Repositories\Category;
 use App\Models\Category;
 use App\Models\Post;
 use App\Repositories\EloquentRepository;
+use Session;
 
 class CategoryRepository extends EloquentRepository
 {
@@ -23,8 +24,15 @@ class CategoryRepository extends EloquentRepository
     public function getCategory($input)
     {
         $paginate = config('common.pagination.default');
+        $language = Session::get('locale');
+        $name = $input['name'] ?? null;
 
-        $result = $this->_model->with('parent', 'language', 'parentTranslate', 'childrenTranslate')->paginate($paginate);
+        $whereConditional = [
+            ['lang_id', $language],
+            ['name', 'like', '%' . $name . '%']
+        ];
+
+        $result = $this->_model->where($whereConditional)->with('parent', 'language', 'parentTranslate', 'childrenTranslate')->paginate($paginate);
 
         return $result;
     }
