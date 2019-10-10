@@ -26,4 +26,9 @@ class Room extends Model
     {
         return $this->hasMany(RoomDetail::class);
     }
+
+    public function properties()
+    {
+        return $this->belongsToMany(Property::class, 'room_property');
+    }
 }

@@ -117,7 +117,84 @@
                                                             <i class="la la-trash"></i>
                                                         </button>
                                                     </form>
-
+                                                    <button data-toggle="modal"
+                                                            data-target="#modal_prop_{{ $room->id }}"
+                                                            class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
+                                                            title="Thêm tiện nghi"><i
+                                                                class="la la-magic"></i></button>
+                                                    <div class="modal fade" id="modal_prop_{{ $room->id }}"
+                                                         tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="exampleModalLabel"></h5>
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body row">
+                                                                    <div class="col-6">
+                                                                        <div class="m-scrollable m-scroller ps"
+                                                                             data-scrollbar-shown="true"
+                                                                             data-scrollable="true"
+                                                                             data-height="150">
+                                                                            <ul class="list-props-{{ $room->id }}">
+                                                                                <?php
+                                                                                $room_properties = $room->properties()->get();
+                                                                                $room_prop_id = [];
+                                                                                $i = 0;
+                                                                                ?>
+                                                                                @foreach ($room_properties as $room_property)
+                                                                                    <li class="list-prop-item-{{ $room->id }}-{{ $room_property->id }}">
+                                                                                        <span class="list-prop-item">{{ $room_property->name }}</span>
+                                                                                        <button data-room="{{ $room->id }}"
+                                                                                                id="{{ $room_property->id }}"
+                                                                                                addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                                                                deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                                                                class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop">
+                                                                                            <i class="la la-trash"></i>
+                                                                                        </button>
+                                                                                    </li>
+                                                                                    <?php
+                                                                                    $room_prop_id[$i] = $room_property->id;
+                                                                                    $i++;
+                                                                                    ?>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="m-scrollable m-scroller ps"
+                                                                             data-scrollbar-shown="true"
+                                                                             data-scrollable="true"
+                                                                             data-height="150">
+                                                                            <form>
+                                                                                <ul class="list-not-use-prop-{{ $room->id }}">
+                                                                                    <?php
+                                                                                    $properties_not_use = $properties->getNotUse($room_prop_id, config('common.languages.default'));
+                                                                                    ?>
+                                                                                    @foreach ($properties_not_use as $property)
+                                                                                        <li class="item-{{$room->id}}-{{$property->id}}">
+                                                                                            <span class="add-property-item">{{ $property->name }}</span>
+                                                                                            <button data-room="{{ $room->id }}"
+                                                                                                    id="{{ $property->id }}"
+                                                                                                    addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                                                                    deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                                                                    class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop">
+                                                                                                <i class="la la-plus"></i>
+                                                                                            </button>
+                                                                                        </li>
+                                                                                    @endforeach
+                                                                                </ul>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             @php($i++)
@@ -137,6 +214,11 @@
 @section('script')
     <script>
         $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $('.btn-delete').on('click', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('roomId');
@@ -151,7 +233,75 @@
                 }).then(function (e) {
                     e.value && form.submit();
                 })
-            })
+            });
+
+            $('body').on('click', '.btn-add-prop', function (e) {
+                e.preventDefault();
+                let id = $(this).attr('id');
+                let room_id = $(this).attr2('data-room');
+                let url = $(this).attr('addUrl');
+                let deleteUrl = $(this).attr('deleteUrl');
+                let formData = new FormData();
+                formData.append('id', id);
+                formData.append('room_id', room_id);
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function (response) {
+                        if (response.messages == 'errors') {
+                            toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                        }
+
+                        if (response.messages == 'success') {
+                            $('.item-' + room_id + '-' + id).remove();
+                            $('.list-props-' + room_id).append('<li class="list-prop-item-' + response.data.room_id + '-' + id + '">' +
+                                '<span class="list-prop-item">' + response.data.property_name + '</span>' +
+                                '<button data-room=' + response.data.room_id + ' id=' + response.data.id +  '' +
+                                ' addUrl=' + url + ' deleteUrl=' + deleteUrl + ' class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop"><i class="la la-trash"></i></button>' +
+                                '</li>');
+                            toastr.success('Thêm thành công', 'Thành công');
+                        }
+                    }, error: function () {
+                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                    },
+                });
+            });
+
+            $('body').on('click', '.btn-delete-prop', function (e) {
+                e.preventDefault();
+                let id = $(this).attr('id');
+                let room_id = $(this).attr2('data-room');
+                let url = $(this).attr('addUrl');
+                let deleteUrl = $(this).attr('deleteUrl');
+                let formData = new FormData();
+                formData.append('id', id);
+                formData.append('room_id', room_id);
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: deleteUrl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function (response) {
+                        if (response.messages == 'success') {
+                            $('.list-prop-item-' + room_id + '-' + id).remove();
+                            $('.list-not-use-prop-' + room_id).append('<li class="item-' + response.data.room_id + '-' + id + '">' +
+                                '<span class="add-property-item">' + response.data.property_name + '</span>' +
+                                '<button data-room=' + response.data.room_id + ' id=' + response.data.id +  '' +
+                                ' addUrl=' + url + ' deleteUrl=' + deleteUrl + ' class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop"><i class="la la-plus"></i></button>' +
+                                '</li>');
+                            toastr.success('Xóa thành công', 'Thành công');
+                        }
+                    }, error: function () {
+                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                    },
+                });
+            });
         });
     </script>
 @endsection
