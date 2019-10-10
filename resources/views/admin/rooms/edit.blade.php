@@ -82,59 +82,6 @@
                                             </b>
                                         </div>
                                     </div>
-                                    {{--<div class="form-group m-form__group">--}}
-                                        {{--<label>Danh sách phòng <b class="text-danger">*</b></label>--}}
-                                        {{--<br>--}}
-                                        {{--<div class="m_repeater">--}}
-                                            {{--<div class="form-group  m-form__group row m_repeater">--}}
-                                                {{--<div data-repeater-list="" class="col-lg-10">--}}
-                                                    {{--@foreach($listRoomNumber as $key => $item)--}}
-                                                        {{--<div data-repeater-item--}}
-                                                             {{--class="form-group m-form__group row align-items-center">--}}
-                                                            {{--<div class="col-md-3">--}}
-                                                                {{--<div class="m-form__group m-form__group--inline">--}}
-                                                                    {{--<div class="m-form__control">--}}
-                                                                        {{--<input type="text"--}}
-                                                                               {{--name="room_number[{{ $key }}]"--}}
-                                                                               {{--class="form-control m-input"--}}
-                                                                               {{--value="{{ $item }}">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="d-md-none m--margin-bottom-10"></div>--}}
-                                                            {{--</div>--}}
-                                                            {{--<div class="col-md-4">--}}
-                                                                {{--<div data-repeater-delete=""--}}
-                                                                     {{--class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">--}}
-																{{--<span>--}}
-																	{{--<i class="la la-trash-o"></i>--}}
-																	{{--<span>Xóa</span>--}}
-																{{--</span>--}}
-                                                                {{--</div>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--@endforeach--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="m-form__group form-group row">--}}
-                                                {{--<div class="col-lg-4">--}}
-                                                    {{--<div data-repeater-create=""--}}
-                                                         {{--class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">--}}
-														{{--<span>--}}
-															{{--<i class="la la-plus"></i>--}}
-															{{--<span>Thêm</span>--}}
-														{{--</span>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--@if ($errors->has('room_number.*'))--}}
-                                            {{--<b class="text-danger">{{ $errors->first('room_number.*') }}</b>--}}
-                                        {{--@endif--}}
-                                        {{--@if ($errors->has('room_number'))--}}
-                                            {{--<b class="text-danger">{{ $errors->first('room_number') }}</b>--}}
-                                        {{--@endif--}}
-                                        {{--<b class="text-danger" id="errors-room-number"></b>--}}
-                                    {{--</div>--}}
                                     <div class="form-group m-form__group">
                                         <label>Danh sách phòng <b
                                                     class="text-danger">*</b></label>
