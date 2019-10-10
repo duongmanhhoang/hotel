@@ -53,4 +53,9 @@ class PropertyRepository extends EloquentRepository
         return $room_id;
     }
 
+    public function getNotUse($arr_id, $lang_id)
+    {
+        return $this->_model->whereNotIn('id', $arr_id)->where('lang_id', $lang_id)->get();
+    }
+
 }

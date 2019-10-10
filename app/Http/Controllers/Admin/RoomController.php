@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\Rooms\UpdateRequest;
 use App\Models\ListRoomNumber;
 use App\Models\RoomDetail;
 use App\Repositories\Location\LocationRepository;
+use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomDetail\RoomDetailRepository;
 use Illuminate\Http\Request;
@@ -22,12 +23,14 @@ class RoomController extends Controller
     (
         LocationRepository $locationRepository,
         RoomRepository $roomRepository,
-        RoomDetailRepository $roomDetailRepository
+        RoomDetailRepository $roomDetailRepository,
+        PropertyRepository $propertyRepository
     )
     {
         $this->locationRepository = $locationRepository;
         $this->roomRepository = $roomRepository;
         $this->roomDetailRepository = $roomDetailRepository;
+        $this->propertyRepository = $propertyRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -36,10 +39,12 @@ class RoomController extends Controller
         $keyword = $request->keyword;
         $location = $this->locationRepository->findOrFail($location_id);
         $rooms = $location->rooms()->orderBy('id', 'desc')->paginate(config('common.pagination.default'));
+        $properties = $this->propertyRepository;
         $data = compact(
             'rooms',
             'location',
-            'keyword'
+            'keyword',
+            'properties'
         );
 
         return view('admin.rooms.index', $data);
@@ -195,6 +200,34 @@ class RoomController extends Controller
         Session::put('locale', config('common.languages.default'));
 
         return redirect(route('admin.rooms.edit', [$location_id, $id]));
+    }
+
+    public function addProperties(Request $request, $location_id)
+    {
+        $data = $request->all();
+        $room = $this->roomRepository->find($data['room_id']);
+        $property = $this->propertyRepository->find($data['id']);
+        if (is_null($room) || is_null($property)) {
+            return response()->json(['messages' => 'errors'], 200);
+        }
+        $data['property_name'] = $property->name;
+        $room->properties()->attach($data['id']);
+
+        return response()->json(['messages' => 'success', 'data' => $data], 200);
+    }
+
+    public function deleteProperties(Request $request)
+    {
+        $data = $request->all();
+        $room = $this->roomRepository->find($data['room_id']);
+        $property = $this->propertyRepository->find($data['id']);
+        if (is_null($room) || is_null($property)) {
+            return response()->json(['messages' => 'errors'], 200);
+        }
+        $data['property_name'] = $property->name;
+        $room->properties()->detach($data['id']);
+
+        return response()->json(['messages' => 'success', 'data' => $data], 200);
     }
 
 }

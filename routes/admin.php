@@ -43,6 +43,8 @@ Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+    Route::post('/add-properties', $controller . 'addProperties')->name('addProperties');
+    Route::post('/delete-properties', $controller . 'deleteProperties')->name('deleteProperties');
 });
 
 /** Tiện nghi */
