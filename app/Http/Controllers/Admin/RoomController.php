@@ -55,7 +55,6 @@ class RoomController extends Controller
         $listRoomsNumber = $location->listRoomsNumber()->pluck('list_room_numbers.room_number')->toArray();
         $data = compact(
             'location',
-            'properties',
             'roomIds',
             'listRoomsNumber'
         );
