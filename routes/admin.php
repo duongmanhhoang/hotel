@@ -30,6 +30,7 @@ Route::prefix('locations')->name('locations.')->group(function () {
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
 });
 
+
 /** Phòng */
 Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     $controller = 'Admin\RoomController@';
@@ -57,4 +58,17 @@ Route::prefix('properties')->name('properties.')->group(function () {
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+
+/** Người dùng */
+Route::prefix('users')->name('users.')->group(function () {
+    $controller = 'Admin\UserController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/create', $controller . 'create')->name('create');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/edit/{id}', $controller . 'edit')->name('edit');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+    Route::get('/deactive/{id}', $controller . 'deactive')->name('deactive');
+    Route::get('/active/{id}', $controller . 'active')->name('active');
+
 });

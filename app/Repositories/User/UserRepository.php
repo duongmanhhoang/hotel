@@ -53,4 +53,98 @@ class UserRepository extends EloquentRepository
         
         return $user;
     }
+
+    public function checkPermission($id)
+    {
+        // Role của user được chọn để xóa
+        $role_user_selected = User::findOrFail($id)->role_id;
+        // Role của user đã đăng nhập vào quản trị
+        $role_user_logged = Auth::User()->role_id;
+        $status = false;
+        if ( $role_user_logged == config('common.roles.super_admin') ) 
+        {
+            if ( $role_user_selected == config('common.roles.super_admin') ) 
+            {
+                $status = false;
+            }
+            else 
+            {
+                $status = true;
+            }
+        } 
+        else if ( $role_user_logged == config('common.roles.admin') )
+        {
+            if ( $role_user_selected == config('common.roles.super_admin') || $role_user_selected == config('common.roles.admin') )
+            {
+                $status = false;
+            } 
+            else 
+            {
+                $status = true;
+            }
+        }
+        else 
+        {
+            $status = false;
+        }
+        return $status;
+    }
+
+    public function checkAdd()
+    {
+        // Role của user đã đăng nhập vào quản trị
+        $role_user_logged = Auth::User()->role_id;
+        $status = false;
+        if ( $role_user_logged == config('common.roles.super_admin') ) 
+        {
+            $status = true;
+        } 
+        else if ( $role_user_logged == config('common.roles.admin') )
+        {
+            $status = true;
+        }
+        else 
+        {
+            $status = false;
+        }
+        return $status;
+    }
+
+    public function checkEdit($id)
+    {
+        // Role của user được chọn để sửa
+        $role_user_selected = User::findOrFail($id)->role_id;
+        // Role của user đã đăng nhập vào quản trị
+        $role_user_logged = Auth::User()->role_id;
+        $status = false;
+        if ( $role_user_logged == config('common.roles.super_admin') ) 
+        {
+            $status = true;
+        } 
+        else if ( $role_user_logged == config('common.roles.admin') )
+        {
+            if ( $role_user_selected == config('common.roles.super_admin') || $role_user_selected == config('common.roles.admin') )
+            {
+                $status = false;
+            } 
+            else 
+            {
+                $status = true;
+            }
+        }
+        else 
+        {
+            if ( $role_user_selected == $role_user_logged )
+            {
+                $status = true;
+            }
+            else
+            {
+                $status = false;
+            }
+            
+        }
+        return $status;
+    }
 }
+
