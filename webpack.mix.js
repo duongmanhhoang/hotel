@@ -10,6 +10,10 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.styles([
+    'resources/assets/admin/css/style.css',
+], 'public/css/app.css');
+
 
 mix.scripts([
     'resources/assets/admin/js/script.js',

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Language;
+use App\Models\Location;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -32,7 +33,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        View::composer(['admin.layouts.header'], function ($view) {
+        View::composer([
+            'admin.layouts.header',
+            'admin.layouts.aside',
+        ], function ($view) {
             if (Auth::check()) {
                 $admin = Auth::user();
             }
@@ -52,6 +56,10 @@ class AppServiceProvider extends ServiceProvider
             //List languages
             $header_languages = Language::all();
             $view->with('header_languages', $header_languages);
+
+            //locations
+            $sidebar_locations = Location::where('lang_parent_id', 0)->get();
+            $view->with('sidebar_locations', $sidebar_locations);
         });
     }
 }

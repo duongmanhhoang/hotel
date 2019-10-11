@@ -23,6 +23,7 @@ return [
     ],
     'uploads' => [
         'languages' => '/uploads/languages',
+        'rooms' => '/uploads/rooms',
     ],
     'languages' => [
         'default' => 1,
