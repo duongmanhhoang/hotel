@@ -23,11 +23,20 @@ return [
     ],
     'uploads' => [
         'languages' => '/uploads/languages',
+        'posts' => '/uploads/posts',
     ],
     'languages' => [
         'default' => 1,
     ],
     'categories' => [
         'default_parent_id' => 0
+    ],
+    'posts' => [
+        'undefined_category' => 'Danh mục không xác định',
+        'approve' => [
+            '-1' => 'Từ chối phê duyệt',
+            '0' => 'Chưa được duyệt',
+            '1' => 'Đã được duyệt'
+        ]
     ]
 ];

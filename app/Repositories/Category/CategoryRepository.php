@@ -57,9 +57,10 @@ class CategoryRepository extends EloquentRepository
     {
         $result = $this->find($id);
 
-        $posts = Post::where('category_id', $id);
-        $posts->update(['category_id' => null]);
+//        $posts = Post::where('category_id', $id);
+//        $posts->update(['category_id' => null]);
 
+        $result->childrenTranslate()->delete();
         $result->delete($id);
 
         return !!$result;

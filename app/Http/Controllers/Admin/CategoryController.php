@@ -23,9 +23,11 @@ class CategoryController extends Controller
         $this->defaultParentId = config('common.categories.default_parent_id');
     }
 
-    public function getCategory(Request $request)
+    public function index(Request $request)
     {
         $input = $request->all();
+
+        $input['name'] = $input['name'] ?? null;
 
         $request->session()->put('params.search.category', $input['name']);
         $nameSearch = $input['name'];
