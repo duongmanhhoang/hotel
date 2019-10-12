@@ -58,6 +58,7 @@ Route::prefix('properties')->name('properties.')->group(function () {
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+});
 
 /** Người dùng */
 Route::prefix('users')->name('users.')->group(function () {
