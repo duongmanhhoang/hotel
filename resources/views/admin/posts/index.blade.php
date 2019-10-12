@@ -118,3 +118,26 @@
         </div>
     </div>
 @endsection
+
+
+@section('script')
+    <script>
+        $(document).ready(function () {
+            $('.btn-delete').on('click', function (e) {
+                e.preventDefault();
+                var id = $(this).attr('locationId');
+                var form = $('#form-' + id);
+                swal({
+                    title: "Bạn chắc chắn chứ",
+                    text: "Khi xóa bạn sẽ không thể khôi phục lại dữ liệu",
+                    type: "warning",
+                    showCancelButton: !0,
+                    cancelButtonText: "Hủy",
+                    confirmButtonText: "Đồng ý"
+                }).then(function (e) {
+                    e.value && form.submit();
+                })
+            })
+        });
+    </script>
+@endsection

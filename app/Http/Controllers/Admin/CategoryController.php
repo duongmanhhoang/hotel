@@ -40,8 +40,8 @@ class CategoryController extends Controller
     public function addView($categoryId = false)
     {
         $categories  = $this->categoryRepo->categoriesAll(null);
-        $dataTranslate = $categoryId != false ? $this->categoryRepo->find($categoryId) : null;
-        $route = $categoryId != false ? route('admin.category.categoryTranslate', ['categoryId' => $dataTranslate->id]) : route('admin.category.postAction');
+        $dataTranslate = $categoryId != false ? true : null;
+        $route = $categoryId != false ? route('admin.category.categoryTranslate', ['categoryId' => $categoryId]) : route('admin.category.postAction');
         $language = $this->languageRepo->getLanguage();
 
         $compact = compact('categories', 'dataTranslate', 'language', 'route');

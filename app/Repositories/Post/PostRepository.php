@@ -17,7 +17,7 @@ class PostRepository extends EloquentRepository
     {
         $paginate = config('common.pagination.default');
         $language = Session::get('locale');
-        $title = $input['title'];
+        $title = $input['title'] ?? null;
 
         $whereConditional = [
             ['title', 'like', '%' . $title . '%'],

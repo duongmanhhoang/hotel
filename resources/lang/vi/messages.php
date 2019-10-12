@@ -6,6 +6,8 @@ return [
     'Forget_password' => 'Quên mật khảu?',
     'Enter_Email' => 'Nhập email',
     'Enter_password' => 'Nhập mật khẩu',
+    'currency' => 'vnđ',
+    'star' => 'sao',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',

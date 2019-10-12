@@ -50,17 +50,20 @@
                                         </div>
                                     @endif
 
-                                    @if(isset($language))
-                                        <div class="form-group m-form__group">
-                                            <label>Ngôn ngữ</label>
-                                            <div class="bs-select">
-                                                <select class="bs-select form-control" tabindex="-98" name="lang_id">
-                                                    @foreach($language as $value)
-                                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                    @if(isset($dataTranslate))
+                                        @if(isset($language))
+                                            <div class="form-group m-form__group">
+                                                <label>Ngôn ngữ</label>
+                                                <div class="bs-select">
+                                                    <select class="bs-select form-control" tabindex="-98"
+                                                            name="lang_id">
+                                                        @foreach($language as $value)
+                                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endif
 
                                     <div class="form-group m-form__group">

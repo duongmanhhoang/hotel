@@ -7,4 +7,5 @@
     {{--<link href="{{ asset('bower_components/bower/admin/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />--}}
     <link href="{{ asset('bower_components/metronic/vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('bower_components/metronic/demo/default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
