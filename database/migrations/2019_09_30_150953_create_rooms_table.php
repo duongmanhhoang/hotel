@@ -22,7 +22,7 @@ class CreateRoomsTable extends Migration
             $table->date('sale_end_at')->nullable();
             $table->text('list_room_number');
             $table->string('rating', 5);
-            $table->longText('available_time');
+            $table->json('available_time');
             $table->timestamps();
         });
     }

@@ -25,9 +25,8 @@ class UpdateRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string|max:191',
-            'phone' => 'nullable|numeric|digits:10',
+            'phone' => 'nullable|numeric|digits_between:10,15',
             'address' => 'max:191',
-            'password' => 'nullable|min:8|max:15|confirmed',
         ];
     }
 
@@ -35,12 +34,9 @@ class UpdateRequest extends FormRequest
         return [
             'full_name.required' => 'Vui lòng nhập họ và tên',
             'full_name.max' => 'Vui lòng không nhập quá 191 ký tự',
-            'phone.digits' => 'Số điện thoại phải có 10 số',
+            'phone.digits_between' => 'Số điện thoại tối thiếu là 10 số và tối đa là 15 số',
             'phone.numeric' => 'Vui lòng chỉ nhập số',
             'address.max' => 'Vui lòng không nhập quá 191 ký tự',
-            'password.min' => 'Mật khẩu ít nhất 8 ký tự',
-            'password.max' => 'Mật khẩu dài tối đa 15 ký tự',
-            'password.confirmed' => 'Xác nhận mật khẩu không đúng',
         ];
     }
 }

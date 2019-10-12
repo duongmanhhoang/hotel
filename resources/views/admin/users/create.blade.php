@@ -47,6 +47,13 @@
                                         @endif
                                     </div>
                                     <div class="form-group m-form__group">
+                                        <label>Xác nhận mật khẩu <b class="text-danger">*</b></label>
+                                        <input type="password" id="password_confirmation" class="form-control m-input" name="password_confirmation">
+                                        @if ($errors->has('password_confirmation'))
+                                            <b class="text-danger">{{ $errors->first('password_confirmation') }}</b>
+                                        @endif
+                                    </div>
+                                    <div class="form-group m-form__group">
                                         <label>Vai trò <b class="text-danger">*</b></label>
                                         <select class="form-control" name="role_id" id="role_id">
                                             @foreach ($roles as $role)
