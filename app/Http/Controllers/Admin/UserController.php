@@ -74,15 +74,8 @@ class UserController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->except('_token');
-        if (!is_null($request->input('password'))) {
-            $data['password'] = bcrypt($request->input('password'));
-            $this->userRepository->update($id, $data);
-            $request->session()->flash('success', 'Cập nhật thành công');
-        }else {
-            $data = $request->except('password');
-            $this->userRepository->update($id, $data);
-            $request->session()->flash('success', 'Cập nhật thành công');
-        }
+        $this->userRepository->update($id, $data);
+        $request->session()->flash('success', 'Cập nhật thành công');
 
         return redirect()->back();
     }

@@ -58,17 +58,6 @@
                                         @endif
                                     </div>
                                     @endif
-                                    <div class="form-group m-form__group">
-                                        <label>Mật khẩu mới</label>
-                                        <input type="password" class="form-control m-input" name="password" value="{{ old('password') }}">
-                                        @if ($errors->has('password'))
-                                            <b class="text-danger">{{ $errors->first('password') }}</b>
-                                        @endif
-                                    </div>
-                                    <div class="form-group m-form__group">
-                                        <label>Xác nhận mật khẩu mới</label>
-                                        <input type="password" id="password-confirm" class="form-control m-input" name="password_confirmation">
-                                    </div>
                                     <input type="hidden" name="id" value="{{ $user->id }}">
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Sửa</button>
