@@ -11,4 +11,9 @@ class LanguageRepository extends EloquentRepository
     {
         return Language::class;
     }
+
+    public function getLanguage()
+    {
+        return $this->_model->all();
+    }
 }

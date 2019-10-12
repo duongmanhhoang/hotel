@@ -122,5 +122,65 @@
                 <span class="m-menu__link-text">Quản lý tiện nghi</span>
             </a>
         </li>
+
+        <!-- Categories -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-user"></i>
+                <span class="m-menu__link-text">Quản lý danh mục</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.category.postView') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-plus">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Thêm</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.category.list') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-list">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Danh sách</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Posts -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-user"></i>
+                <span class="m-menu__link-text">Quản lý bài viết</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.post.addView') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-plus">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Thêm</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.post.list') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-list">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Danh sách</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </div>

@@ -2,7 +2,9 @@
 
 Route::get('/', function () {
     return view('admin.index');
+
 })->name('index');
+
 
 /**Ngôn ngữ */
 Route::prefix('languages')->name('languages.')->middleware('checkSuperAdmin')->group(function () {
@@ -30,6 +32,33 @@ Route::prefix('locations')->name('locations.')->group(function () {
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
 });
 
+/** Danh mục */
+Route::prefix('category')->name('category.')->group(function () {
+    $controller = 'Admin\CategoryController@';
+    Route::get('/', $controller . 'index')->name('list');
+    Route::get('/post', $controller . 'addView')->name('postView');
+    Route::post('/post', $controller . 'postCategory')->name('postAction');
+    Route::get('/edit/{id}', $controller . 'editView')->name('editView');
+    Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
+    Route::get('/translate-category/{categoryId}', $controller . 'addView')->name('categoryTranslateView');
+    Route::post('/translate-category/{categoryId}', $controller . 'categoryTranslate')->name('categoryTranslate');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+});
+
+
+/** Bài viết */
+Route::prefix('posts')->name('post.')->group(function () {
+    $controller = 'Admin\PostController@';
+    Route::get('/', $controller . 'index')->name('list');
+    Route::get('/post', $controller . 'addView')->name('addView');
+    Route::post('/post', $controller . 'store')->name('addAction');
+    Route::get('/show-post/{id}', $controller . 'show')->name('show');
+    Route::get('/edit/{id}', $controller . 'editView')->name('editView');
+    Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
+    Route::get('/translate-post/{postId}', $controller . 'addView')->name('translateView');
+    Route::post('/translate-post/{postId}', $controller . 'translate')->name('translateAction');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+});
 
 /** Phòng */
 Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
