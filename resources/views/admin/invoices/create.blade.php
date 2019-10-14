@@ -221,7 +221,11 @@
                     },
                 });
             });
-
+            $('#check_in_date').on('change', function (e) {
+                $('#room_id').find('option').remove();
+                $('#room_number').find('option').remove();
+                $('#check_out_date').val('');
+            });
             $('#check-out').on('change', function (e) {
                 let checkIn = $('#check_in_date').val();
                 let checkOut = $('#check_out_date').val();

@@ -6,6 +6,7 @@ use App\Models\ListRoomNumber;
 use App\Models\Location;
 use App\Models\Room;
 use App\Models\RoomDetail;
+use App\Models\RoomInvoice;
 use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -127,153 +128,124 @@ class RoomRepository extends EloquentRepository
         }
     }
 
+    protected function getRooms($data, $rooms)
+    {
+        if ($data) {
+            foreach ($data as $item) {
+                if ($rooms) {
+                    if (isset($rooms[$item->room_id])) {
+                        array_push($rooms[$item->room_id], $item->room_number);
+                        $rooms[$item->room_id] = array_unique($rooms[$item->room_id]);
+                    } else {
+                        $rooms[$item->room_id] = [$item->room_number];
+                    }
+                } else {
+                    $rooms[$item->room_id] = [$item->room_number];
+                }
+
+            }
+        };
+
+
+        return $rooms;
+    }
+
     public function roomAvailable($request)
     {
-        $check_in_day = Carbon::parse($request->checkIn);
-        $check_out_day = Carbon::parse($request->checkOut);
-        $rooms = $this->_model->all();
-//        if ($location) {
-//            $location = Location::find($location);
-//            if (is_null($location)) {
-//                return false;
-//            }
-//        }
+        $checkDateCheckIn = $this->checkDate($request, true, false);
+        $checkDateCheckOut = $this->checkDate($request, false, false);
+        $checkDateOver = $this->checkDate($request, true, true);
+        $rooms = [];
+        $rooms = $this->getRooms($checkDateCheckIn, $rooms);
+        $rooms = $this->getRooms($checkDateCheckOut, $rooms);
+        $rooms[48] = ['P103', 'P101'];
+        $rooms = $this->getRooms($checkDateOver, $rooms);
+        $roomIdSearched = array_keys($rooms);
+        $roomNotSearched = Room::whereNotIn('id', $roomIdSearched)->get();
 
-//        if (isset($_GET['properties'])) {
-//            $properties = $_GET['properties'];
-//            $rooms = Room::whereHas('properties', function ($query) use ($properties) {
-//                $query->whereIn('properties.id', $properties);
-//            })->get();
-//        } else {
-//            $rooms = $location->rooms()->get();
-//        }
-        foreach ($rooms as $room) {
-            if ($room->available_time) {
-                $available_times = json_decode($room->available_time, true);
-                foreach ($available_times as $available_time) {
-                    $check_in_available = Carbon::parse($available_time['check_in']);
-                    $check_out_available = Carbon::parse($available_time['check_out']);
-                    $between_checkin = $check_in_available->diff($check_in_day);
-                    $between_checkin_checkout = $check_in_day->diff($check_out_day);
-                    $between_checkout = $check_out_day->diff($check_out_available);
-                    if ($between_checkin->invert == 0 && $between_checkin_checkout->days <= $available_time['length'] && $between_checkout->invert == 0) {
-                        if (isset($available_rooms)) {
-                            $arr_push = array(
-                                'room_id' => $room->id,
-                                'room_number' => $available_time['available_rooms'],
-                            );
-                            array_push($available_rooms, $arr_push);
-                        } else {
-                            $available_rooms = [];
-                            $available_rooms = array(
-                                array(
-                                    'room_id' => $room->id,
-                                    'room_number' => $available_time['available_rooms'],
-                                ),
-                            );
-                        };
-                    }
-                }
-            };
+        foreach ($roomNotSearched as $item) {
+            $listNumbers = $item->listRoomNumbers->pluck('room_number')->toArray();
+            $rooms[$item->id] = $listNumbers;
+
         }
-        if (!isset($available_rooms)) {
+
+        $roomAvailables = [];
+
+        foreach ($rooms as $key => $item) {
+            $room = $this->_model->find($key);
+            $listRoomNumbers = $room->listRoomNumbers->whereNotIn('room_number', $item)->pluck('room_number')->toArray();
+            if ($listRoomNumbers > 0) {
+                if ($roomAvailables) {
+                    $arr_push = array(
+                        'room_id' => $room->id,
+                        'room_number' => $item
+                    );
+                    array_push($roomAvailables, $arr_push);
+                } else {
+                    $roomAvailables = array(
+                        array(
+                            'room_id' => $key,
+                            'room_number' => $item,
+                        ),
+                    );
+                }
+
+            }
+        }
+
+        if (!$roomAvailables) {
             return false;
         }
+
         $rooms_id = [];
         $i = 0;
-        foreach ($available_rooms as $available_room) {
-            $rooms_id[$i] = $available_room['room_id'];
+        foreach ($roomAvailables as $roomAvailable) {
+            $rooms_id[$i] = $roomAvailable['room_id'];
             $i++;
         }
         $rooms_id = array_unique($rooms_id);
         $result = array(
-            'available_rooms' => $available_rooms,
+            'available_rooms' => $roomAvailables,
             'room_id' => $rooms_id,
         );
 
         return $result;
     }
 
-    public function availableTimeByRoom($room, $check_in_day, $check_out_day)
+    protected function checkDate($request, $isCheckIn, $isOver, $isOnlyRoom = false, $roomId = null)
     {
-        $available_times = json_decode($room->available_time, true);
-        foreach ($available_times as $available_time) {
-            $check_in_available = Carbon::parse($available_time['check_in']);
-            $check_out_available = Carbon::parse($available_time['check_out']);
-            $between_checkin = $check_in_available->diff($check_in_day);
-            $between_checkin_checkout = $check_in_day->diff($check_out_day);
-            $between_checkout = $check_out_day->diff($check_out_available);
-            if ($between_checkin->invert == 0 && $between_checkin_checkout->days <= $available_time['length'] && $between_checkout->invert == 0) {
-                if (isset($available_rooms)) {
-                    $arr_push = $available_time['available_rooms'];
-                    array_push($available_rooms, $arr_push);
-                } else {
-                    $available_rooms = [];
-                    $available_rooms =  $available_time['available_rooms'];
-                };
-            };
-        };
+        $checkIn = Carbon::parse($request->checkIn)->toDateString();
+        $checkOut = Carbon::parse($request->checkOut)->toDateString();
+        $checkInCompare = $isOver ? '>' : '<';
+        $checkOutCompare = $isOver ? '<' : '>';
+        $date = $isCheckIn ? $checkIn : $checkOut;
+        $result = RoomInvoice::whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])
+            ->where('check_in_date', $checkInCompare, $isOver ? $checkIn : $date)
+            ->where('check_out_date', $checkOutCompare, $isOver ? $checkOut : $date);
 
-        return $available_rooms;
+        if ($isOnlyRoom) {
+            return $result->where('room_id', $roomId)->get();
+        }
 
+        return $result->get();
     }
 
-    public function updateAvailableTime($room_id, $check_in, $check_out, $room_number)
+    public function availableTimeByRoom($request, $room)
     {
-        $room = $this->_model->find($room_id);
-        if (is_null($room)) {
-            return false;
+        $rooms = [];
+        $checkDateCheckIn = $this->checkDate($request, true, false, true, $room->id);
+        $rooms = $this->getRooms($checkDateCheckIn, $rooms);
+        $checkDateCheckOut = $this->checkDate($request, false, false, true, $room->id);
+        $rooms = $this->getRooms($checkDateCheckOut, $rooms);
+        $checkDateOver = $this->checkDate($request, true, true, true, $room->id);
+        $rooms = $this->getRooms($checkDateOver, $rooms);
+        if (!$rooms) {
+            $result = $room->listRoomNumbers->pluck('room_number')->toArray();
+        } else {
+            $result = $room->listRoomNumbers->whereNotIn('room_number', $rooms[$room->id])->pluck('room_number')->toArray();
         }
-        $check_arr = json_decode($room->available_time, true);
-        foreach ($check_arr as $key => $item) {
-            $checkin = Carbon::parse($check_in);
-            $checkout = Carbon::parse($check_out);
-            $check_in_available = Carbon::parse($item['check_in']);
-            $check_out_available = Carbon::parse($item['check_out']);
-            $diff = $check_in_available->diff($checkin);
-            $diff2 = $check_in_available->diff($check_out_available);
-            $diff3 = $checkin->diff($checkout);
-            if ($diff->invert == 0 && $diff2->days >= $diff3->days) {
-                $new = [];
-                $new['check_in'] = $item['check_in'];
-                $new['check_out'] = $check_in;
-                $new_check_in = Carbon::parse($item['check_in']);
-                $new_check_out = Carbon::parse($check_in);
-                $new['length'] = $new_check_in->diff($new_check_out)->days;
-                $new2 = [];
-                $new2['check_in'] = $check_out;
-                $new2['check_out'] = $item['check_out'];
-                $new_check_in = Carbon::parse($check_out);
-                $new_check_out = Carbon::parse($item['check_out']);
-                $new2['length'] = $new_check_in->diff($new_check_out)->days;
-                if (count($item['available_rooms']) == 1) {
-                    if ($new['length'] > 0) {
-                        $new['available_rooms'] = $item['available_rooms'];
-                        array_push($check_arr, $new);
-                    }
-                    if ($new2['length'] > 0) {
-                        $new2['available_rooms'] = $item['available_rooms'];
-                        array_push($check_arr, $new2);
-                    }
-                    unset($check_arr[$key]);
-                } else {
-                    if ($new['length'] > 0) {
-                        $available_rooms = $item['available_rooms'];
-                        $room_number_key = array_search($room_number, $available_rooms);
-                        $new['available_rooms'] = array($available_rooms[$room_number_key]);
-                        array_push($check_arr, $new);
-                    }
-                    if ($new2['length'] > 0) {
-                        $available_rooms = $item['available_rooms'];
-                        $room_number_key = array_search($room_number, $available_rooms);
-                        $new2['available_rooms'] = array($available_rooms[$room_number_key]);
-                        array_push($check_arr, $new2);
-                    }
-                    unset($check_arr[$key]['available_rooms'][$room_number_key]);
-                }
-            };
-        }
-        $room->available_time = json_encode($check_arr, true);
-        $room->save();
+
+        return $result;
+
     }
 }

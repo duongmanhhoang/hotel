@@ -80,6 +80,7 @@
                                             </td>
                                             <td>
                                                 <p>Tên phòng: {{ $roomDetail->name }}</p>
+                                                <p>Số phòng: {{ $pivot->room_number }}</p>
                                                 <p class="price">Giá: {{ $pivot->price }} {{ !$pivot->currency ? 'vnđ' : '$' }}</p>
                                                 <p class="price">Phí thu thêm: {{ $pivot->extra }}</p>
                                             </td>
