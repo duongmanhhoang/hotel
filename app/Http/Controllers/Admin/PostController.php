@@ -7,6 +7,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Language\LanguageRepository;
 use App\Repositories\Post\PostRepository;
 use Illuminate\Http\Request;
+use Auth;
 
 class PostController extends Controller
 {
@@ -55,6 +56,7 @@ class PostController extends Controller
     {
         $input = $request->all();
         $input['lang_id'] = $this->baseLang;
+        $input['posted_by'] = Auth::user()->id;
 
         $this->postRepo->insertPost($input);
 

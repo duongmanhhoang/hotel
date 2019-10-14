@@ -50,8 +50,8 @@ Route::prefix('category')->name('category.')->group(function () {
 Route::prefix('posts')->name('post.')->group(function () {
     $controller = 'Admin\PostController@';
     Route::get('/', $controller . 'index')->name('list');
-    Route::get('/post', $controller . 'addView')->name('addView');
-    Route::post('/post', $controller . 'store')->name('addAction');
+    Route::get('/create', $controller . 'addView')->name('addView');
+    Route::post('/create', $controller . 'store')->name('addAction');
     Route::get('/show-post/{id}', $controller . 'show')->name('show');
     Route::get('/edit/{id}', $controller . 'editView')->name('editView');
     Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');

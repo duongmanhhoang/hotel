@@ -39,7 +39,7 @@
                                     @if(!isset($dataTranslate))
                                         @php $image = isset($data) ? asset(config('common.uploads.posts')) . '/' . $data->image : asset(config('common.images.default'));  @endphp
                                         <div class="form-group m-form__group">
-                                            <label>Cờ <b class="text-danger">*</b></label>
+                                            <label>Ảnh <b class="text-danger">*</b></label>
                                             <br>
                                             <img id="is_image"
                                                  src="{{ $image }}"

@@ -8,7 +8,7 @@ class Post extends Model
 {
     protected $table = 'posts';
 
-    protected $fillable = ['id', 'category_id', 'title', 'description', 'body', 'lang_id', 'lang_parent_id', 'image'];
+    protected $fillable = ['id', 'category_id', 'title', 'description', 'body', 'lang_id', 'lang_parent_id', 'image', 'posted_by', 'approve_by', 'approve'];
 
     public function language()
     {
