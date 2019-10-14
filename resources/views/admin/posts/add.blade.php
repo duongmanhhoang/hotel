@@ -9,7 +9,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Thêm danh mục
+                                    Thêm bài viết
                                 </h3>
                             </div>
                         </div>
@@ -26,24 +26,14 @@
                                             Những field có dấu * bắt buộc phải điền
                                         </div>
                                     </div>
-
-                                    <div class="form-group m-form__group">
-                                        <label>Tiêu đề <b class="text-danger">*</b></label>
-                                        <input type="text" class="form-control m-input" name="title"
-                                               value="{{ $data->title ?? old('title') }}">
-                                        @if ($errors->has('name'))
-                                            <b class="text-danger">{{ $errors->first('name') }}</b>
-                                        @endif
-                                    </div>
-
                                     @if(!isset($dataTranslate))
                                         @php $image = isset($data) ? asset(config('common.uploads.posts')) . '/' . $data->image : asset(config('common.images.default'));  @endphp
                                         <div class="form-group m-form__group">
-                                            <label>Ảnh <b class="text-danger">*</b></label>
+                                            <label>Ảnh đại diện <b class="text-danger">*</b></label>
                                             <br>
                                             <img id="is_image"
                                                  src="{{ $image }}"
-                                                 width="100"
+                                                 width="500"
                                                  class="mb-4"
                                             >
                                             <div></div>
@@ -58,6 +48,14 @@
                                             @endif
                                         </div>
                                     @endif
+                                    <div class="form-group m-form__group">
+                                        <label>Tiêu đề <b class="text-danger">*</b></label>
+                                        <input type="text" class="form-control m-input" name="title"
+                                               value="{{ $data->title ?? old('title') }}">
+                                        @if ($errors->has('name'))
+                                            <b class="text-danger">{{ $errors->first('name') }}</b>
+                                        @endif
+                                    </div>
 
                                     <div class="form-group m-form__group">
                                         <label>Mô tả <b class="text-danger">*</b></label>

@@ -116,6 +116,10 @@ class UserRepository extends EloquentRepository
         $role_user_selected = User::findOrFail($id)->role_id;
         // Role của user đã đăng nhập vào quản trị
         $role_user_logged = Auth::User()->role_id;
+        // Id của user đã đăng nhập vào quản trị
+        $id_user_logged = Auth::User()->id;
+        // Id của user được chọn để sửa
+        $id_user_selected = $id;
         $status = false;
         if ( $role_user_logged == config('common.roles.super_admin') ) 
         {
@@ -123,18 +127,29 @@ class UserRepository extends EloquentRepository
         } 
         else if ( $role_user_logged == config('common.roles.admin') )
         {
-            if ( $role_user_selected == config('common.roles.super_admin') || $role_user_selected == config('common.roles.admin') )
+            if ( $role_user_selected == config('common.roles.super_admin') )
             {
                 $status = false;
             } 
-            else 
+            else if ( $role_user_selected == config('common.roles.admin') )
+            {
+                if ( $role_user_selected == $role_user_logged && $id_user_logged == $id_user_selected ) 
+                {
+                    $status = true;
+                }
+                else 
+                {
+                    $status = false;
+                }
+            }
+            else
             {
                 $status = true;
             }
         }
         else 
         {
-            if ( $role_user_selected == $role_user_logged )
+            if ( $role_user_selected == $role_user_logged && $id_user_logged == $id_user_selected )
             {
                 $status = true;
             }

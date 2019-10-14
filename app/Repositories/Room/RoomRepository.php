@@ -3,9 +3,12 @@
 namespace App\Repositories\Room;
 
 use App\Models\ListRoomNumber;
+use App\Models\Location;
 use App\Models\Room;
 use App\Models\RoomDetail;
+use App\Models\RoomInvoice;
 use App\Repositories\EloquentRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -113,7 +116,7 @@ class RoomRepository extends EloquentRepository
         return $dataRoomDetail;
     }
 
-    public function deleteRoomNumber($roomNumbers , $room_number)
+    public function deleteRoomNumber($roomNumbers, $room_number)
     {
         foreach ($roomNumbers as $roomNumber) {
             if ($roomNumber->room_number == $room_number) {
@@ -123,5 +126,126 @@ class RoomRepository extends EloquentRepository
                 return true;
             }
         }
+    }
+
+    protected function getRooms($data, $rooms)
+    {
+        if ($data) {
+            foreach ($data as $item) {
+                if ($rooms) {
+                    if (isset($rooms[$item->room_id])) {
+                        array_push($rooms[$item->room_id], $item->room_number);
+                        $rooms[$item->room_id] = array_unique($rooms[$item->room_id]);
+                    } else {
+                        $rooms[$item->room_id] = [$item->room_number];
+                    }
+                } else {
+                    $rooms[$item->room_id] = [$item->room_number];
+                }
+
+            }
+        };
+
+
+        return $rooms;
+    }
+
+    public function roomAvailable($request)
+    {
+        $checkDateCheckIn = $this->checkDate($request, true, false);
+        $checkDateCheckOut = $this->checkDate($request, false, false);
+        $checkDateOver = $this->checkDate($request, true, true);
+        $rooms = [];
+        $rooms = $this->getRooms($checkDateCheckIn, $rooms);
+        $rooms = $this->getRooms($checkDateCheckOut, $rooms);
+        $rooms[48] = ['P103', 'P101'];
+        $rooms = $this->getRooms($checkDateOver, $rooms);
+        $roomIdSearched = array_keys($rooms);
+        $roomNotSearched = Room::whereNotIn('id', $roomIdSearched)->get();
+
+        foreach ($roomNotSearched as $item) {
+            $listNumbers = $item->listRoomNumbers->pluck('room_number')->toArray();
+            $rooms[$item->id] = $listNumbers;
+
+        }
+
+        $roomAvailables = [];
+
+        foreach ($rooms as $key => $item) {
+            $room = $this->_model->find($key);
+            $listRoomNumbers = $room->listRoomNumbers->whereNotIn('room_number', $item)->pluck('room_number')->toArray();
+            if ($listRoomNumbers > 0) {
+                if ($roomAvailables) {
+                    $arr_push = array(
+                        'room_id' => $room->id,
+                        'room_number' => $item
+                    );
+                    array_push($roomAvailables, $arr_push);
+                } else {
+                    $roomAvailables = array(
+                        array(
+                            'room_id' => $key,
+                            'room_number' => $item,
+                        ),
+                    );
+                }
+
+            }
+        }
+
+        if (!$roomAvailables) {
+            return false;
+        }
+
+        $rooms_id = [];
+        $i = 0;
+        foreach ($roomAvailables as $roomAvailable) {
+            $rooms_id[$i] = $roomAvailable['room_id'];
+            $i++;
+        }
+        $rooms_id = array_unique($rooms_id);
+        $result = array(
+            'available_rooms' => $roomAvailables,
+            'room_id' => $rooms_id,
+        );
+
+        return $result;
+    }
+
+    protected function checkDate($request, $isCheckIn, $isOver, $isOnlyRoom = false, $roomId = null)
+    {
+        $checkIn = Carbon::parse($request->checkIn)->toDateString();
+        $checkOut = Carbon::parse($request->checkOut)->toDateString();
+        $checkInCompare = $isOver ? '>' : '<';
+        $checkOutCompare = $isOver ? '<' : '>';
+        $date = $isCheckIn ? $checkIn : $checkOut;
+        $result = RoomInvoice::whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])
+            ->where('check_in_date', $checkInCompare, $isOver ? $checkIn : $date)
+            ->where('check_out_date', $checkOutCompare, $isOver ? $checkOut : $date);
+
+        if ($isOnlyRoom) {
+            return $result->where('room_id', $roomId)->get();
+        }
+
+        return $result->get();
+    }
+
+    public function availableTimeByRoom($request, $room)
+    {
+        $rooms = [];
+        $checkDateCheckIn = $this->checkDate($request, true, false, true, $room->id);
+        $rooms = $this->getRooms($checkDateCheckIn, $rooms);
+        $checkDateCheckOut = $this->checkDate($request, false, false, true, $room->id);
+        $rooms = $this->getRooms($checkDateCheckOut, $rooms);
+        $checkDateOver = $this->checkDate($request, true, true, true, $room->id);
+        $rooms = $this->getRooms($checkDateOver, $rooms);
+        if (!$rooms) {
+            $result = $room->listRoomNumbers->pluck('room_number')->toArray();
+        } else {
+            $result = $room->listRoomNumbers->whereNotIn('room_number', $rooms[$room->id])->pluck('room_number')->toArray();
+        }
+
+        return $result;
+
     }
 }

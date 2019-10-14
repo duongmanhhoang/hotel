@@ -15,6 +15,7 @@ class Room extends Model
         'rating',
         'adults',
         'children',
+        'available_time',
     ];
 
     public function listRoomNumbers()

@@ -8,7 +8,7 @@ Route::get('/', function () {
 
 /**Ngôn ngữ */
 Route::prefix('languages')->name('languages.')->middleware('checkSuperAdmin')->group(function () {
-    $controller  = 'Admin\LanguageController@';
+    $controller = 'Admin\LanguageController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
@@ -101,4 +101,15 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::get('/deactive/{id}', $controller . 'deactive')->name('deactive');
     Route::get('/active/{id}', $controller . 'active')->name('active');
 
+});
+
+
+/** Hóa đơn */
+Route::prefix('invoices')->name('invoices.')->group(function () {
+    $controller = 'Admin\InvoiceController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/create', $controller . 'create')->name('create');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/get-available-room', $controller . 'getAvailableRoom')->name('getAvailableRoom');
+    Route::get('/get-available-room-number/{id}', $controller . 'getAvailableRoomNumbers')->name('getAvailableRoomNumbers');
 });
