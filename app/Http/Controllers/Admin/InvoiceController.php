@@ -50,15 +50,13 @@ class InvoiceController extends Controller
     public function getAvailableRoomNumbers(Request $request, $id)
     {
         $room = $this->roomRepository->find($id);
-        $checkIn = Carbon::parse($request->checkIn);
-        $checkOut = Carbon::parse($request->checkOut);
 
         if (!$room) {
             $dataRespone = [
                 'messages' => 'not_found',
             ];
         } else {
-            $numbers = $this->roomRepository->availableTimeByRoom($room, $checkIn, $checkOut);
+            $numbers = $this->roomRepository->availableTimeByRoom($request, $room);
             $numbers = ListRoomNumber::where('room_id', $id)->whereIn('room_number', $numbers)->get();
             $dataRespone = [
                 'messages' => 'success',
@@ -74,12 +72,11 @@ class InvoiceController extends Controller
         $data = $request->except('_token');
         DB::beginTransaction();
         try {
-            $this->roomRepository->updateAvailableTime($data['room_id'], $data['check_in_date'], $data['check_out_date'], $data['room_number']);
             $this->invoiceRepository->storeData($data);
             DB::commit();
             $request->session()->flash('success', 'Tạo hóa đơn thành công');
 
-            return redirect()->back();
+            return redirect(route('admin.invoices.index'));
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e->getMessage());
