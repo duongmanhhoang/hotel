@@ -39,10 +39,20 @@ class CategoryController extends Controller
 
     public function addView($categoryId = false)
     {
+        if($categoryId != false) {
+            $checkAvailableTranslate = $this->categoryRepo->find($categoryId);
+
+            if($checkAvailableTranslate->lang_parent_id != null)
+                return redirect()->route('admin.category.list')->with(['error' => 'Không được dịch từ bản con']);
+        }
+
         $categories  = $this->categoryRepo->categoriesAll(null);
         $dataTranslate = $categoryId != false ? true : null;
         $route = $categoryId != false ? route('admin.category.categoryTranslate', ['categoryId' => $categoryId]) : route('admin.category.postAction');
-        $language = $this->languageRepo->getLanguage();
+        $language = $categoryId != false ? $this->categoryRepo->getTranslateId($categoryId) : [];
+
+        if($categoryId != false && count($language) <= 0)
+            return redirect()->route('admin.category.list')->with(['error' => 'Đã đủ bản dịch']);
 
         $compact = compact('categories', 'dataTranslate', 'language', 'route');
 
@@ -58,7 +68,7 @@ class CategoryController extends Controller
 
         $this->categoryRepo->post($input);
 
-        $request->session()->flash('success', 'Thêm cơ sở thành công');
+        $request->session()->flash('success', 'Thêm danh mục thành công');
         Session::put('locale', $this->baseLang);
 
         return redirect()->route('admin.category.list');
@@ -100,10 +110,23 @@ class CategoryController extends Controller
         return redirect()->back();
     }
 
-    public function categoryTranslate(Request $request, $categoryId)
+    public function categoryTranslate(PostCategoryRequest $request, $categoryId)
     {
         $input = $request->all();
+
+        $checkParentTranslate = $this->categoryRepo->checkParentTranslate($categoryId, $input['lang_id']);
+
+        if($checkParentTranslate == false) {
+            $language = $this->languageRepo->find($input['lang_id']);
+            $request->session()->flash('error', 'Danh mục cha chưa có bản dịch cho ngôn ngữ ' . $language->name);
+
+            return redirect()->back();
+        }
+
         $this->categoryRepo->categoryTranslate($categoryId, $input);
+
+        $request->session()->flash('success', 'Dịch thành công');
+        Session::put('locale', $input['lang_id']);
 
         return redirect()->route('admin.category.list');
     }

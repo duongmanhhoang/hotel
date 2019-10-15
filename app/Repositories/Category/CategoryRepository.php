@@ -3,7 +3,6 @@
 namespace App\Repositories\Category;
 
 use App\Models\Category;
-use App\Models\Post;
 use App\Repositories\EloquentRepository;
 use Session;
 
@@ -55,12 +54,15 @@ class CategoryRepository extends EloquentRepository
 
     public function deleteCategory($id)
     {
-        $result = $this->find($id);
+        $result = $this->_model->where('id', $id)->with('children')->first();
 
-//        $posts = Post::where('category_id', $id);
-//        $posts->update(['category_id' => null]);
+        if (!empty($result->children)) {
+            foreach ($result->children as $child) {
+                $child->childrenTranslate()->delete();
+                $child->delete();
+            }
+        }
 
-        $result->childrenTranslate()->delete();
         $result->delete($id);
 
         return !!$result;
@@ -73,6 +75,23 @@ class CategoryRepository extends EloquentRepository
         $result = $this->_model->create($input);
 
         return $result;
+    }
+
+    public function checkParentTranslate($id, $langId)
+    {
+        $result = $this->_model->where('id', $id)->with('parent')->first();
+
+        if (!empty($result->parent)) {
+
+            $parentRecord = $this->_model->where(['lang_parent_id' => $result->parent->id, 'lang_id' => $langId])->get();
+
+            if (empty($parentRecord) || count($parentRecord) <= 0 || $parentRecord == null) {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
 }

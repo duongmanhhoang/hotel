@@ -9,7 +9,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Thêm danh mục
+                                    @if(isset($data)) Sửa danh mục @elseif(isset($dataTranslate)) Thêm ngôn ngữ @else Thêm danh mục @endif
                                 </h3>
                             </div>
                         </div>
