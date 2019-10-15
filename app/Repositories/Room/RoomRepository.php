@@ -116,16 +116,31 @@ class RoomRepository extends EloquentRepository
         return $dataRoomDetail;
     }
 
-    public function deleteRoomNumber($roomNumbers, $room_number)
+    public function deleteRoomNumber($roomNumbers, $room_number, $roomId)
     {
-        foreach ($roomNumbers as $roomNumber) {
-            if ($roomNumber->room_number == $room_number) {
-                $number = ListRoomNumber::find($roomNumber->id);
-                $number->delete();
+        $check = $this->checkInvoiceRoomNumber($room_number, $roomId);
+        if ($check) {
+            foreach ($roomNumbers as $roomNumber) {
+                if ($roomNumber->room_number == $room_number) {
+                    $number = ListRoomNumber::find($roomNumber->id);
+                    $number->delete();
 
-                return true;
+                    return true;
+                }
             }
         }
+
+        return false;
+    }
+
+    protected function checkInvoiceRoomNumber($roomNumber, $roomId)
+    {
+        $invoicesCount = RoomInvoice::where('room_id', $roomId)->where('room_number', $roomNumber)->whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])->count();
+        if ($invoicesCount == 0) {
+            return true;
+        };
+
+        return false;
     }
 
     protected function getRooms($data, $rooms)
@@ -246,6 +261,15 @@ class RoomRepository extends EloquentRepository
         }
 
         return $result;
+    }
 
+    public function checkInvoiceRoom($roomId)
+    {
+        $count = RoomInvoice::where('room_id', $roomId)->whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])->count();
+        if ($count == 0) {
+            return true;
+        };
+
+        return false;
     }
 }

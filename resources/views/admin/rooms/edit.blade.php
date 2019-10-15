@@ -330,18 +330,9 @@
                 dataType: 'json',
                 data: formData,
                 success: function (response) {
-                    if (response.messages == 'errors_invoice') {
-                        $('#room_number_status').val('cannotdelete');
-                        toastr.error(response.data, 'Không thể xóa');
+                    if (response.messages == 'error') {
+                        toastr.error('Phòng này đang được sử dụng', 'Không thể xóa');
                     }
-                    if (response.messages == 'errors') {
-                        toastr.error(response.data, 'Không thể xóa');
-                    }
-
-                    if (response.messages == 'errors_null') {
-                        toastr.error(response.data, 'Không thể xóa');
-                    }
-
                     if (response.messages == 'success') {
                         toastr.success('Xóa thành công', 'Thành công');
                         $('#room-number-' + room_number).remove();

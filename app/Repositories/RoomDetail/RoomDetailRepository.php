@@ -16,6 +16,7 @@ class RoomDetailRepository extends EloquentRepository
 
     public function deleteRoom($id)
     {
+
         $check = $this->checkOriginal($id);
         $roomDetail = $this->_model->find($id);
         $room = $roomDetail->room;

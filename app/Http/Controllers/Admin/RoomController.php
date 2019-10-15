@@ -108,7 +108,6 @@ class RoomController extends Controller
         $listLocationRoomsNumber = $location->listRoomsNumber()->pluck('list_room_numbers.room_number')->toArray();
         $data = compact(
             'location',
-            'properties',
             'roomIds',
             'listLocationRoomsNumber',
             'room',
@@ -145,11 +144,13 @@ class RoomController extends Controller
         $room = $this->roomRepository->find($id);
         $roomNumbers = $room->listRoomNumbers;
         $room_number = $request->room_number;
-        $result = $this->roomRepository->deleteRoomNumber($roomNumbers, $room_number);
+        $result = $this->roomRepository->deleteRoomNumber($roomNumbers, $room_number, $id);
 
         if ($result) {
             return response()->json(['messages' => 'success'], 200);
         }
+
+        return response()->json(['messages' => 'error'], 200);
     }
 
     public function translation(Request $request, $location_id, $id)
@@ -184,6 +185,14 @@ class RoomController extends Controller
 
     public function delete(Request $request, $location_id, $id)
     {
+        $checkInvoice = $this->roomRepository->checkInvoiceRoom($id);
+
+        if (!$checkInvoice) {
+            $request->session()->flash('error', 'Phòng này đang được sử dụng');
+
+            return redirect()->back();
+        }
+
         $action = $this->roomDetailRepository->deleteRoom($id);
 
         if ($action) {
@@ -191,7 +200,6 @@ class RoomController extends Controller
         } else {
             $request->session()->flash('error', 'Có lỗi xảy ra');
         }
-
         return redirect()->back();
     }
 
