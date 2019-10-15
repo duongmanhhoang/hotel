@@ -83,7 +83,7 @@ class CategoryRepository extends EloquentRepository
 
         if (!empty($result->parent)) {
 
-            $parentRecord = $this->_model->where(['lang_parent_id' => $result->parent->id, 'lang_id' => $langId])->get();
+            $parentRecord = $this->queryCheckTranslateCategory($result->parent->id, $langId);
 
             if (empty($parentRecord) || count($parentRecord) <= 0 || $parentRecord == null) {
                 return false;
@@ -92,6 +92,11 @@ class CategoryRepository extends EloquentRepository
         }
 
         return true;
+    }
+
+    public function queryCheckTranslateCategory($parentId, $langId)
+    {
+        return $this->_model->where(['lang_parent_id' => $parentId, 'lang_id' => $langId])->get();
     }
 
 }
