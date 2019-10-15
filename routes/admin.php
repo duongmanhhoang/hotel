@@ -76,6 +76,10 @@ Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     Route::post('/add-properties', $controller . 'addProperties')->name('addProperties');
     Route::post('/delete-properties', $controller . 'deleteProperties')->name('deleteProperties');
 });
+Route::post('/rooms/upload-images/{id}', 'Admin\RoomController@uploadImage')->name('rooms.uploadImage');
+Route::post('/rooms/destroy-images', 'Admin\RoomController@destroyImage')->name('rooms.destroyImage');
+Route::post('/rooms/delete-room-number', 'Admin\RoomController@deleteRoomNumber')->name('rooms.deleteRoomNumber');
+Route::get('/rooms/delete-images/{id}', 'Admin\RoomController@deleteImage')->name('rooms.deleteImage');
 
 /** Tiện nghi */
 Route::prefix('properties')->name('properties.')->group(function () {

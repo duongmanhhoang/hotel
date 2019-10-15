@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Rooms\TranslationRequest;
 use App\Http\Requests\Admin\Rooms\UpdateRequest;
 use App\Models\ListRoomNumber;
 use App\Models\RoomDetail;
+use App\Repositories\Library\LibraryRepository;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
@@ -24,13 +25,15 @@ class RoomController extends Controller
         LocationRepository $locationRepository,
         RoomRepository $roomRepository,
         RoomDetailRepository $roomDetailRepository,
-        PropertyRepository $propertyRepository
+        PropertyRepository $propertyRepository,
+        LibraryRepository $libraryRepository
     )
     {
         $this->locationRepository = $locationRepository;
         $this->roomRepository = $roomRepository;
         $this->roomDetailRepository = $roomDetailRepository;
         $this->propertyRepository = $propertyRepository;
+        $this->libraryRepository = $libraryRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -106,13 +109,15 @@ class RoomController extends Controller
         }
         $listRoomNumber = $room->listRoomNumbers()->pluck('room_number')->toArray();
         $listLocationRoomsNumber = $location->listRoomsNumber()->pluck('list_room_numbers.room_number')->toArray();
+        $images = $this->libraryRepository->getImagesByRoom($id);
         $data = compact(
             'location',
             'roomIds',
             'listLocationRoomsNumber',
             'room',
             'roomDetail',
-            'listRoomNumber'
+            'listRoomNumber',
+            'images'
         );
 
         return view('admin.rooms.edit', $data);
@@ -236,6 +241,26 @@ class RoomController extends Controller
         $room->properties()->detach($data['id']);
 
         return response()->json(['messages' => 'success', 'data' => $data], 200);
+    }
+
+    public function uploadImage(Request $request, $id)
+    {
+        $this->libraryRepository->uploadImage($request, $id);
+        $request->session()->flash('image_active');
+    }
+
+    public function destroyImage(Request $request)
+    {
+        $this->libraryRepository->destroyImage($request);
+        $request->session()->flash('image_active');
+    }
+
+    public function deleteImage(Request $request, $id)
+    {
+        $this->libraryRepository->deleteImage($id);
+        $request->session()->flash('image_active');
+
+        return redirect()->back();
     }
 
 }

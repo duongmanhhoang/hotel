@@ -25,6 +25,7 @@ return [
         'languages' => '/uploads/languages',
         'posts' => '/uploads/posts',
         'rooms' => '/uploads/rooms',
+        'libraries' => '/uploads/libraries',
     ],
     'languages' => [
         'default' => 1,
