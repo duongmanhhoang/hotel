@@ -146,7 +146,6 @@ class RoomRepository extends EloquentRepository
             }
         };
 
-
         return $rooms;
     }
 
@@ -161,19 +160,15 @@ class RoomRepository extends EloquentRepository
         $rooms = $this->getRooms($checkDateOver, $rooms);
         $roomIdSearched = array_keys($rooms);
         $roomNotSearched = Room::whereNotIn('id', $roomIdSearched)->get();
-
         foreach ($roomNotSearched as $item) {
-            $listNumbers = $item->listRoomNumbers->pluck('room_number')->toArray();
-            $rooms[$item->id] = $listNumbers;
-
+            $rooms[$item->id] = [];
         }
 
         $roomAvailables = [];
-
         foreach ($rooms as $key => $item) {
             $room = $this->_model->find($key);
             $listRoomNumbers = $room->listRoomNumbers->whereNotIn('room_number', $item)->pluck('room_number')->toArray();
-            if ($listRoomNumbers > 0) {
+            if ($listRoomNumbers) {
                 if ($roomAvailables) {
                     $arr_push = array(
                         'room_id' => $room->id,
@@ -188,10 +183,8 @@ class RoomRepository extends EloquentRepository
                         ),
                     );
                 }
-
             }
         }
-
         if (!$roomAvailables) {
             return false;
         }
@@ -215,12 +208,20 @@ class RoomRepository extends EloquentRepository
     {
         $checkIn = Carbon::parse($request->checkIn)->toDateString();
         $checkOut = Carbon::parse($request->checkOut)->toDateString();
-        $checkInCompare = $isOver ? '>' : '<';
-        $checkOutCompare = $isOver ? '<' : '>';
+        $checkInCompare = $isOver ? '>=' : '<';
+        $checkOutCompare = $isOver ? '<=' : '>';
         $date = $isCheckIn ? $checkIn : $checkOut;
-        $result = RoomInvoice::whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])
-            ->where('check_in_date', $checkInCompare, $isOver ? $checkIn : $date)
-            ->where('check_out_date', $checkOutCompare, $isOver ? $checkOut : $date);
+        if ($request->roomInvoice) {
+            $result = RoomInvoice::whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])
+                ->where('check_in_date', $checkInCompare, $isOver ? $checkIn : $date)
+                ->where('check_out_date', $checkOutCompare, $isOver ? $checkOut : $date)
+                ->where('id', '<>', $request->roomInvoice);
+        } else {
+            $result = RoomInvoice::whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])
+                ->where('check_in_date', $checkInCompare, $isOver ? $checkIn : $date)
+                ->where('check_out_date', $checkOutCompare, $isOver ? $checkOut : $date);
+        }
+
 
         if ($isOnlyRoom) {
             return $result->where('room_id', $roomId)->get();
