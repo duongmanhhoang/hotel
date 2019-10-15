@@ -158,7 +158,6 @@ class RoomRepository extends EloquentRepository
         $rooms = [];
         $rooms = $this->getRooms($checkDateCheckIn, $rooms);
         $rooms = $this->getRooms($checkDateCheckOut, $rooms);
-        $rooms[48] = ['P103', 'P101'];
         $rooms = $this->getRooms($checkDateOver, $rooms);
         $roomIdSearched = array_keys($rooms);
         $roomNotSearched = Room::whereNotIn('id', $roomIdSearched)->get();
