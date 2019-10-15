@@ -212,5 +212,12 @@
                 </ul>
             </div>
         </li>
+        <!-- Cài đặt website -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="{{ route('admin.settings.edit') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-cog"></i>
+                <span class="m-menu__link-text">Cài đặt website</span>
+            </a>
+        </li>
     </ul>
 </div>
