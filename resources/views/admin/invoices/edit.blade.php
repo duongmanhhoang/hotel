@@ -1,15 +1,22 @@
+<?php
+
+use App\Models\RoomInvoice;
+
+?>
 @extends('admin.layouts.master')
 @section('content')
     <div class="m-content">
         <div class="m-subheader mb-5">
             <div class="d-flex align-items-center">
                 <div class="mr-auto">
-                    <h3 class="m-subheader__title m-subheader__title--separator">Thêm hóa đơn</h3>
+                    <h3 class="m-subheader__title m-subheader__title--separator">Chỉnh sửa hóa đơn</h3>
                     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
                         <li class="m-nav__item m-nav__item--home">
                             <div class="form-group m-form__group m--margin-top-10">
                                 <div class="alert alert-danger m-alert m-alert--default" role="alert">
-                                    Những field có dấu * bắt buộc phải điền
+                                    Những field có dấu * bắt buộc phải điền<br>
+                                    Nếu bạn muốn chỉnh sửa thông tin liên quan đến phòng, xin vui lòng cập nhập lại ngày
+                                    tháng năm để hệ thống có thể tìm kiếm những phòng khả dụng
                                 </div>
                             </div>
                         </li>
@@ -17,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <form method="post" action="{{ route('admin.invoices.store') }}">
+        <form method="post" action="{{ route('admin.invoices.update', $invoice->id) }}">
             @csrf
             <div class="row">
                 <div class="col-xl-6">
@@ -39,9 +46,11 @@
                                             <label>Ngày đến <b class="text-danger">*</b></label>
                                             <div class="m-input-icon m-input-icon--right">
                                                 <input type="text" class="form-control m-input my-datepicker"
-                                                       value="{{ old('check_in_date') }}" id="check_in_date"
+                                                       value="{{ old('check_in_date', $checkIn) }}" id="check_in_date"
                                                        name="check_in_date"
-                                                       autocomplete="off">
+                                                       autocomplete="off"
+                                                    {{ $disable ? 'disabled' : '' }}
+                                                >
                                             </div>
                                             <b class="check_in_date_errors text-danger">
                                                 @if ($errors->has('check_in_date'))
@@ -53,9 +62,12 @@
                                             <label class="">Ngày đi <b class="text-danger">*</b></label>
                                             <div class="m-input-icon m-input-icon--right" id="check-out">
                                                 <input type="text" class="form-control m-input my-datepicker"
-                                                       value="{{ old('check_out_date') }}" id="check_out_date"
+                                                       value="{{ old('check_out_date', $checkOut) }}"
+                                                       id="check_out_date"
                                                        name="check_out_date"
-                                                       autocomplete="off">
+                                                       autocomplete="off"
+                                                    {{ $disable ? 'disabled' : '' }}
+                                                >
                                             </div>
                                             <b class="check_out_date_errors text-danger">
                                                 @if ($errors->has('check_out_date'))
@@ -66,8 +78,10 @@
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Chọn phòng <b class="text-danger">*</b></label>
-                                        <select class="form-control" name="room_id" id="room_id">
+                                        <select class="form-control" name="room_id"
+                                                id="room_id" {{ $disable ? 'disabled' : '' }}>
                                             <option></option>
+                                            <option selected value="{{ $room->id }}">{{ $roomDetail->name }}</option>
                                         </select>
                                         @if ($errors->has('room_id'))
                                             <b class="text-danger">{{ $errors->first('room_id') }}</b>
@@ -75,7 +89,10 @@
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Chọn số phòng <b class="text-danger">*</b></label>
-                                        <select class="form-control" name="room_number" id="room_number">
+                                        <select class="form-control" name="room_number"
+                                                id="room_number" {{ $disable ? 'disabled' : '' }}>
+                                            <option
+                                                value="{{ $invoiceRoom->room_number }}">{{ $invoiceRoom->room_number }}</option>
                                         </select>
                                         @if ($errors->has('room_id'))
                                             <b class="text-danger">{{ $errors->first('room_id') }}</b>
@@ -84,24 +101,38 @@
                                     <div class="form-group m-form__group">
                                         <label>Loại tiền <b class="text-danger">*</b></label>
                                         <select class="form-control" name="currency">
-                                            <option value="{{ config('common.currency.vi') }}">VNĐ</option>
-                                            <option value="{{ config('common.currency.en') }}">$</option>
+                                            <option
+                                                value="{{ config('common.currency.vi') }}" {{ !$invoiceRoom->currency ? 'selected' : '' }}>
+                                                VNĐ
+                                            </option>
+                                            <option
+                                                value="{{ config('common.currency.en') }}" {{ $invoiceRoom->currency ? 'selected' : '' }}>
+                                                $
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Trạng thái <b class="text-danger">*</b></label>
                                         <select class="form-control" name="status">
-                                            <option value="{{ \App\Models\RoomInvoice::NOT_PAY }}">Chưa thanh toán</option>
-                                            <option value="{{ \App\Models\RoomInvoice::PAID }}">Đã thanh toán (Chưa nhận phòng)</option>
+                                            <option
+                                                value="{{ RoomInvoice::NOT_PAY }}" {{ $invoiceRoom->status == RoomInvoice::NOT_PAY ? 'selected' : '' }}>
+                                                Chưa thanh toán
+                                            </option>
+                                            <option
+                                                value="{{ RoomInvoice::PAID }}" {{ $invoiceRoom->status == RoomInvoice::PAID ? 'selected' : '' }}>
+                                                Đã thanh toán (Chưa nhận phòng)
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Khoản tiền thu thêm (Nếu có)</label>
-                                        <input type="number" name="extra" class="form-control" min="0" value="{{ old('extra') }}">
+                                        <input type="number" name="extra" class="form-control" min="0"
+                                               value="{{ old('extra', $invoiceRoom->extra) }}">
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú khoản thu thêm (Nếu có)</label>
-                                        <textarea class="form-control" rows="8" name="note">{{ old('note') }}</textarea>
+                                        <textarea class="form-control" rows="8"
+                                                  name="note">{{ old('note', $invoiceRoom->note) }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +156,7 @@
                                     <div class="form-group m-form__group">
                                         <label>Tên <b class="text-danger">*</b></label>
                                         <input type="text" class="form-control m-input" name="customer_name"
-                                               value="{{ old('customer_name') }}">
+                                               value="{{ old('customer_name', $invoice->customer_name) }}">
                                         @if ($errors->has('customer_name'))
                                             <b class="text-danger">{{ $errors->first('customer_name') }}</b>
                                         @endif
@@ -133,7 +164,7 @@
                                     <div class="form-group m-form__group">
                                         <label>Số điện thoại <b class="text-danger">*</b></label>
                                         <input type="text" class="form-control m-input" name="customer_phone"
-                                               value="{{ old('customer_phone') }}">
+                                               value="{{ old('customer_phone', $invoice->customer_phone) }}">
                                         @if ($errors->has('customer_phone'))
                                             <b class="text-danger">{{ $errors->first('customer_phone') }}</b>
                                         @endif
@@ -141,7 +172,7 @@
                                     <div class="form-group m-form__group">
                                         <label>Email</label>
                                         <input type="text" class="form-control m-input" name="customer_email"
-                                               value="{{ old('customer_email') }}">
+                                               value="{{ old('customer_email', $invoice->customer_email) }}">
                                         @if ($errors->has('customer_email'))
                                             <b class="text-danger">{{ $errors->first('customer_email') }}</b>
                                         @endif
@@ -149,20 +180,22 @@
                                     <div class="form-group m-form__group">
                                         <label>Địa chỉ</label>
                                         <input type="text" class="form-control m-input" name="customer_address"
-                                               value="{{ old('customer_address') }}">
+                                               value="{{ old('customer_address', $invoice->customer_address) }}">
                                         @if ($errors->has('customer_address'))
                                             <b class="text-danger">{{ $errors->first('customer_address') }}</b>
                                         @endif
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú</label>
-                                        <textarea class="form-control" name="messages" rows="8">{{ old('messages') }}</textarea>
+                                        <textarea class="form-control" name="messages"
+                                                  rows="8">{{ old('messages', $room->messages) }}</textarea>
                                         @if ($errors->has('messages'))
                                             <b class="text-danger">{{ $errors->first('messages') }}</b>
                                         @endif
                                     </div>
+                                    <input type="hidden" name="disabled" value="{{ $disable ? '1' : '0' }}">
                                     <div class="form-group m-form__group">
-                                        <button class="btn btn-primary float-right">Thêm</button>
+                                        <button class="btn btn-primary float-right">Sửa</button>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +208,7 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.my-datepicker').datepicker({
                 todayHighlight: !0,
                 autoclose: !0,
@@ -194,11 +227,12 @@
                 let room_id = $('#room_id').val();
                 let checkIn = $('#check_in_date').val();
                 let checkOut = $('#check_out_date').val();
+                let invoiceRoom = '{{ $invoiceRoom->id }}';
                 e.preventDefault();
                 $.ajax({
                     contentType: false,
                     processData: false,
-                    url: `{{ route('admin.invoices.getAvailableRoomNumbers', '') }}/${room_id}?checkIn=${checkIn}&checkOut=${checkOut}`,
+                    url: `{{ route('admin.invoices.getAvailableRoomNumbers', '') }}/${room_id}?checkIn=${checkIn}&checkOut=${checkOut}&roomInvoice=${invoiceRoom}`,
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
@@ -228,11 +262,12 @@
             $('#check-out').on('change', function (e) {
                 let checkIn = $('#check_in_date').val();
                 let checkOut = $('#check_out_date').val();
+                let invoiceRoom = '{{ $invoiceRoom->id }}';
                 e.preventDefault();
                 $.ajax({
                     contentType: false,
                     processData: false,
-                    url: `{{ route('admin.invoices.getAvailableRoom') }}?checkIn=${checkIn}&checkOut=${checkOut}`,
+                    url: `{{ route('admin.invoices.getAvailableRoom') }}?checkIn=${checkIn}&checkOut=${checkOut}&roomInvoice=${invoiceRoom}`,
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {

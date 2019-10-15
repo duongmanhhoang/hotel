@@ -7,10 +7,12 @@ use App\Http\Requests\Admin\Invoices\StoreRequest;
 use App\Models\ListRoomNumber;
 use App\Models\Room;
 use App\Repositories\Invoice\InvoiceRepository;
+use App\Repositories\InvoiceRoom\InvoiceRoomRepository;
 use App\Repositories\Room\RoomRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use function PHPSTORM_META\type;
 
 class InvoiceController extends Controller
@@ -45,6 +47,58 @@ class InvoiceController extends Controller
         );
 
         return view('admin.invoices.create', $data);
+    }
+
+    public function edit($id)
+    {
+        $today = Carbon::today();
+        $invoice = $this->invoiceRepository->findOrFail($id);
+        $invoiceRoom = $invoice->rooms->first()->pivot;
+        $room = $invoice->rooms->first();
+        $checkIn = formatDate($invoiceRoom->check_in_date);
+        $diff = Carbon::parse($checkIn)->diff($today);
+        $disable = false;
+        if (!$diff->invert) {
+            $disable = true;
+        };
+        $checkOut = formatDate($invoiceRoom->check_out_date);
+        $roomDetail = $room->roomDetails->where('lang_parent_id', 0)->first();
+        $data = compact(
+            'invoice',
+            'room',
+            'invoiceRoom',
+            'roomDetail',
+            'checkIn',
+            'checkOut',
+            'disable'
+        );
+
+        return view('admin.invoices.edit', $data);
+    }
+
+    public function show($id)
+    {
+        $invoice = $this->invoiceRepository->findOrFail($id);
+        $invoiceRoom = $invoice->rooms->first()->pivot;
+        $room = $invoice->rooms->first();
+        $roomDetail = $room->roomDetails->where('lang_parent_id', 0)->first();
+        if ($invoiceRoom->currency) {
+            $detail = $room->roomDetails->where('lang_parent_id', '<>', 0)->first();
+            $price = $room->sale_status ? $detail->sale_price : $detail->price;
+        } else {
+            $price = $room->sale_status ? $roomDetail->sale_price : $roomDetail->price;
+        }
+        $currency = $invoiceRoom->currency ? '$' : 'vnđ';
+        $data = compact(
+            'invoice',
+            'room',
+            'invoiceRoom',
+            'roomDetail',
+            'price',
+            'currency'
+        );
+
+        return view('admin.invoices.show', $data);
     }
 
     public function getAvailableRoomNumbers(Request $request, $id)
@@ -84,6 +138,36 @@ class InvoiceController extends Controller
 
     }
 
+    public function update(Request $request, $id)
+    {
+        $data = $request->except('_token');
+        $invoice = $this->invoiceRepository->findOrFail($id);
+        $invoiceRoom = $invoice->rooms->first()->pivot;
+        $disabled = $request->disabled;
+
+        if ($disabled == 1) {
+            $validator = Validator::make($data, $this->invoiceRepository->makeRulesUpdateAfter(), $this->invoiceRepository->messagesUpdateAfter());
+        } else {
+            $validator = Validator::make($data, $this->invoiceRepository->makeRulesUpdateBefore(), $this->invoiceRepository->messagesUpdateBefore());
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        DB::beginTransaction();
+        try {
+            $this->invoiceRepository->updateData($data, $invoice, $invoiceRoom);
+            DB::commit();
+            $request->session()->flash('success', 'Cập nhập hóa đơn thành công');
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+    }
+
     public function getAvailableRoom(Request $request)
     {
         $results = $this->roomRepository->roomAvailable($request);
@@ -101,6 +185,25 @@ class InvoiceController extends Controller
         } else {
             $dataResponse = [
                 'messages' => 'fail',
+            ];
+        }
+
+        return response()->json($dataResponse, 200);
+    }
+
+    public function markAsReturn(Request $request, $id)
+    {
+        $invoice = $this->invoiceRepository->findOrFail($id);
+        if (is_null($invoice)) {
+            $dataResponse = [
+                'messages' => 'not_found',
+            ];
+        } else {
+            $invoiceRoom = $invoice->rooms->first()->pivot;
+            $invoiceRoom->update(['status' => $request->status]);
+            $dataResponse = [
+                'data' => $id,
+                'messages' => 'success'
             ];
         }
 

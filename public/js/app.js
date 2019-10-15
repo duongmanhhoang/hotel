@@ -11,3 +11,17 @@ function readURL(input) {
 $("#select_image").change(function () {
     readURL(this);
 });
+
+
+function numberWithCommas(number) {
+    var parts = number.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    return parts.join(".");
+}
+
+$(".price").each(function () {
+    var num = $(this).text();
+    var commaNum = numberWithCommas(num);
+    $(this).text(commaNum);
+});

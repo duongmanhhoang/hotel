@@ -14,3 +14,12 @@ if (!function_exists('uploadImage')) {
         return $fileName;
     }
 }
+
+if (!function_exists('formatDate')) {
+    function formatDate($date)
+    {
+        $result = \Carbon\Carbon::parse($date)->format('d-m-Y');
+
+        return $result;
+    }
+}
