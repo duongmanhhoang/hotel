@@ -20,7 +20,7 @@ class Post extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
-    public function childrenPost()
+    public function childrenTranslate()
     {
         return $this->hasMany($this, 'lang_parent_id');
     }

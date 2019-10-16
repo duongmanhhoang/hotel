@@ -58,7 +58,7 @@ class PostRepository extends EloquentRepository
                 'category_id' => $result->category_id,
                 'image' => $result->image
             ];
-            $result->childrenPost()->update($dataUpdate);
+            $result->childrenTranslate()->update($dataUpdate);
         }
 
         return $result;
@@ -68,7 +68,7 @@ class PostRepository extends EloquentRepository
     {
         $result = $this->find($id);
 
-        $result->childrenPost()->delete();
+        $result->childrenTranslate()->delete();
 
         $result->delete();
 
@@ -86,6 +86,21 @@ class PostRepository extends EloquentRepository
         $input['category_id'] = $post->category_id;
 
         $result = $this->_model->create($input);
+
+        return $result;
+    }
+
+    public function checkUniqueTitle($input)
+    {
+        $title = $input['title'];
+        $langId = $input['lang_id'];
+
+        $whereConditional = [
+            ['title', $title],
+            ['lang_id', $langId]
+        ];
+
+        $result = $this->_model->where($whereConditional)->get();
 
         return $result;
     }
