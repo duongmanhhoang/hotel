@@ -24,7 +24,7 @@ class PostRepository extends EloquentRepository
             ['lang_id', $language]
         ];
 
-        $result = $this->_model->where($whereConditional)->with('category', 'postedBy', 'approveBy')->paginate($paginate);
+        $result = $this->_model->where($whereConditional)->with('category', 'postedBy', 'approveBy', 'parentTranslate')->paginate($paginate);
 
         return $result;
     }

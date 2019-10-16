@@ -34,7 +34,9 @@ class CategoryController extends Controller
 
         $data = $this->categoryRepo->getCategory($input);
 
-        return view('admin.category.index', compact('data', 'nameSearch'));
+        $compact = compact('data', 'nameSearch');
+
+        return view('admin.category.index', $compact);
     }
 
     public function addView($categoryId = false)
@@ -46,7 +48,7 @@ class CategoryController extends Controller
                 return redirect()->route('admin.category.list')->with(['error' => 'Không được dịch từ bản con']);
         }
 
-        $categories  = $this->categoryRepo->categoriesAll(null);
+        $categories  = $this->categoryRepo->getCategoriesToAddParent();
         $dataTranslate = $categoryId != false ? true : null;
         $route = $categoryId != false ? route('admin.category.categoryTranslate', ['categoryId' => $categoryId]) : route('admin.category.postAction');
         $language = $categoryId != false ? $this->categoryRepo->getTranslateId($categoryId) : [];
@@ -77,7 +79,7 @@ class CategoryController extends Controller
     public function editView($id)
     {
         $data = $this->categoryRepo->find($id);
-        $categories  = $this->categoryRepo->categoriesAll($id);
+        $categories  = $this->categoryRepo->getCategoriesToAddParent($id);
         $route = route('admin.category.editAction', ['id' => $id]);
 
         $compact = compact('data', 'categories', 'route');
