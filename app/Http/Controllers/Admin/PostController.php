@@ -75,6 +75,8 @@ class PostController extends Controller
 
         $this->postRepo->insertPost($input);
 
+        $request->session()->flash('success', 'Thêm bài viết thành công');
+
         return redirect()->route('admin.post.list');
     }
 
@@ -84,7 +86,6 @@ class PostController extends Controller
 
         $categories  = $this->categoryRepo->categoriesAll(null);
         $route = route('admin.post.editAction', ['id' => $id]);
-
         $compact = compact('categories', 'route', 'data');
 
         return view('admin.posts.add', $compact);
@@ -95,6 +96,8 @@ class PostController extends Controller
         $input = $request->all();
 
         $this->postRepo->editPost($id, $input);
+
+        $request->session()->flash('success', 'Cập nhật thành công');
 
         return redirect()->route('admin.post.list');
     }

@@ -52,6 +52,7 @@
                                         <th>Tên danh mục</th>
                                         <th>Danh mục cha</th>
                                         <th>Ngôn ngữ</th>
+                                        <th>Bản dịch gốc</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
@@ -63,6 +64,13 @@
                                             <td>{{ $value->name }}</td>
                                             <td>{{ !empty($value->parent) ? $value->parent->name : 'None' }}</td>
                                             <td>{{ $value->language->short }}</td>
+                                            <td>
+                                                @if($value->parentTranslate != null)
+                                                    <a href="{{ route('admin.category.editView', $value->parentTranslate->id) }}">{{ $value->parentTranslate->name }}</a>
+                                                @else
+                                                    Bản gốc
+                                                @endif
+                                            </td>
                                             <td>
                                                 <a href="{{ route('admin.category.editView', $value->id) }}"
                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
@@ -77,10 +85,12 @@
                                                 </a>
 
                                                 <form id="form-{{ $value->id }}" method="post"
-                                                      action="{{ route('admin.category.delete', $value->id) }}" class="float-left">
+                                                      action="{{ route('admin.category.delete', $value->id) }}"
+                                                      class="float-left">
                                                     @csrf
                                                     <button locationId="{{ $value->id }}"
-                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Xóa"><i
+                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                                            title="Xóa"><i
                                                                 class="la la-trash"></i>
                                                     </button>
                                                 </form>

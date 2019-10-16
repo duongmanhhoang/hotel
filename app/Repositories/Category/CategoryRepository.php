@@ -31,7 +31,7 @@ class CategoryRepository extends EloquentRepository
             ['name', 'like', '%' . $name . '%']
         ];
 
-        $result = $this->_model->where($whereConditional)->with('parent', 'language', 'parentTranslate', 'childrenTranslate')->paginate($paginate);
+        $result = $this->_model->where($whereConditional)->with('parentTranslate', 'childrenTranslate')->paginate($paginate);
 
         return $result;
     }
@@ -97,6 +97,17 @@ class CategoryRepository extends EloquentRepository
     public function queryCheckTranslateCategory($parentId, $langId)
     {
         return $this->_model->where(['lang_parent_id' => $parentId, 'lang_id' => $langId])->get();
+    }
+
+    public function getCategoriesToAddParent($id = false) {
+        $whereConditional = [
+            ['lang_parent_id', 0],
+            $id != false ? ['parent_id', '<>', $id] : ['id', '>', -1]
+        ];
+
+        $result = $this->_model->where($whereConditional)->get();
+
+        return $result;
     }
 
 }

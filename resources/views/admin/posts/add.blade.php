@@ -9,7 +9,8 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Thêm bài viết
+                                    @if(isset($data)) Sửa bài viết @elseif(isset($dataTranslate)) Dịch bài viết @else
+                                        Thêm bài viết @endif
                                 </h3>
                             </div>
                         </div>
@@ -38,7 +39,8 @@
                                             >
                                             <div></div>
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="select_image" name="image"
+                                                <input type="file" class="custom-file-input" id="select_image"
+                                                       name="image"
                                                        accept="image/*">
                                                 <label class="custom-file-label"
                                                        for="selectImage">Hãy chọn ảnh</label>
@@ -59,26 +61,25 @@
 
                                     <div class="form-group m-form__group">
                                         <label>Mô tả <b class="text-danger">*</b></label>
-                                        <textarea name="description" class="form-control swal2-textarea">{{$data->description ?? ''}}</textarea>
+                                        <textarea name="description"
+                                                  class="form-control swal2-textarea">{{$data->description ?? ''}}</textarea>
                                         @if ($errors->has('description'))
                                             <b class="text-danger">{{ $errors->first('description') }}</b>
                                         @endif
                                     </div>
 
-                                    @if(!isset($dataTranslate))
-                                        @if(isset($categories))
-                                            <div class="form-group m-form__group">
-                                                <label>Danh mục</label>
-                                                <div class="bs-select">
-                                                    <select class="bs-select form-control" tabindex="-98"
-                                                            name="category_id">
-                                                        @foreach($categories as $value)
-                                                            <option value="{{ $value->id }}" {{(isset($data) && $data->category->id == $value->id) ? 'selected' : ''}}>{{ $value->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                    @if(isset($categories))
+                                        <div class="form-group m-form__group">
+                                            <label>Danh mục</label>
+                                            <div class="bs-select">
+                                                <select class="bs-select form-control" tabindex="-98"
+                                                        name="category_id">
+                                                    @foreach($categories as $value)
+                                                        <option value="{{ $value->id }}" {{( isset($data) && $data->category != null && $data->category->id == $value->id) ? 'selected' : ''}}>{{ $value->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        @endif
+                                        </div>
                                     @endif
 
                                     @if(isset($dataTranslate))

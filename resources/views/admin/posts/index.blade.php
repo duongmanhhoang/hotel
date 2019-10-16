@@ -53,6 +53,7 @@
                                         <th>Ảnh</th>
                                         <th>Mô tả</th>
                                         <th>Danh mục</th>
+                                        <th>Bản dịch gốc</th>
                                         <th>Trạng thái</th>
                                         <th>Đăng bởi</th>
                                         <th>Duyệt bởi</th>
@@ -72,6 +73,13 @@
                                                 {{ $value->description }}
                                             </td>
                                             <td>{{ $value->category != null ? $value->category->name : config('common.posts.undefined_category') }}</td>
+                                            <td>
+                                                @if($value->parentTranslate != null)
+                                                    <a href="{{ route('admin.post.editView', ['id' => $value->parentTranslate->id]) }}">{{ $value->parentTranslate->title }}</a>
+                                                @else
+                                                    Bản gốc
+                                                @endif
+                                            </td>
                                             <td>{{ config("common.posts.approve.$value->approve") }}</td>
                                             <td>{{ $value->postedBy->email }}</td>
                                             <td>{{ $value->approveBy != null ? $value->approveBy->email : config("common.posts.approve.0") }}</td>
