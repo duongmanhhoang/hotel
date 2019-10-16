@@ -16,7 +16,8 @@
     "public/bower_components/"
   ],
   "dependencies": {
-    "metronic": "https://github.com/duongmanhhoang/metronic.git"
+    "metronic": "https://github.com/duongmanhhoang/metronic.git",
+    "client_layout": "https://github.com/Canpham/client_layout.git"
   },
   "private": true
 }
