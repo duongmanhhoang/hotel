@@ -116,8 +116,17 @@ Route::prefix('invoices')->name('invoices.')->group(function () {
     Route::post('/store', $controller . 'store')->name('store');
     Route::get('/get-available-room', $controller . 'getAvailableRoom')->name('getAvailableRoom');
     Route::get('/get-available-room-number/{id}', $controller . 'getAvailableRoomNumbers')->name('getAvailableRoomNumbers');
+
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');
     Route::get('/show/{id}', $controller . 'show')->name('show');
     Route::post('/update/{id}', $controller . 'update')->name('update');
     Route::post('/mark-as-return/{id}', $controller . 'markAsReturn')->name('markAsReturn');
+});
+
+/** Caft đặt website */
+Route::prefix('settings')->name('settings.')->group(function () {
+    $controller = 'Admin\WebSettingController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/edit', $controller . 'edit')->name('edit');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
 });

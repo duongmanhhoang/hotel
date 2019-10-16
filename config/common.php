@@ -26,6 +26,7 @@ return [
         'posts' => '/uploads/posts',
         'rooms' => '/uploads/rooms',
         'libraries' => '/uploads/libraries',
+        'logo' => '/uploads/logo',
     ],
     'languages' => [
         'default' => 1,
