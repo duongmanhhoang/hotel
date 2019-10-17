@@ -130,3 +130,14 @@ Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/edit', $controller . 'edit')->name('edit');
     Route::post('/update/{id}', $controller . 'update')->name('update');
 });
+
+/** Quản lý roles */
+Route::prefix('roles')->name('roles.')->group(function () {
+    $controller = 'Admin\RoleController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/create', $controller . 'create')->name('create');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/edit/{id}', $controller . 'edit')->name('edit');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+});
