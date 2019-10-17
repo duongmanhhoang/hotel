@@ -16,8 +16,9 @@ class RouteController extends Controller
         $this->roleRepository = $roleRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $keyword = $request->keyword;
         DB::beginTransaction();
         try {
             $count = $this->routeRepository->autoUpdateRoles();
@@ -26,8 +27,12 @@ class RouteController extends Controller
             DB::rollBack();
             $count = 'error';
         }
+        if ($keyword) {
+            $routes = $this->routeRepository->search('name', $keyword, config('common.pagination.default'));
+        } else {
+            $routes = $this->routeRepository->paginate(config('common.pagination.default'));
+        }
 
-        $routes = $this->routeRepository->paginate(config('common.pagination.default'));
         $roles = $this->roleRepository->getRoles();
 
         foreach ($routes as $route) {
@@ -46,5 +51,39 @@ class RouteController extends Controller
         );
 
         return view('admin.routes.index', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $store = $this->routeRepository->storeData($data);
+        if ($store) {
+            $dataResponse = [
+                'messages' => 'success',
+            ];
+        } else {
+            $dataResponse = [
+                'messages' => 'errors',
+            ];
+        }
+
+        return response()->json($dataResponse, 200);
+    }
+
+    public function delete(Request $request)
+    {
+        $data = $request->all();
+        $store = $this->routeRepository->deleteData($data);
+        if ($store) {
+            $dataResponse = [
+                'messages' => 'success',
+            ];
+        } else {
+            $dataResponse = [
+                'messages' => 'errors',
+            ];
+        }
+
+        return response()->json($dataResponse, 200);
     }
 }

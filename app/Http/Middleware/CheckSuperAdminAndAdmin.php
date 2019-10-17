@@ -6,7 +6,7 @@ use App\Models\Role;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckSuperAdmin
+class CheckSuperAdminAndAdmin
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class CheckSuperAdmin
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if ($user->role_id == Role::SUPER_ADMIN) {
+        if ($user->role_id == Role::SUPER_ADMIN || $user->role_id == Role::ADMIN) {
             return $next($request);
         } else {
             abort(403);

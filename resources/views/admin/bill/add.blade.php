@@ -9,8 +9,8 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    @if(isset($data)) Sửa danh mục @elseif(isset($dataTranslate)) Dịch ngôn ngữ @else
-                                        Thêm danh mục @endif
+                                    @if(isset($data)) Sửa thu chi @elseif(isset($dataTranslate)) Dịch ngôn ngữ @else
+                                        Thêm thu chi @endif
                                 </h3>
                             </div>
                         </div>
@@ -84,8 +84,8 @@
                                     </div>
 
                                     <div class="form-group m-form__group">
+                                        <button class="btn btn-primary">@if(isset($data)) Sửa  @else Tạo @endif</button>
                                         <a href="{{ route('admin.bill.list') }}" class="btn btn-danger">Quay lại</a>
-                                        <button class="btn btn-primary">Tạo</button>
                                     </div>
                                 </form>
                             </div>

@@ -253,7 +253,7 @@
         <!-- Quản lý bills -->
         <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon la la-wrench"></i>
+                <i class="m-menu__link-icon la la-dollar"></i>
                 <span class="m-menu__link-text">Quản lý thu chi</span>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
             </a>
@@ -278,6 +278,14 @@
                     </li>
                 </ul>
             </div>
+        </li>
+
+        <!-- Cài đặt website -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="{{ route('admin.routes.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-lock"></i>
+                <span class="m-menu__link-text">Quản lý modules</span>
+            </a>
         </li>
 
     </ul>

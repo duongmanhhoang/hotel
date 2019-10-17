@@ -94,7 +94,7 @@ Route::prefix('properties')->name('properties.')->group(function () {
 });
 
 /** Người dùng */
-Route::prefix('users')->name('users.')->group(function () {
+Route::prefix('users')->name('users.')->middleware('checkSuperAdmin&Admin')->group(function () {
     $controller = 'Admin\UserController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
@@ -132,7 +132,7 @@ Route::prefix('settings')->name('settings.')->group(function () {
 });
 
 /** Quản lý roles */
-Route::prefix('roles')->name('roles.')->group(function () {
+Route::prefix('roles')->name('roles.')->middleware('checkSuperAdmin')->group(function () {
     $controller = 'Admin\RoleController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
@@ -143,9 +143,11 @@ Route::prefix('roles')->name('roles.')->group(function () {
 });
 
 /** Quản lý routes */
-Route::prefix('routes')->name('routes.')->group(function () {
+Route::prefix('routes')->name('routes.')->middleware('checkSuperAdmin')->group(function () {
     $controller = 'Admin\RouteController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::post('/delete', $controller . 'delete')->name('delete');
 });
 
 /** Hóa đơn */
