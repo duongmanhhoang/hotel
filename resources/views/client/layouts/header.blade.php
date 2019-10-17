@@ -20,28 +20,28 @@
 					<div class="all-drop-down">
 						<ul id='dropdown1' class='dropdown-content drop-con-man'>
 							<li>
-								<a href="dashboard.html"><img src="images/icon/15.png" alt=""> My Account</a>
+								<a href="dashboard.html"><img src="{{ asset('bower_components/client_layout/images/icon/15.png') }}" alt=""> My Account</a>
 							</li>
 							<li>
-								<a href="db-profile.html"><img src="images/icon/2.png" alt=""> My Profile</a>
+								<a href="db-profile.html"><img src="{{ asset('bower_components/client_layout/images/icon/2.png') }}" alt=""> My Profile</a>
 							</li>
 							<li>
-								<a href="db-booking.html"><img src="images/icon/16.png" alt=""> My Bookings</a>
+								<a href="db-booking.html"><img src="{{ asset('bower_components/client_layout/images/icon/16.png') }}" alt=""> My Bookings</a>
 							</li>
 							<li>
-								<a href="db-event.html"><img src="images/icon/17.png" alt=""> My Events</a>
+								<a href="db-event.html"><img src="{{ asset('bower_components/client_layout/images/icon/17.png') }}" alt=""> My Events</a>
 							</li>
 							<li>
-								<a href="db-activity.html"><img src="images/icon/14.png" alt=""> My Activity</a>
+								<a href="db-activity.html"><img src="{{ asset('bower_components/client_layout/images/icon/14.png') }}" alt=""> My Activity</a>
 							</li>
 							<li>
-								<a href="#!" data-toggle="modal" data-target="#modal2"><img src="images/icon/5.png" alt=""> Register</a>
+								<a href="#!" data-toggle="modal" data-target="#modal2"><img src="{{ asset('bower_components/client_layout/images/icon/5.png') }}" alt=""> Register</a>
 							</li>
 							<li>
-								<a href="#!" data-toggle="modal" data-target="#modal1"><img src="images/icon/6.png" alt=""> Log In</a>
+								<a href="#!" data-toggle="modal" data-target="#modal1"><img src="{{ asset('bower_components/client_layout/images/icon/6.png') }}" alt=""> Log In</a>
 							</li>
 							<li>
-								<a href="#!" data-toggle="modal" data-target="#modal3"><img src="images/icon/13.png" alt=""> Forgot Password</a>
+								<a href="#!" data-toggle="modal" data-target="#modal3"><img src="{{ asset('bower_components/client_layout/images/icon/13.png') }}" alt=""> Forgot Password</a>
 							</li>
 						</ul>
 						<ul id='dropdown2' class='dropdown-content drop-con-man'>
