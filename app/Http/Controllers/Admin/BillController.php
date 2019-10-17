@@ -33,7 +33,7 @@ class BillController extends Controller
     public function addView()
     {
         $route = route('admin.bill.postAction');
-        $locations = $this->locationRepo->getLocation();
+        $locations = $this->locationRepo->getMainLocation();
 
         $compact = compact('route', 'locations');
 
@@ -53,7 +53,7 @@ class BillController extends Controller
     public function editView($id)
     {
         $data = $this->billRepo->findBillById($id);
-        $locations = $this->locationRepo->getLocation();
+        $locations = $this->locationRepo->getMainLocation();
         $route = route('admin.bill.editAction', ['id' => $id]);
 
         if($data == null) {

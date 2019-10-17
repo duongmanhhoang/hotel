@@ -20,7 +20,7 @@ class RouteRepository extends EloquentRepository
         $count = 0;
         foreach ($routes as $key => $route)
         {
-            if (Str::contains($route->getName(),['admin']) && !Str::contains($route->getName(), ['admin.users', 'admin.roles'])) {
+            if (Str::contains($route->getName(),['admin']) && !Str::contains($route->getName(), ['admin.users', 'admin.roles', 'admin.routes', 'admin.languages', 'admin.index'])) {
                 $isRoute = $this->_model->where('name',$route->getName())->first();
                 if (!$isRoute) {
                     $route = $this->create(['name' => $route->getName()]);
@@ -31,5 +31,28 @@ class RouteRepository extends EloquentRepository
         }
 
         return $count;
+    }
+
+    public function storeData($data)
+    {
+        $route = $this->find($data['id']);
+        if (!$route) {
+            return false;
+        }
+        $route->roles()->attach($data['role_id']);
+
+        return true;
+
+    }
+
+    public function deleteData($data)
+    {
+        $route = $this->find($data['id']);
+        if (!$route) {
+            return false;
+        }
+        $route->roles()->detach($data['role_id']);
+
+        return true;
     }
 }

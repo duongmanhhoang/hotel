@@ -38,15 +38,6 @@
                                     </div>
                                 </div>
                                 @foreach ($routes as $route)
-                                    <tr>
-                                        <td id="select_role_{{ $route->id }}">
-                                            <div class="form-group">
-                                                {{--                                                <select class="form-control" name="role_id" class="m-input select-role" multiple data-id="{{ $route->id }}">--}}
-                                                {{--                                                    @foreach($roles as $role)--}}
-                                                {{--                                                        <option value="{{ $role->id }}">{{ $role->name }}</option>--}}
-                                                {{--                                                    @endforeach--}}
-                                                {{--                                                </select>--}}
-                                            </div>
                                             <div class="form-group m-form__group row">
                                                 <label class="col-form-label col-lg-3 col-sm-12">{{ $route->name }}</label>
                                                 <div class="col-lg-4 col-md-4 col-sm-12">
@@ -57,9 +48,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-
-                                        </td>
-                                    </tr>
                                 @endforeach
                                 {{ $routes->links() }}
                             </div>
@@ -73,6 +61,12 @@
 @section('script')
     <script>
         $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             $(".role-select").select2({placeholder: "Chọn role"})
             const count = '{{ $count }}';
             if (count === 'error') {
@@ -86,46 +80,58 @@
             $("select[name='role_id']").each((i,v)=> {
                 // add role
                 $(v).on('select2:select', (r) => {
-
                     let role_id = r.params.data.id;
                     let route_id = $(v).attr('data-id');
-                    // ls.block('#select_role_' + $(v).attr('data-id'));
-                    // ls.ajax(
-                    //     {role_id:role_id,route_id:route_id,action:'addRole'},2,
-                    //     ['val','#routeRouteAjax'],
-                    //     (r,s,x) => {
-                    //         if(s === "success") {
-                    //             ls.unblock('#select_role_' + $(v).attr('data-id'));
-                    //         }
-                    //     },
-                    //     (x,s,e) => {
-                    //         if(s === "error") {
-                    //             ls.unblock('#select_role_' + $(v).attr('data-id'));
-                    //             swal(i18n.messages.error_swal,i18n.messages.error_swal_mess,"error");
-                    //         }
-                    //     }
-                    // );
+                    let formData = new FormData();
+                    formData.append('id', route_id);
+                    formData.append('role_id', role_id);
+                    $.ajax({
+                        contentType: false,
+                        processData: false,
+                        url: '{{ route('admin.routes.store') }}',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        success: function (response) {
+                            if (response.messages == 'errors') {
+                                toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                            }
+
+                            if (response.messages == 'success') {
+                                toastr.success('Thêm thành công', 'Thành công');
+                            }
+                        }, error: function () {
+                            toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                        },
+                    });
                 });
                 //event unselect
+
                 $(v).on('select2:unselect', (r) => {
                     let role_id = r.params.data.id;
                     let route_id = $(v).attr('data-id');
-                    ls.block('#select_role_' + $(v).attr('data-id'));
-                    ls.ajax(
-                        {role_id:role_id,route_id:route_id,action:'removeRole'},2,
-                        ['val','#routeRouteAjax'],
-                        (r,s,x) => {
-                            if(s === "success") {
-                                ls.unblock('#select_role_' + $(v).attr('data-id'));
+                    let formData = new FormData();
+                    formData.append('id', route_id);
+                    formData.append('role_id', role_id);
+                    $.ajax({
+                        contentType: false,
+                        processData: false,
+                        url: '{{ route('admin.routes.delete') }}',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        success: function (response) {
+                            if (response.messages == 'errors') {
+                                toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
                             }
+
+                            if (response.messages == 'success') {
+                                toastr.success('Xóa thành công', 'Thành công');
+                            }
+                        }, error: function () {
+                            toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
                         },
-                        (x,s,e) => {
-                            if(s === "error") {
-                                ls.unblock('#select_role_' + $(v).attr('data-id'));
-                                swal(i18n.messages.error_swal,i18n.messages.error_swal_mess,"error");
-                            }
-                        }
-                    );
+                    });
                 });
             });
         });
