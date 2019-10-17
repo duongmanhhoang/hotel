@@ -43,6 +43,8 @@ class PostController extends Controller
         if($postId != false) {
             $checkAvailableTranslate = $this->postRepo->find($postId);
 
+            if($checkAvailableTranslate == null) return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+
             if($checkAvailableTranslate->lang_parent_id != null)
                 return redirect()->route('admin.post.list')->with(['error' => 'Không được dịch từ bản con']);
         }
@@ -52,6 +54,8 @@ class PostController extends Controller
         $posts = $this->postRepo->searchPost(null);
         $dataTranslate = $postId != false ? true : null;
         $language = $postId != false ? $this->postRepo->getTranslateId($postId) : [];
+
+
 
         if($postId != false && count($language) <= 0)
             return redirect()->route('admin.post.list')->with(['error' => 'Đã đủ bản dịch']);
@@ -83,9 +87,13 @@ class PostController extends Controller
     public function editView($id)
     {
         $data = $this->postRepo->getPostById($id);
-
         $categories  = $this->categoryRepo->categoriesAll(null);
         $route = route('admin.post.editAction', ['id' => $id]);
+
+        if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
         $compact = compact('categories', 'route', 'data');
 
         return view('admin.posts.add', $compact);
