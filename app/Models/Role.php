@@ -7,6 +7,7 @@ class Role extends Model
 {
     const SUPER_ADMIN = 1;
     const ADMIN = 2;
+    const MEMBER = 4;
 
     protected $fillable = [
         'name',

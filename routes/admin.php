@@ -141,3 +141,9 @@ Route::prefix('roles')->name('roles.')->group(function () {
     Route::post('/update/{id}', $controller . 'update')->name('update');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
 });
+
+/** Quản lý routes */
+Route::prefix('routes')->name('routes.')->group(function () {
+    $controller = 'Admin\RouteController@';
+    Route::get('/', $controller . 'index')->name('index');
+});
