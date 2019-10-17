@@ -37,25 +37,8 @@
 			</div>
 			<div class="db-cent">
 				<div class="db-cent-1">
-					<p>Tran Dan,</p>
+					<p>Hi Tran Dan,</p>
 					<h4>Chào mừng bạn tới trang quản lí tài khoản</h4> </div>
-				<div class="db-cent-2">
-					<div class="db-2-main-1">
-						<div class="db-2-main-2"> <img src="{{ asset('bower_components/client_layout/images/icon/dbc5.png') }}" alt=""> <span>My Bookings</span>
-							<p>All the Lorem Ipsum generators on the</p>
-							<h2>12</h2> </div>
-					</div>
-					<div class="db-2-main-1">
-						<div class="db-2-main-2"> <img src="{{ asset('bower_components/client_layout/images/icon/dbc6.png') }}" alt=""> <span>Activity</span>
-							<p>All the Lorem Ipsum generators on the</p>
-							<h2>04</h2> </div>
-					</div>
-					<div class="db-2-main-1">
-						<div class="db-2-main-2"> <img src="{{ asset('bower_components/client_layout/images/icon/dbc3.png') }}" alt=""> <span>Payment</span>
-							<p>All the Lorem Ipsum generators on the</p>
-							<h2>16</h2> </div>
-					</div>
-				</div>
 				<div class="db-cent-3">
 					<div class="db-cent-table db-com-table">
 						<div class="db-title">
@@ -68,7 +51,7 @@
 									<th>No</th>
 									<th>Tên</th>
 									<th>Số điện thoại</th>
-									<th>Thành phố</th>
+									<th>Địa chỉ</th>
 									<th>Ngày đến</th>
 									<th>Ngày đi</th>
 									<th>Số lượng thành viên</th>
@@ -79,96 +62,131 @@
 								<tr>
 									<td>01</td>
 									<td>Tran Dan</td>
-									<td>+84 376 594 637</td>
-									<td><span class="db-tab-hi">New york,</span>USA</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
 									<td>12may</td>
 									<td>20may</td>
-									<td>04</td>
+									<td>02</td>
 									<td><a href="#" class="db-success">Success</a>
 									</td>
 								</tr>
 								<tr>
-									<td>01</td>
+									<td>02</td>
 									<td>Tran Dan</td>
-									<td>+84 376 594 637</td>
-									<td><span class="db-tab-hi">New york,</span>USA</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
 									<td>12may</td>
 									<td>20may</td>
-									<td>04</td>
-									<td><a href="#" class="db-success">Success</a>
-									</td>
-								</tr>
-								<tr>
-									<td>03</td>
-									<td>Tran Dan</td>
-									<td>+84 376 594 637</td>
-									<td><span class="db-tab-hi">New york,</span>USA</td>
-									<td>12may</td>
-									<td>20may</td>
-									<td>04</td>
-									<td><a href="#" class="db-not-success">Pending</a>
-									</td>
-								</tr>
-								<tr>
-									<td>01</td>
-									<td>Tran Dan</td>
-									<td>+84 376 594 637</td>
-									<td><span class="db-tab-hi">New york,</span>USA</td>
-									<td>12may</td>
-									<td>20may</td>
-									<td>04</td>
+									<td>02</td>
 									<td><a href="#" class="db-success">Success</a>
 									</td>
 								</tr>
 								<tr>
 									<td>03</td>
 									<td>Tran Dan</td>
-									<td>+84 376 594 637</td>
-									<td><span class="db-tab-hi">New york,</span>USA</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
 									<td>12may</td>
 									<td>20may</td>
-									<td>04</td>
+									<td>02</td>
 									<td><a href="#" class="db-not-success">Pending</a>
+									</td>
+								</tr>
+								<tr>
+									<td>04</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-success">Success</a>
+									</td>
+								</tr>
+								<tr>
+									<td>05</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-success">Success</a>
+									</td>
+								</tr>
+								<tr>
+									<td>06</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-success">Success</a>
+									</td>
+								</tr>
+								<tr>
+									<td>07</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-success">Success</a>
+									</td>
+								</tr>
+								<tr>
+									<td>08</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-not-success">Pending</a>
+									</td>
+								</tr>
+								<tr>
+									<td>09</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-success">Success</a>
+									</td>
+								</tr>
+								<tr>
+									<td>10</td>
+									<td>Tran Dan</td>
+									<td>+84 262 975 64</td>
+									<td><span class="db-tab-hi">Ha Noi,</span>Viet Nam</td>
+									<td>12may</td>
+									<td>20may</td>
+									<td>02</td>
+									<td><a href="#" class="db-success">Success</a>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
-				</div>
-				<div class="db-cent-3">
-					<div class="db-cent-acti">
-						<div class="db-title">
-							<h3><img src="{{ asset('bower_components/client_layout/images/icon/dbc1.png') }}" alt=""/> My Activity</h3>
-							<p>Hoạt động gần đây...</p>
-						</div>
-						<ul>
-							<li>
-								<div class="db-cent-wr-img"> <img src="images/users/3.png" alt=""> </div>
-								<div class="db-cent-wr-con">
-									<h6>Hotel Booking Canceled</h6> <span class="lr-revi-date">21th May, 2019</span>
-									<p>Bạn đã hủy đặt phòng vì lí do gì đó omewa lul nani dafug hoho nammo nammo nammo nammo nammo nammo.</p>
-									<ul>
-										<li><a href="#!"><i class="fa fa-facebook" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a> </li>
-									</ul>
-								</div>
+					<div class="db-pagi">
+						<ul class="pagination">
+							<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a>
 							</li>
-							<li>
-								<div class="db-cent-wr-img"> <img src="images/users/3.png" alt=""> </div>
-								<div class="db-cent-wr-con">
-									<h6>Hotel Payment Success</h6> <span class="lr-revi-date">08th Msy, 2019</span>
-									<p>Bạn đã hủy đặt phòng vì lí do gì đó omewa lul nani dafug hoho nammo nammo nammo nammo nammo nammo.</p>
-									<ul>
-										<li><a href="#!"><i class="fa fa-facebook" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-google-plus" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a> </li>
-										<li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a> </li>
-									</ul>
-								</div>
+							<li class="active"><a href="#!">1</a>
+							</li>
+							<li class="waves-effect"><a href="#!">2</a>
+							</li>
+							<li class="waves-effect"><a href="#!">3</a>
+							</li>
+							<li class="waves-effect"><a href="#!">4</a>
+							</li>
+							<li class="waves-effect"><a href="#!">5</a>
+							</li>
+							<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a>
 							</li>
 						</ul>
 					</div>
@@ -214,7 +232,7 @@
 						</ul>
 					</div>
 					<div class="foot-com foot-2">
-						<h5>Phone:  (+84) 376 594 637</h5> </div>
+						<h5>Phone: (+84) 376 594 637</h5> </div>
 					<div class="foot-com foot-3">
 						<!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
 					<div class="foot-com foot-4">
