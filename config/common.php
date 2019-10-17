@@ -46,4 +46,6 @@ return [
         'vi' => 0,
         'en' => 1,
     ],
+
+    'not_found' => 'Không tìm thấy dữ liệu'
 ];

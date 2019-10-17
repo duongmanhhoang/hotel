@@ -147,3 +147,14 @@ Route::prefix('routes')->name('routes.')->group(function () {
     $controller = 'Admin\RouteController@';
     Route::get('/', $controller . 'index')->name('index');
 });
+
+/** Hóa đơn */
+Route::prefix('bills')->name('bill.')->group(function () {
+    $controller = 'Admin\BillController@';
+    Route::get('/', $controller . 'index')->name('list');
+    Route::get('/post', $controller . 'addView')->name('postView');
+    Route::post('/post', $controller . 'store')->name('postAction');
+    Route::get('/edit/{id}', $controller . 'editView')->name('editView');
+    Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+});

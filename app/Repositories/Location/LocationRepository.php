@@ -37,4 +37,9 @@ class LocationRepository extends EloquentRepository
             return true;
         }
     }
+
+    public function getLocation()
+    {
+        return $this->_model->orderBy('id', 'desc')->get();
+    }
 }

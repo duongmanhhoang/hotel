@@ -17,4 +17,9 @@ class Bill extends Model
         'location_id',
         'room_id',
     ];
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 }
