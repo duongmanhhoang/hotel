@@ -23,7 +23,7 @@
 						</div>
 						<div>
 							<div class="input-field s12">
-								<input type="password" class="validate">
+								<input type="password" class="validate" autocomplete=off" autofocus="off">
 								<label>Mật khẩu</label>
 							</div>
 						</div>
