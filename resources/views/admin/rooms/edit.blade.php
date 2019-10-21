@@ -208,7 +208,7 @@
                                                     <label class="">Ngày kết thúc</label>
                                                     <div class="m-input-icon m-input-icon--right">
                                                         <input type="text" class="form-control m-input my-datepicker"
-                                                               value="{{ old('sale_end_at, $room->sale_end_at') }}" id="sale_end_at"
+                                                               value="{{ old('sale_end_at', $room->sale_end_at) }}" id="sale_end_at"
                                                                name="sale_end_at"
                                                                autocomplete="off">
                                                     </div>
@@ -357,7 +357,7 @@
         $('.my-datepicker').datepicker({
             todayHighlight: !0,
             autoclose: !0,
-            format: "mm/dd/yyyy"
+            format: "yyyy-mm-dd"
         });
 
         $('#description').summernote({
@@ -392,6 +392,9 @@
                 dataType: 'json',
                 data: formData,
                 success: function (response) {
+                    if (response.messages == 'last-room') {
+                        toastr.error('Bạn không thể xóa toàn bộ phòng', 'Không thể xóa');
+                    }
                     if (response.messages == 'error') {
                         toastr.error('Phòng này đang được sử dụng', 'Không thể xóa');
                     }

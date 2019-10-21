@@ -274,7 +274,7 @@
         $('.my-datepicker').datepicker({
             todayHighlight: !0,
             autoclose: !0,
-            format: "mm/dd/yyyy"
+            format: "yyyy-mm-dd"
         });
 
         $('#description').summernote({

@@ -61,12 +61,15 @@ Route::prefix('posts')->name('post.')->group(function () {
 });
 
 /** Phòng */
+Route::post('/rooms/upload-images/{id}', 'Admin\RoomController@uploadImage')->name('rooms.uploadImage');
+Route::post('/rooms/destroy-images', 'Admin\RoomController@destroyImage')->name('rooms.destroyImage');
+Route::post('/rooms/delete-room-number', 'Admin\RoomController@deleteRoomNumber')->name('rooms.deleteRoomNumber');
+Route::get('/rooms/delete-images/{id}', 'Admin\RoomController@deleteImage')->name('rooms.deleteImage');
 Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     $controller = 'Admin\RoomController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
-    Route::post('delete-room-number/{id}', $controller . 'deleteRoomNumber')->name('deleteRoomNumber');
     Route::get('/show-original/{id}', $controller . 'showOriginal')->name('showOriginal');
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');
     Route::post('/update/{id}', $controller . 'update')->name('update');
@@ -75,11 +78,9 @@ Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
     Route::post('/add-properties', $controller . 'addProperties')->name('addProperties');
     Route::post('/delete-properties', $controller . 'deleteProperties')->name('deleteProperties');
+    Route::post('delete-room-number/{id}', $controller . 'deleteRoomNumber')->name('deleteRoomNumber');
 });
-Route::post('/rooms/upload-images/{id}', 'Admin\RoomController@uploadImage')->name('rooms.uploadImage');
-Route::post('/rooms/destroy-images', 'Admin\RoomController@destroyImage')->name('rooms.destroyImage');
-Route::post('/rooms/delete-room-number', 'Admin\RoomController@deleteRoomNumber')->name('rooms.deleteRoomNumber');
-Route::get('/rooms/delete-images/{id}', 'Admin\RoomController@deleteImage')->name('rooms.deleteImage');
+
 
 /** Tiện nghi */
 Route::prefix('properties')->name('properties.')->group(function () {
