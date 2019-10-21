@@ -116,6 +116,16 @@ class RoomRepository extends EloquentRepository
         return $dataRoomDetail;
     }
 
+    public function checkLastRoomNumber($room)
+    {
+        $count = $room->listRoomNumbers->count();
+        if ($count == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function deleteRoomNumber($roomNumbers, $room_number, $roomId)
     {
         $check = $this->checkInvoiceRoomNumber($room_number, $roomId);
