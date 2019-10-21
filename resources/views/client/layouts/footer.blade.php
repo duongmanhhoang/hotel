@@ -31,6 +31,21 @@
 										</ul>
 									</div>
 									<div class="col-sm-12 col-md-3">
+										<h4>Địa chỉ</h4>
+										<p>Số 7 Đại Cồ Việt, Hà Nội, Việt Nam</p>
+										<p> <span class="foot-phone">Phone: </span> <span class="foot-phone">+84 376 594 637</span> </p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="foot-sec2">
+							<div class="container">
+								<div class="row">
+									<div class="col-sm-12 col-md-3">
+										<h4>Phương thức thanh toán</h4>
+										<p class="hasimg"> <img src="{{ asset('bower_components/client_layout/images/payment.png') }}" alt="payment"> </p>
+									</div>
+									<div class="col-sm-12 col-md-4">
 										<h4>Đăng kí tin tức ngay</h4>
 										<form>
 											<ul class="foot-subsc">
@@ -77,3 +92,4 @@
 			<p>copyrights © 2019 Atlantic. &nbsp;&nbsp;All rights reserved. </p>
 		</div>
 	</section>
+	

@@ -17,37 +17,7 @@
 							<form class="col s12">
 								<div class="row">
 									<div class="input-field col s6">
-										<input type="text" class="validate">
-										<label>Full Name</label>
-									</div>
-									<div class="input-field col s6">
-										<input type="text" class="validate">
-										<label>Email</label>
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-field col s6">
-										<input type="text" class="validate">
-										<label>Phone</label>
-									</div>
-									<div class="input-field col s6">
-										<input type="text" class="validate">
-										<label>Mobile</label>
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-field col s6">
-										<input type="text" class="validate">
-										<label>City</label>
-									</div>
-									<div class="input-field col s6">
-										<input type="text" class="validate">
-										<label>Country</label>
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-field col s6">
-										<select>
+										<select name="status" id="selectedTest">
 											<option value="" disabled selected>No of adults</option>
 											<option value="1">1</option>
 											<option value="2">2</option>
@@ -56,7 +26,7 @@
 										</select>
 									</div>
 									<div class="input-field col s6">
-										<select>
+										<select  name="status" id="selectedTest">
 											<option value="" disabled selected>No of childrens</option>
 											<option value="1">1</option>
 											<option value="2">2</option>
@@ -77,13 +47,17 @@
 								</div>
 								<div class="row">
 									<div class="input-field col s12">
-										<textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
-										<label>Message</label>
+										<select>
+											<option value="" disabled selected>Chọn sơ sở</option>
+											<option value="1">Hà Nội</option>
+											<option value="2">TP Hồ Chí Minh</option>
+											<option value="3">Đà Nẵng</option>
+										</select>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-field col s12">
-										<input type="submit" value="submit" class="form-btn"> </div>
+										<input type="submit" value="SREACH" class="form-btn"> </div>
 								</div>
 							</form>
 						</div>
