@@ -10,10 +10,15 @@ class WebSetting extends Model
     protected $table = 'web_settings';
     protected $fillable = [
     	'logo',
+        'logo_footer',
     	'facebook',
     	'twitter',
     	'instagram',
     	'linkedin',
     	'tripadvisor',
+        'youtube',
+        'google_plus',
+        'phone',
+        'address',
     ];
 }

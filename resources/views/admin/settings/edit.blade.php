@@ -24,7 +24,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group">
-                                        <label>Logo <b class="text-danger">*</b></label><br>
+                                        <label>Logo header <b class="text-danger">*</b></label><br>
                                         <img id="is_image"
                                              src="{{ config('common.uploads.logo') . '/' . $inforWeb->logo }}"
                                              width="100"
@@ -39,6 +39,38 @@
                                         </div>
                                         @if ($errors->has('logo'))
                                             <b class="text-danger">{{ $errors->first('logo') }}</b>
+                                        @endif
+                                    </div>
+                                    <div class="form-group m-form__group">
+                                        <label>Logo footer <b class="text-danger">*</b></label><br>
+                                        <img id="is_image_logo_footer"
+                                             src="{{ config('common.uploads.logo') . '/' . $inforWeb->logo_footer }}"
+                                             width="100"
+                                             class="mb-4"
+                                        >
+                                        <div></div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="select_image_logo_footer" name="logo_footer"
+                                                   accept="image/*">
+                                            <label class="custom-file-label"
+                                                   for="selectImage">Hãy chọn ảnh</label>
+                                        </div>
+                                        @if ($errors->has('logo_footer'))
+                                            <b class="text-danger">{{ $errors->first('logo_footer') }}</b>
+                                        @endif
+                                    </div>
+                                    <div class="form-group m-form__group">
+                                        <label>Số điện thoại <b class="text-danger">*</b></label>
+                                        <input type="text" class="form-control m-input" name="phone" value="{{ old('phone', $inforWeb->phone) }}">
+                                        @if ($errors->has('phone'))
+                                            <b class="text-danger">{{ $errors->first('phone') }}</b>
+                                        @endif
+                                    </div>
+                                    <div class="form-group m-form__group">
+                                        <label>Địa chỉ chính <b class="text-danger">*</b></label>
+                                        <input type="text" class="form-control m-input" name="address" value="{{ old('address', $inforWeb->address) }}">
+                                        @if ($errors->has('address'))
+                                            <b class="text-danger">{{ $errors->first('address') }}</b>
                                         @endif
                                     </div>
                                     <div class="form-group m-form__group">
@@ -76,9 +108,25 @@
                                             <b class="text-danger">{{ $errors->first('tripadvisor') }}</b>
                                         @endif
                                     </div>
-                                    <input type="hidden" name="current_image" value="{{ $inforWeb->logo }}">
+                                    <div class="form-group m-form__group">
+                                        <label>Youtube <b class="text-danger">*</b></label>
+                                        <input type="text" class="form-control m-input" name="youtube" value="{{ old('youtube', $inforWeb->youtube) }}">
+                                        @if ($errors->has('youtube'))
+                                            <b class="text-danger">{{ $errors->first('youtube') }}</b>
+                                        @endif
+                                    </div>
+                                    <div class="form-group m-form__group">
+                                        <label>Google Plus <b class="text-danger">*</b></label>
+                                        <input type="text" class="form-control m-input" name="google_plus" value="{{ old('google_plus', $inforWeb->google_plus) }}">
+                                        @if ($errors->has('google_plus'))
+                                            <b class="text-danger">{{ $errors->first('google_plus') }}</b>
+                                        @endif
+                                    </div>
+                                    <input type="hidden" name="current_image_header" value="{{ $inforWeb->logo }}">
+                                    <input type="hidden" name="current_image_footer" value="{{ $inforWeb->logo_footer }}">
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Sửa</button>
+                                        <a class="btn btn-danger" href="{{ route('admin.index') }}">Hủy</a>
                                     </div>
                                 </form>
                             </div>

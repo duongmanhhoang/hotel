@@ -95,14 +95,6 @@
                                                    title="Ngôn Ngữ">
                                                     <i class="la la-file-word-o"></i>
                                                 </a>
-
-                                                <a href="{{ route('admin.post.show', $value->id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
-                                                   title="Chi tiết bài viết">
-                                                    <i class="la la-eye"></i>
-                                                </a>
-
-
                                                 <form id="form-{{ $value->id }}" method="post"
                                                       action="{{ route('admin.post.delete', $value->id) }}" class="float-left">
                                                     @csrf
