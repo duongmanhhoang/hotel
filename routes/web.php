@@ -18,3 +18,10 @@ Route::post('/login', 'Auth\LoginController@submitLogin')->name('submitLogin');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/change-language/{id}', 'LanguageController@change')->name('changeLanguage');
+
+/** Danh sách phòng */
+Route::prefix('/rooms')->name('rooms.')->group(function () {
+    $controller = 'Client\RoomController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/{id}', $controller . 'detail')->name('detail');
+});

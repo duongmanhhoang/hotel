@@ -150,6 +150,10 @@ class RoomController extends Controller
         $room = $this->roomRepository->find($id);
         $roomNumbers = $room->listRoomNumbers;
         $room_number = $request->room_number;
+        $checkLastRoom = $this->roomRepository->checkLastRoomNumber($room);
+        if ($checkLastRoom) {
+            return response()->json(['messages' => 'last-room'], 200);
+        }
         $result = $this->roomRepository->deleteRoomNumber($roomNumbers, $room_number, $id);
 
         if ($result) {

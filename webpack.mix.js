@@ -18,3 +18,7 @@ mix.styles([
 mix.scripts([
     'resources/assets/admin/js/script.js',
 ], 'public/js/app.js');
+
+mix.scripts([
+    'resources/assets/client/js/script.js',
+], 'public/js/client/app.js');

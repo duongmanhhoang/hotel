@@ -11,4 +11,15 @@ class RoleRepository extends EloquentRepository
     {
         return Role::class;
     }
+
+    public function getRoles()
+    {
+        return $this->_model->whereNotIn('id', [Role::ADMIN, Role::SUPER_ADMIN, Role::MEMBER])->orderBy('id', 'desc')->get();
+    }
+
+    public function deleteRole($id)
+    {
+        $this->delete($id);
+    }
+
 }

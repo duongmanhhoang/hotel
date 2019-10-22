@@ -12,8 +12,94 @@
 					</li>
 					@endforeach
 				</ul>
+		<div class="inn-body-section inn-booking">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="book-title">
+							<h2>Check Availability</h2>
+							<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries. </p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="book-form inn-com-form">
+							<form class="col s12">
+								<div class="row">
+									<div class="input-field col s6">
+										<input type="text" class="validate">
+										<label>Full Name</label>
+									</div>
+									<div class="input-field col s6">
+										<input type="text" class="validate">
+										<label>Email</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s6">
+										<input type="text" class="validate">
+										<label>Phone</label>
+									</div>
+									<div class="input-field col s6">
+										<input type="text" class="validate">
+										<label>Mobile</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s6">
+										<input type="text" class="validate">
+										<label>City</label>
+									</div>
+									<div class="input-field col s6">
+										<input type="text" class="validate">
+										<label>Country</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s6">
+										<select>
+											<option value="" disabled selected>No of adults</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="1">4</option>
+										</select>
+									</div>
+									<div class="input-field col s6">
+										<select>
+											<option value="" disabled selected>No of childrens</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="1">4</option>
+										</select>
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s6">
+										<input type="text" id="from" name="from">
+										<label for="from">Check In</label>
+									</div>
+									<div class="input-field col s6">
+										<input type="text" id="to" name="to">
+										<label for="to">Check Out</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s12">
+										<textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
+										<label>Message</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s12">
+										<input type="submit" value="submit" class="form-btn"> </div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+		</div>		
 		<div class="hom1 hom-com pad-bot-40">
 			<div class="container">
 				<div class="row">

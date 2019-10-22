@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Role;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,7 @@ class CheckSuperAdmin
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if ($user->role_id == config('common.roles.super_admin')) {
+        if ($user->role_id == Role::SUPER_ADMIN) {
             return $next($request);
         } else {
             abort(403);

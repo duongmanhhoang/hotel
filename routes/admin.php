@@ -61,12 +61,15 @@ Route::prefix('posts')->name('post.')->group(function () {
 });
 
 /** Phòng */
+Route::post('/rooms/upload-images/{id}', 'Admin\RoomController@uploadImage')->name('rooms.uploadImage');
+Route::post('/rooms/destroy-images', 'Admin\RoomController@destroyImage')->name('rooms.destroyImage');
+Route::post('/rooms/delete-room-number', 'Admin\RoomController@deleteRoomNumber')->name('rooms.deleteRoomNumber');
+Route::get('/rooms/delete-images/{id}', 'Admin\RoomController@deleteImage')->name('rooms.deleteImage');
 Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     $controller = 'Admin\RoomController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
-    Route::post('delete-room-number/{id}', $controller . 'deleteRoomNumber')->name('deleteRoomNumber');
     Route::get('/show-original/{id}', $controller . 'showOriginal')->name('showOriginal');
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');
     Route::post('/update/{id}', $controller . 'update')->name('update');
@@ -75,11 +78,9 @@ Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
     Route::post('/add-properties', $controller . 'addProperties')->name('addProperties');
     Route::post('/delete-properties', $controller . 'deleteProperties')->name('deleteProperties');
+    Route::post('delete-room-number/{id}', $controller . 'deleteRoomNumber')->name('deleteRoomNumber');
 });
-Route::post('/rooms/upload-images/{id}', 'Admin\RoomController@uploadImage')->name('rooms.uploadImage');
-Route::post('/rooms/destroy-images', 'Admin\RoomController@destroyImage')->name('rooms.destroyImage');
-Route::post('/rooms/delete-room-number', 'Admin\RoomController@deleteRoomNumber')->name('rooms.deleteRoomNumber');
-Route::get('/rooms/delete-images/{id}', 'Admin\RoomController@deleteImage')->name('rooms.deleteImage');
+
 
 /** Tiện nghi */
 Route::prefix('properties')->name('properties.')->group(function () {
@@ -94,7 +95,7 @@ Route::prefix('properties')->name('properties.')->group(function () {
 });
 
 /** Người dùng */
-Route::prefix('users')->name('users.')->group(function () {
+Route::prefix('users')->name('users.')->middleware('checkSuperAdmin&Admin')->group(function () {
     $controller = 'Admin\UserController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
@@ -129,4 +130,34 @@ Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/edit', $controller . 'edit')->name('edit');
     Route::post('/update/{id}', $controller . 'update')->name('update');
+});
+
+/** Quản lý roles */
+Route::prefix('roles')->name('roles.')->middleware('checkSuperAdmin')->group(function () {
+    $controller = 'Admin\RoleController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/create', $controller . 'create')->name('create');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/edit/{id}', $controller . 'edit')->name('edit');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+});
+
+/** Quản lý routes */
+Route::prefix('routes')->name('routes.')->middleware('checkSuperAdmin')->group(function () {
+    $controller = 'Admin\RouteController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::post('/delete', $controller . 'delete')->name('delete');
+});
+
+/** Hóa đơn */
+Route::prefix('bills')->name('bill.')->group(function () {
+    $controller = 'Admin\BillController@';
+    Route::get('/', $controller . 'index')->name('list');
+    Route::get('/post', $controller . 'addView')->name('postView');
+    Route::post('/post', $controller . 'store')->name('postAction');
+    Route::get('/edit/{id}', $controller . 'editView')->name('editView');
+    Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
 });

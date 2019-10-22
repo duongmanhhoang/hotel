@@ -219,5 +219,74 @@
                 <span class="m-menu__link-text">Cài đặt website</span>
             </a>
         </li>
+
+        <!-- Quản lý roles -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-wrench"></i>
+                <span class="m-menu__link-text">Quản lý quyền</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.roles.create') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-plus">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Thêm</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.roles.index') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-list">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Danh sách</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Quản lý bills -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-dollar"></i>
+                <span class="m-menu__link-text">Quản lý thu chi</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.bill.postView') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-plus">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Thêm</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.bill.list') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-list">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Danh sách</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Cài đặt website -->
+        <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="{{ route('admin.routes.index') }}" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon la la-lock"></i>
+                <span class="m-menu__link-text">Quản lý modules</span>
+            </a>
+        </li>
+
     </ul>
 </div>

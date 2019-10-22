@@ -44,6 +44,8 @@ class CategoryController extends Controller
         if($categoryId != false) {
             $checkAvailableTranslate = $this->categoryRepo->find($categoryId);
 
+            if($checkAvailableTranslate == null) return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+
             if($checkAvailableTranslate->lang_parent_id != null)
                 return redirect()->route('admin.category.list')->with(['error' => 'Không được dịch từ bản con']);
         }
@@ -81,6 +83,11 @@ class CategoryController extends Controller
         $data = $this->categoryRepo->find($id);
         $categories  = $this->categoryRepo->getCategoriesToAddParent($id);
         $route = route('admin.category.editAction', ['id' => $id]);
+
+        if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
 
         $compact = compact('data', 'categories', 'route');
 

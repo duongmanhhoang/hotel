@@ -67,6 +67,8 @@
                                     @endif
 
                                     <div class="form-group m-form__group">
+                                        <a href="{{ route('admin.category.list') }}" class="btn btn-danger">Quay lại</a>
+
                                         <button class="btn btn-primary">Tạo</button>
                                     </div>
                                 </form>

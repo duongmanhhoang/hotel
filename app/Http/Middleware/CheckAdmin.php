@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Role;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,12 +19,12 @@ class CheckAdmin
     {
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user->role_id != config('common.roles.member')) {
+            if ($user->role_id != Role::MEMBER) {
                 return $next($request);
             }
         }
 
-        return redirect(route('login'));
+        return redirect(route('index'));
 
 
     }
