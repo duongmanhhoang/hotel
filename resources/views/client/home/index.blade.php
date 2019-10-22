@@ -2,16 +2,7 @@
 @section('content')
 <div>
 			<div class="slider fullscreen">
-				<ul class="slides">
-					@foreach ($sliders as $slider)
-					<li><img src="{{ asset('bower_components/client_layout/images/slider') . '/' .$slider->image }}" alt="">
-						<div class="caption center-align slid-cap">
-							<h5 class="light grey-text text-lighten-3">Chào mừng bạn tới</h5>
-							<h2>{{$slider->title}}</h2>
-							<p>{{$slider->description}}</p> <a href="#" class="waves-effect waves-light">Booking</a><a href="#" class="waves-effect waves-light">Booking</a> </div>
-					</li>
-					@endforeach
-				</ul>
+				
 		<div class="inn-body-section inn-booking">
 			<div class="container">
 				<div class="row">
@@ -664,4 +655,4 @@
 				</div>
 			</div>
 		</div>
-@stop
+@endsection
