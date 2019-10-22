@@ -14,7 +14,7 @@ class CreateStatisticalsTable extends Migration
     public function up()
     {
         Schema::create('statisticals', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->date('time');
             $table->integer('day');
             $table->integer('month');

@@ -23,6 +23,10 @@ class BillController extends Controller
     {
         $input = $request->all();
 
+        $test = $this->billRepo->recordsDailyInsert();
+
+        dd($test);
+
         $data = $this->billRepo->searchBill($input);
 
         $compact = compact('data');
