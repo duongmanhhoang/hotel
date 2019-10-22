@@ -6,8 +6,8 @@
 <body data-ng-app="">
 	<section>
 @include ('client.layouts.header')
-@yield('content')
-					
+@yield('content')					
+@include ('client.layouts.booking')
 	</section>
 @include ('client.layouts.footer')
 @include ('client.layouts.sidebar')

@@ -8,8 +8,22 @@ function readURL(input) {
     }
 }
 
+function readURLFooter(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#is_image_logo_footer').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 $("#select_image").change(function () {
     readURL(this);
+});
+
+$("#select_image_logo_footer").change(function () {
+    readURLFooter(this);
 });
 
 

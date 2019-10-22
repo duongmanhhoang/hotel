@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('client.home.index');
-});
+Route::get('/','Client\HomeController@index')->name('home');
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/login', 'Auth\LoginController@submitLogin')->name('submitLogin');

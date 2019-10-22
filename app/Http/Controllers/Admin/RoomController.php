@@ -80,6 +80,7 @@ class RoomController extends Controller
                 $data['image'] = uploadImage('rooms', $data['image']);
 
             }
+        
             $this->roomRepository->storeRoom($data, $location_id);
             DB::commit();
             $request->session()->flash('success', 'Thêm thành công');

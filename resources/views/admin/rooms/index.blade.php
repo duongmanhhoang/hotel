@@ -57,7 +57,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @php ($i = 1)
+                                    @php ($stt = 1)
                                     @foreach($rooms as $room)
                                         @if (!is_null($keyword))
                                             <?php
@@ -70,7 +70,7 @@
                                         @endif
                                         @if ($roomDetail != null)
                                             <tr>
-                                                <td>{{ $i }}</td>
+                                                <td>{{ $stt }}</td>
                                                 <td>
                                                     <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
                                                          style="width: 200px"></td>
@@ -197,7 +197,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @php($i++)
+                                            @php($stt++)
                                         @endif
                                     @endforeach
                                     </tbody>

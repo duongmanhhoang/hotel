@@ -1,5 +1,8 @@
 @extends('client.layouts.master')
 @section('content')
+<div>
+			<div class="slider fullscreen">
+				
 		<div class="inn-body-section inn-booking">
 			<div class="container">
 				<div class="row">
@@ -637,62 +640,19 @@
 						<div class="bot-gal h-blog">
 							<h4>Tin tức và sự kiện</h4>
 							<ul>
+								@foreach ($posts as $post)
 								<li>
 									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
+										<h5>{{ $post->title }}</h5> 
+										<span>{{ formatDate($post->created_at) }}</span>
+										<p>{{ $post->description }}</p>
 									</a>
 								</li>
-								<li>
-									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
-									</a>
-								</li>
-								<li>
-									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
-									</a>
-								</li>
-								<li>
-									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
-									</a>
-								</li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="">
-			<div>
-				<div class="hom-footer-section">
-					<div class="container">
-						<div class="row">
-							<div class="foot-com foot-1">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-									</li>
-									<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-									</li>
-									<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-									</li>
-								</ul>
-							</div>
-							<div class="foot-com foot-2">
-								<h5>Phone: (+84) 376 594 637</h5> </div>
-							<div class="foot-com foot-3">
-								<!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
-							<div class="foot-com foot-4">
-								<a href="#"><img src="images/card.png" alt="" />
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
 @endsection
