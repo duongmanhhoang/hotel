@@ -26,6 +26,7 @@ class BillPostRequest extends FormRequest
         return [
             'title' => 'required',
             'money' => 'required|numeric',
+            'body' => 'required'
         ];
     }
 }
