@@ -3,30 +3,14 @@
 <div>
 			<div class="slider fullscreen">
 				<ul class="slides">
-					<li> <img src="images/slider/1.jpg" alt="">
+					@foreach ($sliders as $slider)
+					<li><img src="{{ asset('bower_components/client_layout/images/slider') . '/' .$slider->image }}" alt="">
 						<div class="caption center-align slid-cap">
 							<h5 class="light grey-text text-lighten-3">Chào mừng bạn tới</h5>
-							<h2>Atlantic Hotel</h2>
-							<p>Atlantic giúp bạn tiết kiệm tối đa chi phí đặt phòng, nhanh chóng và tiện lợi, với kinh nhiệm 10 năm trong ngành khách sạn, chúng tôi tin rằng sẽ bạn sẽ có một kì nghỉ tuyệt vời cùng Atlantic! Còn chờ gì nữa mà không đặt phòng ngay thôi!</p> <a href="#" class="waves-effect waves-light">Booking</a><a href="#" class="waves-effect waves-light">Booking</a> </div>
+							<h2>{{$slider->title}}</h2>
+							<p>{{$slider->description}}</p> <a href="#" class="waves-effect waves-light">Booking</a><a href="#" class="waves-effect waves-light">Booking</a> </div>
 					</li>
-					<li> <img src="images/slider/2.jpg" alt="">
-						<div class="caption center-align slid-cap">
-							<h5 class="light grey-text text-lighten-3">Chào mừng bạn tới</h5>
-							<h2>Atlantic Hotel</h2>
-							<p>Atlantic giúp bạn tiết kiệm tối đa chi phí đặt phòng, nhanh chóng và tiện lợi, với kinh nhiệm 10 năm trong ngành khách sạn, chúng tôi tin rằng sẽ bạn sẽ có một kì nghỉ tuyệt vời cùng Atlantic! Còn chờ gì nữa mà không đặt phòng ngay thôi!</p> <a href="#" class="waves-effect waves-light">Booking</a><a href="#" class="waves-effect waves-light">Booking</a> </div>
-					</li>
-					<li> <img src="images/slider/3.jpg" alt="">
-						<div class="caption center-align slid-cap">
-							<h5 class="light grey-text text-lighten-3">Chào mừng bạn tới</h5>
-							<h2>Atlantic Hotel</h2>
-							<p>Atlantic giúp bạn tiết kiệm tối đa chi phí đặt phòng, nhanh chóng và tiện lợi, với kinh nhiệm 10 năm trong ngành khách sạn, chúng tôi tin rằng sẽ bạn sẽ có một kì nghỉ tuyệt vời cùng Atlantic! Còn chờ gì nữa mà không đặt phòng ngay thôi!</p> <a href="#" class="waves-effect waves-light">Booking</a><a href="#" class="waves-effect waves-light">Booking</a> </div>
-					</li>
-					<li> <img src="images/slider/4.jpg" alt="">
-						<div class="caption center-align slid-cap">
-							<h5 class="light grey-text text-lighten-3">Chào mừng bạn tới</h5>
-							<h2>Atlantic Hotel</h2>
-							<p>Atlantic giúp bạn tiết kiệm tối đa chi phí đặt phòng, nhanh chóng và tiện lợi, với kinh nhiệm 10 năm trong ngành khách sạn, chúng tôi tin rằng sẽ bạn sẽ có một kì nghỉ tuyệt vời cùng Atlantic! Còn chờ gì nữa mà không đặt phòng ngay thôi!</p> <a href="#" class="waves-effect waves-light">Booking</a><a href="#" class="waves-effect waves-light">Booking</a> </div>
-					</li>
+					@endforeach
 				</ul>
 			</div>
 		</div>
@@ -579,62 +563,19 @@
 						<div class="bot-gal h-blog">
 							<h4>Tin tức và sự kiện</h4>
 							<ul>
+								@foreach ($posts as $post)
 								<li>
 									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
+										<h5>{{ $post->title }}</h5> 
+										<span>{{ formatDate($post->created_at) }}</span>
+										<p>{{ $post->description }}</p>
 									</a>
 								</li>
-								<li>
-									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
-									</a>
-								</li>
-								<li>
-									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
-									</a>
-								</li>
-								<li>
-									<a href="#!"> <img src="images/users/2.png" alt="">
-										<h5>Trần Dần, Aqua man</h5> <span>3 Dec, 2017</span>
-										<p>Một chuyến du lịch Đà Nẵng cho thu này, nghĩ sao nhỉ?</p>
-									</a>
-								</li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="">
-			<div>
-				<div class="hom-footer-section">
-					<div class="container">
-						<div class="row">
-							<div class="foot-com foot-1">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-									</li>
-									<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-									</li>
-									<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-									</li>
-								</ul>
-							</div>
-							<div class="foot-com foot-2">
-								<h5>Phone: (+84) 376 594 637</h5> </div>
-							<div class="foot-com foot-3">
-								<!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
-							<div class="foot-com foot-4">
-								<a href="#"><img src="images/card.png" alt="" />
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
-@endsection
+@stop

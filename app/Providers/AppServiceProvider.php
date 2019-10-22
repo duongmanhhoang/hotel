@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Language;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\WebSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -60,6 +61,33 @@ class AppServiceProvider extends ServiceProvider
             //locations
             $sidebar_locations = Location::where('lang_parent_id', 0)->get();
             $view->with('sidebar_locations', $sidebar_locations);
+        });
+
+        View::composer([
+            'client.layouts.header',
+            'client.layouts.booking',
+            'client.layouts.footer',
+        ], function ($view) {
+            //Current language
+            if (Session::get('locale')) {
+                $current_language = Language::find(Session::get('locale'));
+                if (is_null($current_language)) {
+                    $current_language = Language::find(Config::get('common.languages.default'));
+                }
+            } else {
+                $current_language = Language::find(Config::get('common.languages.default'));
+            }
+            $view->with('current_language', $current_language);
+
+            //List languages
+            $header_languages = Language::all();
+            $view->with('header_languages', $header_languages);
+            // Infor website
+            $inforWeb = Websetting::all()->first();
+            $view->with('inforWeb', $inforWeb);
+            // Location
+            $locations = Location::where('lang_id', Session::get('locale'))->get();
+            $view->with('locations', $locations);
         });
     }
 }

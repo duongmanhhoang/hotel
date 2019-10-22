@@ -22,11 +22,19 @@ class WebSettingController extends Controller
     public function update(UpdateRequest $request, $id)
     {
     	$data = $request->except('_token');
-    	if ($request->logo) {
+        if ($request->logo && $request->logo_footer) {
+            $data['logo'] = uploadImage('logo', $data['logo']);
+            $data['logo_footer'] = uploadImage('logo', $data['logo_footer']);
+        }
+    	else if ($request->logo) {  
     		$data['logo'] = uploadImage('logo', $data['logo']);
     	}
-    	else {
-    		$data['logo'] = $request->current_image;
+        else if ($request->logo_footer) {
+            $data['logo_footer'] = uploadImage('logo', $data['logo_footer']);
+        }
+    	else { 
+    		$data['logo'] = $request->current_image_header;
+            $data['logo_footer'] = $request->current_image_footer;
     	}
     	$this->configRepository->update($id, $data);
         $request->session()->flash('success', 'Cập nhật thành công');

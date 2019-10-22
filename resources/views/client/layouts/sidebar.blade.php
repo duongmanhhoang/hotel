@@ -10,7 +10,7 @@
                     opacity: 0.6" src="images/about.jpg">
 				</div>
 				<div class="log-in-pop-right">
-					<a href="#" class="pop-close" data-dismiss="modal"><img src="images/cancel.png" alt="" />
+					<a href="#" class="pop-close" data-dismiss="modal"><img src="{{ asset('/bower_components/client_layout/images/cancel.png') }}" alt="" />
 					</a>
 					<h4>Đăng nhập</h4>
 					<p>Đăng nhập để cùng Atlantic trải nghiệm những kì nghỉ tuyệt vời nào!</p>
@@ -57,7 +57,7 @@
                     opacity: 0.6" src="images/about.jpg">
 				</div>
 				<div class="log-in-pop-right">
-					<a href="#" class="pop-close" data-dismiss="modal"><img src="images/cancel.png" alt="" />
+					<a href="#" class="pop-close" data-dismiss="modal"><img src="{{ asset('/bower_components/client_layout/images/cancel.png')}}" alt="" />
 					</a>
 					<h4>Đăng kí tài khoản</h4>
 					<p>Khởi tạo tài khoản để cùng Atlantic trải nghiệm những chuyến du lịch nghỉ dưỡng tốt nhất</p>
@@ -107,7 +107,7 @@
                     opacity: 0.6" src="images/about.jpg">
 				</div>
 				<div class="log-in-pop-right">
-					<a href="#" class="pop-close" data-dismiss="modal"><img src="images/cancel.png" alt="" />
+					<a href="#" class="pop-close" data-dismiss="modal"><img src="{{ asset('/bower_components/client_layout/images/cancel.png')}}" alt="" />
 					</a>
 					<h4>Quên mật khẩu</h4>
 					<p>Nhận lại mật khẩu ngay thôi nào</p>
