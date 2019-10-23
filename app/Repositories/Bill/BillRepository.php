@@ -60,7 +60,7 @@ class BillRepository extends EloquentRepository
         $yesterday = Carbon::yesterday()->format('Y-m-d');
         $today = Carbon::today()->format('Y-m-d');
         $arrayToInsert = [];
-
+        $array = [];
 
         $whereConditional = [
             ['created_at', '>=', $yesterday . ' 00:00:00'],
@@ -74,34 +74,66 @@ class BillRepository extends EloquentRepository
         $d = $yesterdaySplit[2];
 
 
-        $result = $this->_model->select(DB::raw('sum(if(type = 1, 0, 1)) as incoming, sum(if(type = 2, 0, 1)) as outgoing, location_id'))->where($whereConditional)->groupBy('location_id')->get();
+        $result = $this->_model->select(DB::raw('if(type = 1, sum(money), 0) as incoming, if(type = 2, sum(money), 0) as outgoing, location_id, type'))->where($whereConditional)->groupBy('location_id', 'type')->get()->toArray();
 
         foreach ($result as $value) {
+            $array[$value['location_id']][] = $value;
+        }
+
+
+       foreach ($array as $value) {
+
+           $incoming = count($value) > 1 ? $value[0]['incoming'] + $value[1]['incoming'] : $value[0]['incoming'];
+           $outgoing = count($value) > 1 ? $value[0]['outgoing'] + $value[1]['outgoing'] : $value[0]['outgoing'];
+
+           $data = [
+               'time' => $yesterday,
+               'day' => $d,
+               'month' => $m,
+               'year' => $y,
+               'incoming' => $incoming,
+               'outgoing' => $outgoing,
+               'location_id' => $value[0]['location_id'],
+               'room_id' => null,
+               'created_at' => date('Y-m-d H:i:s'),
+               'updated_at' => date('Y-m-d H:i:s'),
+           ];
+
+           array_push($arrayToInsert, $data);
+       }
+
+        return $arrayToInsert;
+    }
+
+    public function calculateMoneyLocation($arrayValue)
+    {
+        $data = null;
+        $arr = [];
+        for ($i = 0; $i < count($arrayValue); $i++) {
+            $value = $arrayValue[$i];
+
             $data = [
-                'time' => $yesterday,
-                'day' => $d,
-                'month' => $m,
-                'year' => $y,
-                'incoming' => $value->incoming,
-                'outgoing' => $value->outgoing,
-                'location_id' => $value->location_id,
+                'incoming' => $data != null ? $data['incoming'] += $value['incoming'] : $value['incoming'],
+                'outgoing' => $value['outgoing'],
+                'location_id' => $value['location_id'],
                 'room_id' => null,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
 
-            array_push($arrayToInsert, $data);
+            array_push($arr, $data);
         }
 
-        return $arrayToInsert;
+        $arrayValue = $data;
+
+        return $arr;
     }
 
     public function groupRecordsByLocation($records)
     {
         $data = [];
 
-        foreach ($records as $record)
-        {
+        foreach ($records as $record) {
             $data[$record->location_id] = $record;
         }
 
