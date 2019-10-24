@@ -161,3 +161,14 @@ Route::prefix('bills')->name('bill.')->group(function () {
     Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
 });
+
+/** Tên phòng */
+Route::prefix('room-name')->name('roomNames.')->group(function () {
+    $controller = 'Admin\RoomNameController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
+    Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+    Route::get('/translation/{id}', $controller . 'translation')->name('translation');
+    Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+});
