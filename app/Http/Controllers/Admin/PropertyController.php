@@ -101,6 +101,7 @@ class PropertyController extends Controller
 
         return view('admin.properties.translation', $data);
     }
+
     public function storeTranslation(TranslationRequest $request, $id)
     {
         $data = $request->all();
@@ -118,6 +119,7 @@ class PropertyController extends Controller
             throw new \Exception($e->getMessage());
         }
     }
+
     public function delete(Request $request, $id)
     {
         $delete = $this->propertyRepository->deleteProperty($id);
