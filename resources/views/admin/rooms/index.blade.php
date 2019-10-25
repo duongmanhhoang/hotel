@@ -59,22 +59,17 @@
                                     <tbody>
                                     @php ($stt = 1)
                                     @foreach($rooms as $room)
-                                        @if (!is_null($keyword))
-                                            <?php
-                                            $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->where('name', 'LIKE', '%' . $keyword . '%')->first();
-                                            ?>
-                                        @else
-                                            <?php
-                                            $roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first();
-                                            ?>
-                                        @endif
+                                        @php($roomDetail = $room->roomDetails()->where('lang_id', session('locale'))->first())
                                         @if ($roomDetail != null)
                                             <tr>
                                                 <td>{{ $stt }}</td>
                                                 <td>
-                                                    <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
-                                                         style="width: 200px"></td>
-                                                <td>{{ $roomDetail->name }}</td>
+                                                    <img
+                                                        src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
+                                                        style="width: 200px"></td>
+                                                <td>{{ (session('locale') == config('common.languages.default')
+                                                 ? $room->roomName->name
+                                                  : \App\Models\RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->room_name_id)->first()->name) }}</td>
                                                 <td>
                                                     @if ($room->sale_status == 0)
                                                         <p class="price">{{ $roomDetail->price }} {{ __('messages.currency') }}</p>
@@ -110,9 +105,10 @@
                                                           method="post"
                                                           action="{{ route('admin.rooms.delete', [$location->id, $roomDetail->id]) }}">
                                                         @csrf
-                                                        <button class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill float-left"
-                                                                title="Xóa"
-                                                                roomId="{{ $roomDetail->id }}"
+                                                        <button
+                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill float-left"
+                                                            title="Xóa"
+                                                            roomId="{{ $roomDetail->id }}"
                                                         >
                                                             <i class="la la-trash"></i>
                                                         </button>
@@ -121,7 +117,7 @@
                                                             data-target="#modal_prop_{{ $room->id }}"
                                                             class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
                                                             title="Thêm tiện nghi"><i
-                                                                class="la la-magic"></i></button>
+                                                            class="la la-magic"></i></button>
                                                     <div class="modal fade" id="modal_prop_{{ $room->id }}"
                                                          tabindex="-1" role="dialog" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg" role="document">
@@ -148,12 +144,14 @@
                                                                                 ?>
                                                                                 @foreach ($room_properties as $room_property)
                                                                                     <li class="list-prop-item-{{ $room->id }}-{{ $room_property->id }}">
-                                                                                        <span class="list-prop-item">{{ $room_property->name }}</span>
-                                                                                        <button data-room="{{ $room->id }}"
-                                                                                                id="{{ $room_property->id }}"
-                                                                                                addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
-                                                                                                deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
-                                                                                                class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop">
+                                                                                        <span
+                                                                                            class="list-prop-item">{{ $room_property->name }}</span>
+                                                                                        <button
+                                                                                            data-room="{{ $room->id }}"
+                                                                                            id="{{ $room_property->id }}"
+                                                                                            addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                                                            deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                                                            class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop">
                                                                                             <i class="la la-trash"></i>
                                                                                         </button>
                                                                                     </li>
@@ -177,12 +175,14 @@
                                                                                     ?>
                                                                                     @foreach ($properties_not_use as $property)
                                                                                         <li class="item-{{$room->id}}-{{$property->id}}">
-                                                                                            <span class="add-property-item">{{ $property->name }}</span>
-                                                                                            <button data-room="{{ $room->id }}"
-                                                                                                    id="{{ $property->id }}"
-                                                                                                    addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
-                                                                                                    deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
-                                                                                                    class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop">
+                                                                                            <span
+                                                                                                class="add-property-item">{{ $property->name }}</span>
+                                                                                            <button
+                                                                                                data-room="{{ $room->id }}"
+                                                                                                id="{{ $property->id }}"
+                                                                                                addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                                                                deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                                                                class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop">
                                                                                                 <i class="la la-plus"></i>
                                                                                             </button>
                                                                                         </li>
@@ -260,7 +260,7 @@
                             $('.item-' + room_id + '-' + id).remove();
                             $('.list-props-' + room_id).append('<li class="list-prop-item-' + response.data.room_id + '-' + id + '">' +
                                 '<span class="list-prop-item">' + response.data.property_name + '</span>' +
-                                '<button data-room=' + response.data.room_id + ' id=' + response.data.id +  '' +
+                                '<button data-room=' + response.data.room_id + ' id=' + response.data.id + '' +
                                 ' addUrl=' + url + ' deleteUrl=' + deleteUrl + ' class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop"><i class="la la-trash"></i></button>' +
                                 '</li>');
                             toastr.success('Thêm thành công', 'Thành công');
@@ -292,7 +292,7 @@
                             $('.list-prop-item-' + room_id + '-' + id).remove();
                             $('.list-not-use-prop-' + room_id).append('<li class="item-' + response.data.room_id + '-' + id + '">' +
                                 '<span class="add-property-item">' + response.data.property_name + '</span>' +
-                                '<button data-room=' + response.data.room_id + ' id=' + response.data.id +  '' +
+                                '<button data-room=' + response.data.room_id + ' id=' + response.data.id + '' +
                                 ' addUrl=' + url + ' deleteUrl=' + deleteUrl + ' class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop"><i class="la la-plus"></i></button>' +
                                 '</li>');
                             toastr.success('Xóa thành công', 'Thành công');

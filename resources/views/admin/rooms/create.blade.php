@@ -42,11 +42,18 @@
                                         @endif
                                     </div>
                                     <div class="form-group m-form__group">
-                                        <label>Hạng phòng <b class="text-danger">*</b></label>
-                                        <input type="text" class="form-control m-input" name="name"
-                                               value="{{ old('name') }}">
-                                        @if ($errors->has('name'))
-                                            <b class="text-danger">{{ $errors->first('name') }}</b>
+                                        <label>Tên phòng <b class="text-danger">*</b></label>
+                                        <select class="form-control" name="room_name_id">
+                                            @foreach ($roomNames as $name)
+                                                <option
+                                                    value="{{ session('locale') == config('common.languages.default') ? $name->id : $name->lang_parent_id}}"
+                                                >
+                                                    {{ $name->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('room_name_id'))
+                                            <b class="text-danger">{{ $errors->first('room_name_id') }}</b>
                                         @endif
                                     </div>
                                     <div class="form-group m-form__group row">

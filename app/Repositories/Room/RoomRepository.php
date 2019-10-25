@@ -68,6 +68,7 @@ class RoomRepository extends EloquentRepository
     public function makeRoomDataUpdate($data)
     {
         return [
+            'room_name_id' => $data['room_name_id'],
             'sale_start_at' => $data['sale_start_at'],
             'sale_end_at' => $data['sale_end_at'],
             'adults' => $data['adults'],
@@ -78,7 +79,6 @@ class RoomRepository extends EloquentRepository
     public function makeRoomDetailUpdate($data)
     {
         return [
-            'name' => $data['name'],
             'price' => $data['price'],
             'sale_price' => $data['sale_price'],
             'short_description' => $data['short_description'],
@@ -89,6 +89,7 @@ class RoomRepository extends EloquentRepository
     public function makeRoomData($data, $location_id)
     {
         $dataRoom = [
+            'room_name_id' => $data['room_name_id'],
             'location_id' => $location_id,
             'sale_start_at' => $data['sale_start_at'],
             'sale_end_at' => $data['sale_end_at'],
@@ -104,7 +105,6 @@ class RoomRepository extends EloquentRepository
     public function makeRoomDetailData($data)
     {
         $dataRoomDetail = [
-            'name' => $data['name'],
             'price' => $data['price'],
             'sale_price' => $data['sale_price'],
             'short_description' => $data['short_description'],

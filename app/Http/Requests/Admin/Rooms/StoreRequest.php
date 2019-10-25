@@ -26,10 +26,10 @@ class StoreRequest extends FormRequest
     {
         return [
             'image' => 'required|mimes:jpg,jpeg,png|max:2000',
-            'name' => [
+            'room_name_id' => [
                 'required',
                 'max:191',
-                Rule::unique('room_details')->whereIn('room_id', $this->roomIds),
+                Rule::unique('rooms'),
             ],
             'room_number.*' => 'required',
             'price' => 'required|numeric|min:1000',
@@ -49,9 +49,9 @@ class StoreRequest extends FormRequest
             'image.required' => 'Vui lòng không bỏ trống',
             'image.mimes' => 'Vui lòng chỉ chọn ảnh jpg, jpeg, png',
             'image.max' => 'Vui lòng không chọn ảnh quá 2MB',
-            'name.required' => 'Vui lòng không bỏ trống',
-            'name.max' => 'Vui lòng không nhập quá ' . ' :max ' . ' ký tự',
-            'name.unique' => 'Tên này đã được sử dụng',
+            'room_name_id.required' => 'Vui lòng không bỏ trống',
+            'room_name_id.max' => 'Vui lòng không nhập quá ' . ' :max ' . ' ký tự',
+            'room_name_id.unique' => 'Tên này đã được sử dụng',
             'room_number.*.required' => 'Vui lòng không bỏ trống',
             'price.required' => 'Vui lòng không bỏ trống',
             'price.numeric' => 'Vui lòng chỉ nhập số',

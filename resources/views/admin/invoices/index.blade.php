@@ -83,7 +83,13 @@ use App\Models\RoomInvoice;
                                                 <p>Ghi chú: {{ $invoice->messages }}</p>
                                             </td>
                                             <td>
-                                                <p>Tên phòng: {{ $roomDetail->name }}</p>
+                                                <p>Tên phòng:
+                                                    @if (session('locale') == config('common.languages.default'))
+                                                        {{ $room->roomName->name }}
+                                                    @else
+                                                        {{ \App\Models\RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->id)->first()->name }}
+                                                    @endif
+                                                </p>
                                                 <p>Số phòng: {{ $pivot->room_number }}</p>
                                                 <p class="price">
                                                     Giá: {{ $pivot->price }} {{ !$pivot->currency ? 'vnđ' : '$' }}</p>

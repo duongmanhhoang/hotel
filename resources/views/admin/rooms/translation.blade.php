@@ -8,7 +8,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Tạo bản dịch của {{ $origin->name }}
+                                    Tạo bản dịch của {{ $room->roomName->name }}
                                 </h3>
                             </div>
                         </div>
@@ -33,17 +33,6 @@
                                                 <option value="{{ $language->id }}">{{ $language->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                    <div class="form-group m-form__group">
-                                        <label>Tên phòng <b class="text-danger">*</b></label>
-                                        <input type="text" class="form-control m-input" name="name"
-                                               value="{{ old('name') }}">
-                                        @if ($errors->has('name'))
-                                            <b class="text-danger">{{ $errors->first('name') }}</b>
-                                        @endif
-                                        @if (session('name_used'))
-                                            <b class="text-danger">{{ __('messages.Name_used') }}</b>
-                                        @endif
                                     </div>
                                     <div class="form-group m-form__group row">
                                         <div class="col-lg-6">
