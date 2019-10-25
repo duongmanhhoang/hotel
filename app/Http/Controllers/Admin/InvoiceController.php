@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Invoices\StoreRequest;
 use App\Models\ListRoomNumber;
 use App\Models\Room;
+use App\Models\RoomName;
 use App\Repositories\Invoice\InvoiceRepository;
 use App\Repositories\InvoiceRoom\InvoiceRoomRepository;
 use App\Repositories\Room\RoomRepository;
+use App\Repositories\RoomName\RoomNameRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,11 +22,13 @@ class InvoiceController extends Controller
     private $invoiceRepository;
     private $roomRepository;
     private $baseLang;
+    private $roomNameRepsitory;
 
-    public function __construct(InvoiceRepository $invoiceRepository, RoomRepository $roomRepository)
+    public function __construct(InvoiceRepository $invoiceRepository, RoomRepository $roomRepository, RoomNameRepository $roomNameRepository)
     {
         $this->invoiceRepository = $invoiceRepository;
         $this->roomRepository = $roomRepository;
+        $this->roomNameRepsitory = $roomNameRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -61,6 +65,7 @@ class InvoiceController extends Controller
         if (!$diff->invert) {
             $disable = true;
         };
+        $roomNameRepository = $this->roomNameRepsitory;
         $checkOut = formatDate($invoiceRoom->check_out_date);
         $roomDetail = $room->roomDetails->where('lang_parent_id', 0)->first();
         $data = compact(
@@ -70,7 +75,8 @@ class InvoiceController extends Controller
             'roomDetail',
             'checkIn',
             'checkOut',
-            'disable'
+            'disable',
+            'roomNameRepository'
         );
 
         return view('admin.invoices.edit', $data);
@@ -174,7 +180,12 @@ class InvoiceController extends Controller
         $rooms = Room::whereIn('id', $results['room_id'])->get();
 
         foreach ($rooms as $room) {
-            $room->name = $room->roomDetails()->where('lang_parent_id', 0)->first()->name;
+            if (session('locale') == config('common.languages.default')) {
+                $room->name = $room->roomName->name;
+            } else {
+                $room->name = RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->room_name_id)->first()->name;
+            }
+
         }
 
         if ($rooms) {

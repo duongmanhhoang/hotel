@@ -13,6 +13,7 @@ use App\Repositories\Location\LocationRepository;
 use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomDetail\RoomDetailRepository;
+use App\Repositories\RoomName\RoomNameRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -26,7 +27,8 @@ class RoomController extends Controller
         RoomRepository $roomRepository,
         RoomDetailRepository $roomDetailRepository,
         PropertyRepository $propertyRepository,
-        LibraryRepository $libraryRepository
+        LibraryRepository $libraryRepository,
+        RoomNameRepository $roomNameRepository
     )
     {
         $this->locationRepository = $locationRepository;
@@ -34,6 +36,7 @@ class RoomController extends Controller
         $this->roomDetailRepository = $roomDetailRepository;
         $this->propertyRepository = $propertyRepository;
         $this->libraryRepository = $libraryRepository;
+        $this->roomNameRepository = $roomNameRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -41,7 +44,16 @@ class RoomController extends Controller
     {
         $keyword = $request->keyword;
         $location = $this->locationRepository->findOrFail($location_id);
-        $rooms = $location->rooms()->orderBy('id', 'desc')->paginate(config('common.pagination.default'));
+        if ($keyword) {
+            if (\session('locale') == $this->baseLang) {
+                $roomNameId = $this->roomNameRepository->search('name', $keyword, 100000)->pluck('id');
+            } else {
+                $roomNameId = $this->roomNameRepository->search('name', $keyword, 100000)->pluck('lang_parent_id');
+            }
+            $rooms = $location->rooms()->whereIn('id', $roomNameId)->orderBy('id', 'desc')->paginate(config('common.pagination.default'));
+        } else {
+            $rooms = $location->rooms()->orderBy('id', 'desc')->paginate(config('common.pagination.default'));
+        }
         $properties = $this->propertyRepository;
         $data = compact(
             'rooms',
@@ -56,6 +68,7 @@ class RoomController extends Controller
     public function create($location_id)
     {
         $location = $this->locationRepository->findOrFail($location_id);
+        $roomNames = $this->roomNameRepository->getAllByLang(\session('locale'));
         $roomIds = $location->rooms()->pluck('id')->toArray();
         if (sizeof($roomIds) == 0) {
             $roomIds = [0];
@@ -64,7 +77,8 @@ class RoomController extends Controller
         $data = compact(
             'location',
             'roomIds',
-            'listRoomsNumber'
+            'listRoomsNumber',
+            'roomNames'
         );
 
         return view('admin.rooms.create', $data);
@@ -80,7 +94,7 @@ class RoomController extends Controller
                 $data['image'] = uploadImage('rooms', $data['image']);
 
             }
-        
+
             $this->roomRepository->storeRoom($data, $location_id);
             DB::commit();
             $request->session()->flash('success', 'Thêm thành công');
@@ -96,6 +110,7 @@ class RoomController extends Controller
     public function edit(Request $request, $location_id, $id)
     {
         $location = $this->locationRepository->findOrFail($location_id);
+        $roomNames = $this->roomNameRepository->getAllByLang(\session('locale'));
         $room = $this->roomRepository->findOrFail($id);
         $roomDetail = $room->roomDetails()->where('lang_id', \session('locale'))->first();
         if (is_null($roomDetail)) {
@@ -104,21 +119,18 @@ class RoomController extends Controller
 
             return redirect(route('admin.rooms.edit', [$location_id, $id]));
         }
-        $roomIds = $location->rooms()->where('id', '!=', $id)->pluck('id')->toArray();
-        if (sizeof($roomIds) == 0) {
-            $roomIds = [0];
-        }
+
         $listRoomNumber = $room->listRoomNumbers()->pluck('room_number')->toArray();
         $listLocationRoomsNumber = $location->listRoomsNumber()->pluck('list_room_numbers.room_number')->toArray();
         $images = $this->libraryRepository->getImagesByRoom($id);
         $data = compact(
             'location',
-            'roomIds',
             'listLocationRoomsNumber',
             'room',
             'roomDetail',
             'listRoomNumber',
-            'images'
+            'images',
+            'roomNames'
         );
 
         return view('admin.rooms.edit', $data);
@@ -173,10 +185,12 @@ class RoomController extends Controller
         }
 
         $origin = $this->roomDetailRepository->findOrFail($id);
+        $room = $origin->room;
         $data = compact(
             'languages',
             'origin',
-            'location_id'
+            'location_id',
+            'room'
         );
 
         return view('admin.rooms.translation', $data);

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     protected $fillable = [
+        'room_name_id',
         'location_id',
         'image',
         'sale_status',
@@ -31,5 +32,10 @@ class Room extends Model
     public function properties()
     {
         return $this->belongsToMany(Property::class, 'room_property');
+    }
+
+    public function roomName()
+    {
+        return $this->belongsTo(RoomName::class, 'room_name_id');
     }
 }

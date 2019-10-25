@@ -100,6 +100,20 @@ class RoomNameController extends Controller
         Session::put('locale', $data['lang_id']);
 
         return redirect(route('admin.roomNames.index'));
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $check = $this->roomNameRepository->deleteRoomName($id);
+        if (!$check) {
+            $request->session()->flash('error', 'Tên phòng này đang được sử dụng');
+
+            return redirect()->back();
+        }
+        $request->session()->flash('success', 'Xóa thành công');
+
+        return redirect()->back();
+
 
     }
 }

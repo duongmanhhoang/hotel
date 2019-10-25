@@ -16,7 +16,8 @@
                     <div class="m-portlet__body">
                         <div class="m-section">
                             <div class="m-section__content">
-                                <form method="post" action="{{ route('admin.rooms.update', [$location->id, $room->id]) }}"
+                                <form method="post"
+                                      action="{{ route('admin.rooms.update', [$location->id, $room->id]) }}"
                                       enctype="multipart/form-data" onsubmit="return validation()">
                                     @csrf
                                     <div class="form-group m-form__group m--margin-top-10">
@@ -48,7 +49,8 @@
                                                      class="mb-4">
                                                 <div></div>
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="select_image" name="image"
+                                                    <input type="file" class="custom-file-input" id="select_image"
+                                                           name="image"
                                                            accept="image/*">
                                                     <label class="custom-file-label"
                                                            for="selectImage">Chọn ảnh</label>
@@ -58,11 +60,23 @@
                                                 @endif
                                             </div>
                                             <div class="form-group m-form__group">
-                                                <label>Hạng phòng <b class="text-danger">*</b></label>
-                                                <input type="text" class="form-control m-input" name="name"
-                                                       value="{{ old('name', $roomDetail->name) }}">
-                                                @if ($errors->has('name'))
-                                                    <b class="text-danger">{{ $errors->first('name') }}</b>
+                                                <label>Tên phòng <b class="text-danger">*</b></label>
+                                                <select class="form-control" name="room_name_id">
+                                                    @foreach ($roomNames as $name)
+                                                        <option
+                                                            @if (session('locale') == config('common.languages.default'))
+                                                            {{ $name->id == $room->room_name_id ? 'selected' : '' }}
+                                                            @else
+                                                            {{ $name->lang_parent_id == $room->room_name_id ? 'selected' : '' }}
+                                                            @endif
+                                                            value="{{ session('locale') == config('common.languages.default') ? $name->id : $name->lang_parent_id}}"
+                                                        >
+                                                            {{ $name->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('room_name_id'))
+                                                    <b class="text-danger">{{ $errors->first('room_name_id') }}</b>
                                                 @endif
                                             </div>
                                             <div class="form-group m-form__group row">
@@ -85,7 +99,8 @@
                                                     <label class="">Số trẻ em</label>
                                                     <div class="m-input-icon m-input-icon--right">
                                                         <input type="number" class="form-control m-input"
-                                                               value="{{ old('children', $room->children) }}" id="children"
+                                                               value="{{ old('children', $room->children) }}"
+                                                               id="children"
                                                                name="children"
                                                                min="0" max="10"
                                                                autocomplete="off">
@@ -99,7 +114,7 @@
                                             </div>
                                             <div class="form-group m-form__group">
                                                 <label>Danh sách phòng <b
-                                                            class="text-danger">*</b></label>
+                                                        class="text-danger">*</b></label>
                                                 <br>
                                                 <div class="form-group m-form__group">
                                                     <div>
@@ -179,8 +194,10 @@
                                                 <div class="col-lg-6">
                                                     <label class="">Giá khuyến mãi</label>
                                                     <div class="m-input-icon m-input-icon--right">
-                                                        <input type="text" class="form-control m-input" name="sale_price"
-                                                               value="{{ old('sale_price', $roomDetail->sale_price) }}" id="sale_price">
+                                                        <input type="text" class="form-control m-input"
+                                                               name="sale_price"
+                                                               value="{{ old('sale_price', $roomDetail->sale_price) }}"
+                                                               id="sale_price">
                                                     </div>
                                                     <b class="sale_price_errors text-danger">
                                                         @if ($errors->has('sale_price'))
@@ -194,7 +211,8 @@
                                                     <label>Ngày bắt đầu</label>
                                                     <div class="m-input-icon m-input-icon--right">
                                                         <input type="text" class="form-control m-input my-datepicker"
-                                                               value="{{ old('sale_start_at', $room->sale_start_at) }}" id="sale_start_at"
+                                                               value="{{ old('sale_start_at', $room->sale_start_at) }}"
+                                                               id="sale_start_at"
                                                                name="sale_start_at"
                                                                autocomplete="off">
                                                     </div>
@@ -208,7 +226,8 @@
                                                     <label class="">Ngày kết thúc</label>
                                                     <div class="m-input-icon m-input-icon--right">
                                                         <input type="text" class="form-control m-input my-datepicker"
-                                                               value="{{ old('sale_end_at', $room->sale_end_at) }}" id="sale_end_at"
+                                                               value="{{ old('sale_end_at', $room->sale_end_at) }}"
+                                                               id="sale_end_at"
                                                                name="sale_end_at"
                                                                autocomplete="off">
                                                     </div>
@@ -221,7 +240,7 @@
                                             </div>
                                             <div class="form-group m-form__group">
                                                 <label>Mô tả ngắn <b
-                                                            class="text-danger">*</b></label>
+                                                        class="text-danger">*</b></label>
                                                 <textarea class="form-control" name="short_description"
                                                           rows="10">{{ old('short_description', $roomDetail->short_description) }}</textarea>
                                                 @if ($errors->has('short_description'))
@@ -248,8 +267,9 @@
                                             <div class="row">
                                                 @foreach ($images as $image)
                                                     <div class="col-md-3 admin-image-grid">
-                                                        <img src="{{ asset(config('common.uploads.libraries')) }}/{{ $image->name }}"
-                                                             class="img-fluid admin-image-gallery">
+                                                        <img
+                                                            src="{{ asset(config('common.uploads.libraries')) }}/{{ $image->name }}"
+                                                            class="img-fluid admin-image-gallery">
                                                         <a href="{{ route('admin.rooms.deleteImage', $image->id) }}"
                                                            class="btn btn-danger btn-img">Xóa
                                                             ảnh</a>
@@ -265,9 +285,10 @@
                                                                 <a href="">x</a>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="m-dropzone dropzone m-dropzone--success dz-clickable"
-                                                                     action="{{ route('admin.rooms.uploadImage', $room->id) }}"
-                                                                     id="m-dropzone-three">
+                                                                <div
+                                                                    class="m-dropzone dropzone m-dropzone--success dz-clickable"
+                                                                    action="{{ route('admin.rooms.uploadImage', $room->id) }}"
+                                                                    id="m-dropzone-three">
                                                                     @csrf
                                                                     <div class="m-dropzone__msg dz-message needsclick">
                                                                         <h3 class="m-dropzone__msg-title">Thả ảnh
@@ -283,12 +304,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @foreach($roomIds as $key => $roomId)
-                                        <input type="hidden" name="roomIds[{{ $key }}]" value="{{ $roomId }}">
-                                    @endforeach
                                     <input type="hidden" name="listRoomsNumber" id="listRoomsNumber"
                                            value="{{ json_encode($listLocationRoomsNumber) }}">
-                                    <input type="hidden" name="roomDetailId" value="{{ $roomDetail->id }}">
+                                    <input type="hidden" name="roomId" value="{{ $room->id }}">
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Sửa</button>
                                     </div>

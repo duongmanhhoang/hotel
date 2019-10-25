@@ -98,7 +98,7 @@
                                                     <i class="la la-exchange"></i>
                                                 </a>
                                                 <form method="post" id="form-{{ $roomName->id }}"
-                                                      action="{{ route('admin.properties.delete', $roomName->id) }}"
+                                                      action="{{ route('admin.roomNames.delete', $roomName->id) }}"
                                                       class="float-left">
                                                     @csrf
                                                     <button
