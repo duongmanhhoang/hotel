@@ -8,9 +8,10 @@ use App\Models\Post;
 use App\Models\Room;
 use App\Models\RoomDetail;
 use Session;
+
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
     	$posts = Post::where('lang_id',Session::get('locale'))->limit(4)->orderBy('id','desc')->get();
     	$rooms = RoomDetail::all();  
