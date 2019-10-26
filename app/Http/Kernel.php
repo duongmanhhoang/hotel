@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Analytic;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -66,6 +67,7 @@ class Kernel extends HttpKernel
         'locale' => \App\Http\Middleware\Locale::class,
         'accessRouteByRole' => \App\Http\Middleware\AccessRouteByRole::class,
         'checkSuperAdmin&Admin' => \App\Http\Middleware\CheckSuperAdminAndAdmin::class,
+        'analytic' => \App\Http\Middleware\Analytic::class,
     ];
 
     /**

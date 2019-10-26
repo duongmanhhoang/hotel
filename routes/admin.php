@@ -1,9 +1,6 @@
 <?php
 
-Route::get('/', function () {
-    return view('admin.index');
-
-})->name('index');
+Route::get('/', 'Admin\DashboardController@index')->name('index');
 
 
 /**Ngôn ngữ */
