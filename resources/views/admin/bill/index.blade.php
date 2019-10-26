@@ -2,7 +2,11 @@
 @section('content')
     <div class="m-content">
         <div class="row">
+
             <div class="col-xl-12">
+
+                <canvas id="myChart" width="400" height="100" style="margin: 0 0 48px 0"></canvas>
+
                 <div class="m-portlet">
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
@@ -105,6 +109,8 @@
 @endsection
 
 @section('script')
+
+    <script type="text/javascript" src="{{ asset('bower_components/chart.js/dist/Chart.js') }}"></script>
     <script>
         $(document).ready(function () {
             $('.btn-delete').on('click', function (e) {
@@ -123,5 +129,55 @@
                 })
             })
         });
+
+
+        var ctx = document.getElementById('myChart');
+
+        let statisticalData = JSON.parse('{!! json_encode($statistical) !!}');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: statisticalData.day,
+                datasets: [{
+                    label: 'Tiền Vào',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: statisticalData.incoming,
+                    fill: false,
+                }, {
+                    label: 'Tiền ra',
+                    fill: false,
+                    backgroundColor: 'rgb(54, 162, 235)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: statisticalData.outgoing,
+                }]
+            },
+
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Bảng thống kê'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Ngày'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Số tiền'
+                        }
+                    }]
+                }
+            }
+        });
+
     </script>
 @endsection

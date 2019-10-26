@@ -6,16 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Bill\BillPostRequest;
 use App\Repositories\Bill\BillRepository;
 use App\Repositories\Location\LocationRepository;
+use App\Repositories\Statistical\StatisticalRepository;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
 {
     public function __construct(
         BillRepository $billRepository,
+        StatisticalRepository $statisticalRepository,
         LocationRepository $locationRepository
     )
     {
         $this->billRepo = $billRepository;
+        $this->statisticalReppo = $statisticalRepository;
         $this->locationRepo = $locationRepository;
     }
 
@@ -25,9 +28,18 @@ class BillController extends Controller
 
         $data = $this->billRepo->searchBill($input);
 
-        $compact = compact('data');
+        $statistical = $this->statisticalReppo->statisticalByMonth();
+
+        $compact = compact('data', 'statistical');
 
         return view('admin.bill.index', $compact);
+    }
+
+    public function test()
+    {
+        $test = $this->statisticalReppo->statisticalByMonth();
+
+        return $test;
     }
 
     public function addView()
