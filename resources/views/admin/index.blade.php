@@ -54,6 +54,29 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="m-portlet m-portlet--tab">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                                <h3 class="m-portlet__head-text">
+                                    Thống kê chi tiêu
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <canvas id="statistical-bill__chart" width="400" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <input type="hidden" id="chartLabel" name="chartLabel" value="{{ json_encode($analyticUser['label']) }}">
     <input type="hidden" id="chartData" name="chartData" value="{{ json_encode($analyticUser['total']) }}">
@@ -113,6 +136,54 @@
                         scaleLabel: {
                             display: true,
                             labelString: 'Số lượng'
+                        }
+                    }]
+                }
+            }
+        });
+
+        var statisticalElementId = document.getElementById('statistical-bill__chart');
+
+        let statisticalData = JSON.parse('{!! json_encode($statistical) !!}');
+
+        new Chart(statisticalElementId, {
+            type: 'line',
+            data: {
+                labels: statisticalData.day,
+                datasets: [{
+                    label: 'Tiền Vào',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: statisticalData.incoming,
+                    fill: false,
+                }, {
+                    label: 'Tiền ra',
+                    fill: false,
+                    backgroundColor: 'rgb(54, 162, 235)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: statisticalData.outgoing,
+                }]
+            },
+
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Bảng thống kê'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Ngày'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Số tiền'
                         }
                     }]
                 }

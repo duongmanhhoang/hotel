@@ -135,8 +135,6 @@
 
         let statisticalData = JSON.parse('{!! json_encode($statistical) !!}');
 
-        console.log(statisticalData);
-
         new Chart(ctx, {
             type: 'line',
             data: {
