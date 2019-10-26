@@ -26,10 +26,10 @@ class UpdateRequest extends FormRequest
     {
         return [
             'image' => 'nullable|mimes:jpg,jpeg,png|max:2000',
-            'name' => [
+            'room_name_id' => [
                 'required',
                 'max:191',
-                Rule::unique('room_details')->ignore($this->roomDetailId)->whereIn('room_id', $this->roomIds),
+                Rule::unique('rooms')->ignore($this->roomId),
             ],
             'price' => 'required|numeric|min:1000',
             'sale_price' => 'nullable|lt:price|numeric',
@@ -47,9 +47,9 @@ class UpdateRequest extends FormRequest
         return [
             'image.mimes' => 'Vui lòng chỉ chọn ảnh jpg, jpeg, png',
             'image.max' => 'Vui lòng không chọn ảnh quá 2MB',
-            'name.required' => 'Vui lòng không bỏ trống',
-            'name.max' => 'Vui lòng không nhập quá ' . ' :max ' . ' ký tự',
-            'name.unique' => 'Tên này đã được sử dụng',
+            'room_name_id.required' => 'Vui lòng không bỏ trống',
+            'room_name_id.max' => 'Vui lòng không nhập quá ' . ' :max ' . ' ký tự',
+            'room_name_id.unique' => 'Tên này đã được sử dụng',
             'price.required' => 'Vui lòng không bỏ trống',
             'price.numeric' => 'Vui lòng chỉ nhập số',
             'price.min' => 'Vui lòng không nhập nhỏ hơn ' . ' :min ' . ' vnđ',

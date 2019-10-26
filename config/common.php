@@ -47,5 +47,8 @@ return [
         'en' => 1,
     ],
 
-    'not_found' => 'Không tìm thấy dữ liệu'
+    'not_found' => 'Không tìm thấy dữ liệu',
+    'limit' => [
+        'default' => 10,
+    ],
 ];

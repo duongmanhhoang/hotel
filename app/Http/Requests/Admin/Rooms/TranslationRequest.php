@@ -25,11 +25,6 @@ class TranslationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required',
-                'max:191',
-                Rule::unique('room_details')->where('lang_id', $this->lang_id)
-            ],
             'price' => 'required|numeric|min:1',
             'sale_price' => 'nullable|lt:price|numeric',
             'short_description' => 'required',
@@ -40,9 +35,6 @@ class TranslationRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Vui lòng không bỏ trống',
-            'name.max' => 'Tên không được vượt quá' . ' :max ' . 'ký tự',
-            'name.unique' => 'Tên này đã được sử dụng',
             'price.required' => 'Vui lòng không bỏ trống',
             'price.numeric' => 'Vui lòng chỉ nhập số',
             'price.min' => 'Vui lòng không nhập nhỏ hơn ' . ' :min ',

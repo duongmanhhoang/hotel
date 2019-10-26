@@ -58,7 +58,13 @@
                                                 <td><img
                                                         src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
                                                         width="200"/></td>
-                                                <td>{{ $roomDetail->name }}</td>
+                                                <td>
+                                                    @if (session('locale') == config('common.languages.default'))
+                                                        {{ $room->roomName->name }}
+                                                    @else
+                                                        {{ \App\Models\RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->id)->first()->name }}
+                                                    @endif
+                                                </td>
                                                 <td>{{ $invoiceRoom->room_number }}</td>
                                                 <td class="price">
                                                     {{ $price }} {{ $currency }}

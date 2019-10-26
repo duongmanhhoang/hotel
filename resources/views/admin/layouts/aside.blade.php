@@ -71,6 +71,14 @@
             <div class="m-menu__submenu ">
                 <span class="m-menu__arrow"></span>
                 <ul class="m-menu__subnav">
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="{{ route('admin.roomNames.index') }}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet fa fa-plus">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Quản lý tên phòng</span>
+                        </a>
+                    </li>
                     @foreach ($sidebar_locations as $location)
                         <li class="m-menu__item" aria-haspopup="true">
                             <a href="{{ route('admin.rooms.index', $location->id) }}" class="m-menu__link ">

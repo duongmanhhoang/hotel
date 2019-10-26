@@ -24,7 +24,7 @@ class CheckAdmin
             }
         }
 
-        return redirect(route('index'));
+        return redirect(route('home'));
 
 
     }

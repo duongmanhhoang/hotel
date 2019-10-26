@@ -81,7 +81,9 @@ use App\Models\RoomInvoice;
                                         <select class="form-control" name="room_id"
                                                 id="room_id" {{ $disable ? 'disabled' : '' }}>
                                             <option></option>
-                                            <option selected value="{{ $room->id }}">{{ $roomDetail->name }}</option>
+                                            <option selected value="{{ $room->id }}">{{ session('locale') == config('common.languages.default')
+                                             ? $room->roomName->name
+                                             : $roomNameRepository->where('lang_id', '=', session('locale'))->where('lang_parent_id', '=', $room->id)->first()->name }}</option>
                                         </select>
                                         @if ($errors->has('room_id'))
                                             <b class="text-danger">{{ $errors->first('room_id') }}</b>
