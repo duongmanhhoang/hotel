@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div id="m_header_topbar"
-                 class="m-header-menu m-aside-header-menu-mobile m-header-menu--skin-light m-header-menu--submenu-skin-light">
+                 class="m-header-menu m-aside-header-menu-mobile m-header-menu--skin-light m-header-menu--submenu-skin-light" style="float: right">
                 <div id="m_header_menu"
                      class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas m-header-menu--skin-light">
                     <ul class="m-menu__nav m-menu__nav--submenu-arrow ">
