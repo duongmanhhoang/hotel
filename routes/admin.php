@@ -170,8 +170,16 @@ Route::prefix('room-name')->name('roomNames.')->group(function () {
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
 });
 
+
 /** Thống kê */
 Route::prefix('statistical')->name('statistical.')->group(function () {
     $controller = 'Admin\StatisticalController@';
     Route::post('/', $controller . 'index')->name('list');
+});
+
+/** Thống kê dashboard */
+Route::prefix('analytics')->name('analytics.')->group(function () {
+    $controller = 'Admin\DashboardController@';
+    Route::post('/user-analytics', $controller . 'userAnalytic')->name('users');
+    Route::post('/user-access', $controller . 'userAccess')->name('userAccess');
 });
