@@ -5,9 +5,66 @@
 
             <div class="col-xl-12">
 
-                <canvas id="myChart" width="400" height="100" style="margin: 0 0 48px 0"></canvas>
-
                 <div class="m-portlet">
+
+                    <div class="m-portlet__body">
+                        <div class="m-section">
+                            <div class="m-section__content">
+                                <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                                    <div class="row align-items-center">
+                                        <div class="col-xl-12">
+                                            <div class="form-group m-form__group row align-items-center">
+                                                <div class="m-input-icon m-input-icon--left">
+                                                    <form method="get"
+                                                          action="{{ route('admin.category.list') }}"
+                                                          id="chart-statistical">
+                                                        <div class="row">
+
+                                                            <div class="form-group col-md-4">
+                                                                <label>Tháng</label>
+                                                                <div class="bs-select">
+                                                                    <select class="bs-select form-control"
+                                                                            tabindex="-98" name="chart-month"
+                                                                            id="chart-month">
+                                                                        <option value=""></option>
+
+                                                                        @for($i = 1; $i <= 12; $i++)
+                                                                            <option value="{{$i}}">
+                                                                                Tháng {{ $i }}</option>
+                                                                        @endfor
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group col-md-4">
+                                                                <label>Năm</label>
+                                                                <div class="bs-select">
+                                                                    <select class="bs-select form-control"
+                                                                            tabindex="-98" name="chart-year"
+                                                                            id="chart-year">
+                                                                        <option value=""></option>
+                                                                        @for($i = 2018; $i <= 2019; $i++)
+                                                                            <option value="{{$i}}">Năm {{ $i }}</option>
+                                                                        @endfor
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <canvas id="myChart" width="400" height="100"></canvas>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
@@ -112,6 +169,12 @@
 
     <script type="text/javascript" src="{{ asset('bower_components/chart.js/dist/Chart.js') }}"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $(document).ready(function () {
             $('.btn-delete').on('click', function (e) {
                 e.preventDefault();
@@ -130,12 +193,9 @@
             })
         });
 
-
-        var ctx = document.getElementById('myChart');
-
         let statisticalData = JSON.parse('{!! json_encode($statistical) !!}');
 
-        new Chart(ctx, {
+        let configChart = {
             type: 'line',
             data: {
                 labels: statisticalData.day,
@@ -177,7 +237,47 @@
                     }]
                 }
             }
+        };
+
+        window.onload = function () {
+            let ctx = $('#myChart')[0].getContext('2d');
+            window.myLine = new Chart(ctx, configChart);
+        };
+
+        $('#chart-statistical').on('change', function () {
+            let month = $('#chart-month').val();
+            let year = $('#chart-year').val();
+
+            let formData = new FormData();
+            formData.append('month', month);
+            formData.append('year', year);
+
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: '{!! route('admin.statistical.list') !!}',
+                type: 'POST',
+                dataType: 'json',
+                data: formData,
+                success: function (response) {
+
+                    if (typeof response.data !== 'string') {
+                        configChart.data.labels = response.data.day;
+                        configChart.data.datasets[0].data = response.data.incoming;
+                        configChart.data.datasets[1].data = response.data.outgoing;
+
+                        window.myLine.update();
+                    } else {
+                        toastr.error('Không có dữ liệu!!');
+                    }
+
+                }, error: function () {
+                    toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                },
+            });
         });
 
+
     </script>
+
 @endsection

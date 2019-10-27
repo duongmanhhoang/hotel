@@ -169,3 +169,9 @@ Route::prefix('room-name')->name('roomNames.')->group(function () {
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');
     Route::post('/store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
 });
+
+/** Thống kê */
+Route::prefix('statistical')->name('statistical.')->group(function () {
+    $controller = 'Admin\StatisticalController@';
+    Route::post('/', $controller . 'index')->name('list');
+});

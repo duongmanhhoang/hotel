@@ -15,17 +15,18 @@ class StatisticalTableSeeder extends Seeder
         $arr = [];
         $curDay = null;
 
-        for($i = 0; $i < 30; $i++) {
-            $currentDay = $curDay ?? Carbon::today();
-            $subDay = $currentDay->subDay(1);
-            $formatDay = $subDay->format('Y-m-d');
+        for($i = 0; $i < 500; $i++) {
+//            $currentDay = $curDay ?? Carbon::today();
+//            $subDay = $currentDay->subDay(1);
+//            $formatDay = $subDay->format('Y-m-d');
+//
+//            $daySplit = explode('-', $formatDay);
 
-            $daySplit = explode('-', $formatDay);
+            $year = rand(2018, 2019);
+            $month = rand(1, 12);
+            $day = rand(1, 28);
 
-            $year = $daySplit[0];
-            $month = $daySplit[1];
-            $day = $daySplit[2];
-
+            $formatDay = "$year-$month-$day";
             $randomIncoming = rand(100000, 100000000);
             $randomOutgoing = rand(100000, 100000000);
 
@@ -39,9 +40,10 @@ class StatisticalTableSeeder extends Seeder
                 'location_id' => rand(1, 2)
             ];
 
+
             array_push($arr, $data);
 
-            $curDay = $subDay;
+//            $curDay = $subDay;
         }
 
         \App\Models\Statistical::insert($arr);
