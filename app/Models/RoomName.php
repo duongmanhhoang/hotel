@@ -12,8 +12,13 @@ class RoomName extends Model
         'lang_parent_id',
     ];
 
-    public function roomNames()
+    public function children()
     {
         return $this->hasMany($this, 'lang_parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo($this, 'lang_parent_id');
     }
 }
