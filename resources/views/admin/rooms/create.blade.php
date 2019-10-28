@@ -213,6 +213,7 @@
                                     @endforeach
                                     <input type="hidden" name="listRoomsNumber" id="listRoomsNumber"
                                            value="{{ json_encode($listRoomsNumber) }}">
+                                    <input type="hidden" name="locationId" value="{{ $location->id }}">
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Tạo</button>
                                     </div>
