@@ -376,7 +376,7 @@
 					<div class="foot-com foot-3">
 						<!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
 					<div class="foot-com foot-4">
-						<a href="#"><img src="images/card.png" alt="" /> </a>
+						<a href="#"><img src="{{ asset('bower_components/client_layout/images/card.png') }}" alt="" /> </a>
 					</div>
 				</div>
 			</div>

@@ -23,7 +23,7 @@
 					</div>
 					<div class="col-md-8">
 						<div class="row inn-services in-blog">
-							<div class="col-md-4"> <img src="images/ami/10.jpg" alt="" /> </div>
+							<div class="col-md-4"> <img src="{{ asset('bower_components/client_layout/images/ami/10.jpg') }}" alt="" /> </div>
 							<div class="col-md-8">
 								<h3>Mùa đông tại Hà Nội này</h3> <span class="blog-date">Date: December 9, 2019</span> <span class="blog-author">Author: Trần Dần</span>
 								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
@@ -39,27 +39,27 @@
 							<h3>Bài viết gần nhất</h3>
 							<ul>
 								<li>
-									<div class="rec-po-img"> <img src="images/ami/1.jpg" alt="" /> </div>
+									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}" alt="" /> </div>
 									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
 										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
 								</li>
 								<li>
-									<div class="rec-po-img"> <img src="images/ami/2.jpg" alt="" /> </div>
+									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/2.jpg') }}" alt="" /> </div>
 									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
 										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
 								</li>
 								<li>
-									<div class="rec-po-img"> <img src="images/ami/3.jpg" alt="" /> </div>
+									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/3.jpg') }}" alt="" /> </div>
 									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
 										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
 								</li>
 								<li>
-									<div class="rec-po-img"> <img src="images/ami/4.jpg" alt="" /> </div>
+									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/4.jpg') }}" alt="" /> </div>
 									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
 										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
 								</li>
 								<li>
-									<div class="rec-po-img"> <img src="images/ami/5.jpg" alt="" /> </div>
+									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/5.jpg') }}" alt="" /> </div>
 									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
 										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
 								</li>
@@ -91,7 +91,7 @@
 					<div class="foot-com foot-3">
 						<!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
 					<div class="foot-com foot-4">
-						<a href="#"><img src="images/card.png" alt="" />
+						<a href="#"><img src="{{ asset('bower_components/client_layout/images/card.png') }}" alt="" />
 						</a>
 					</div>
 				</div>

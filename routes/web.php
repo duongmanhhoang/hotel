@@ -11,10 +11,15 @@
 |
 */
 
+<<<<<<< HEAD
 Route::get('/','Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
     return view('client.rooms.index');
+=======
+Route::get('/', function () {
+    return view('client.home.index');
+>>>>>>> Update client layout
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');

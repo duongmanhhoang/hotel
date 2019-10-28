@@ -143,7 +143,7 @@
 						</div>
 						<ul>
 							<li>
-								<div class="db-cent-wr-img"> <img src="images/users/3.png" alt=""> </div>
+								<div class="db-cent-wr-img"> <img src="{{ asset('bower_components/client_layout/images/users/100.png') }}" alt=""> </div>
 								<div class="db-cent-wr-con">
 									<h6>Hotel Booking Canceled</h6> <span class="lr-revi-date">21th May, 2019</span>
 									<p>Bạn đã hủy đặt phòng vì lí do gì đó omewa lul nani dafug hoho nammo nammo nammo nammo nammo nammo.</p>
@@ -157,7 +157,7 @@
 								</div>
 							</li>
 							<li>
-								<div class="db-cent-wr-img"> <img src="images/users/3.png" alt=""> </div>
+								<div class="db-cent-wr-img"> <img src="{{ asset('bower_components/client_layout/images/users/100.png') }}" alt=""> </div>
 								<div class="db-cent-wr-con">
 									<h6>Hotel Payment Success</h6> <span class="lr-revi-date">08th Msy, 2019</span>
 									<p>Bạn đã hủy đặt phòng vì lí do gì đó omewa lul nani dafug hoho nammo nammo nammo nammo nammo nammo.</p>
@@ -178,22 +178,22 @@
 				<h4>Notifications(05)</h4>
 				<ul>
 					<li>
-						<a href="#!"> <img src="images/icon/dbr1.jpg" alt="">
+						<a href="#!"> <img src="{{ asset('bower_components/client_layout/images/icon/dbr1.jpg') }}" alt="">
 							<h5>New blog</h5>
 							<p>All the Lorem Ipsum generators on the</p> <span>2 hours ago</span> </a>
 					</li>
 					<li>
-						<a href="#!"> <img src="images/icon/dbr2.jpg" alt="">
+						<a href="#!"> <img src="{{ asset('bower_components/client_layout/images/icon/dbr2.jpg') }}" alt="">
 							<h5>Thanh toán thành công</h5>
 							<p>All the Lorem Ipsum generators on the</p> <span>4 hours ago</span> </a>
 					</li>
 					<li>
-						<a href="#!"> <img src="images/icon/dbr3.jpg" alt="">
+						<a href="#!"> <img src="{{ asset('bower_components/client_layout/images/icon/dbr3.jpg') }}" alt="">
 							<h5>Thanh toán thành công</h5>
 							<p>All the Lorem Ipsum generators on the</p> <span>10 hours ago</span> </a>
 					</li>
 					<li>
-						<a href="#!"> <img src="images/icon/dbr4.jpg" alt="">
+						<a href="#!"> <img src="{{ asset('bower_components/client_layout/images/icon/dbr4.jpg') }}" alt="">
 							<h5>Thanh toán thành công</h5>
 							<p>All the Lorem Ipsum generators on the</p> <span>12 hours ago</span> </a>
 					</li>

@@ -31,7 +31,7 @@
 							<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p> <a href="#" class="link-btn">Gọi cho chúng tôi: (+84) 376 594 637</a> </div>
 					</div>
 					<div class="col-md-6">
-						<div class="about-right"> <img src="images/about.jpg" alt=""> </div>
+						<div class="about-right"> <img src="{{ asset('bower_components/client_layout/images/about.jpg') }}" alt=""> </div>
 					</div>
 				</div>
 			</div>

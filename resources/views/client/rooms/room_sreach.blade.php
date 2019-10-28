@@ -251,7 +251,7 @@
 				</div>
 			</div>
 		</div>
-	<div class="col-md-4">
+	<div class="paginations col-md-4">
 		<ul class="pagination">
 				<li class="disabled">
 					<a href="#!"></a>

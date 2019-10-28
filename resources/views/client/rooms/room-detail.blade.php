@@ -453,7 +453,7 @@
                         </div>
                         <div>
                             <div class="input-field s12"><a href="#" data-dismiss="modal" data-toggle="modal"
-                                                            data-target="#modal1">Bạn đã có tài khoản ? Đăng nhập</a>
+                                 data-target="#modal1">Bạn đã có tài khoản ? Đăng nhập</a>
                             </div>
                         </div>
                     </form>
