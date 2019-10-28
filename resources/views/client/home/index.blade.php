@@ -195,7 +195,7 @@
 		@foreach ($saleroom->roomDetails as $saleroomDetail)
 
 		@php 
-			$percent = $saleroomDetail->price - $saleroomDetail->sale_price
+			$precent_sale = (($saleroomDetail->price - $saleroomDetail->sale_price)/$saleroomDetail->price)*100 . "%";
 		@endphp	
 		<div class="offer">
 			<div class="container">
@@ -215,7 +215,7 @@
 					<div class="col-md-6">
 						<div class="offer-r">
 							<div class="or-1"> <span class="or-11">go</span> <span class="or-12">Stays</span> </div>
-							<div class="or-2"> <span class="or-21">Giảm tới</span> <span class="or-22"></span> <span class="or-23">Off</span> <span class="or-24">use code: RG5481WERQ</span> <span class="or-25"></span> </div>
+							<div class="or-2"> <span class="or-21">Giảm giá lên tới</span> <span class="or-22">{{ $precent_sale }}</span></div>
 						</div>
 					</div>
 				</div>

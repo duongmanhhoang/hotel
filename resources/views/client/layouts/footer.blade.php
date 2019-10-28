@@ -41,27 +41,6 @@
 								<div class="row">
 									<div class="col-sm-12 col-md-3">
 										<h4>Phương thức thanh toán</h4>
-										<p class="hasimg"> <img src="{{ asset('bower_components/client_layout/images/payment.png') }}" alt="payment"> </p>
-									</div>
-									<div class="col-sm-12 col-md-4">
-										<h4>Đăng kí tin tức ngay</h4>
-										<form>
-											<ul class="foot-subsc">
-												<li>
-													<input type="text" placeholder="Enter your email id"> </li>
-												<li>
-													<input type="submit" value="submit"> </li>
-											</ul>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="foot-sec2">
-							<div class="container">
-								<div class="row">
-									<div class="col-sm-12 col-md-3">
-										<h4>Phương thức thanh toán</h4>
 										<p class="hasimg"> <img src="{{ asset('/bower_components/client_layout/images/payment.png') }}" alt="payment"> </p>
 									</div>
 									<div class="col-sm-12 col-md-4 foot-social">

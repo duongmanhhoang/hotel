@@ -38,29 +38,11 @@ class HomeController extends Controller
     public function index()
     {
     	$posts = $this->postRepository->limitByLang(Session::get('locale'),4);
-    	// $locations = $this->locationRepository->getAllByLang(Session::get('locale'));
-    	// $rooms = $locations->rooms()->orderBy('id', 'desc');
-    	// $locations = Location::where('lang_id',Session::get('locale'))->get();
-    	// foreach ( $locations as $location ) {
-    	// 	$roomByLocations[] = Room::where('location_id', $location->id)->limit(2)->with('roomDetails')->orderBy('id','desc')->get();
-    	// }
-    	// $rooms = Location::rooms()->limit(2)->get();
-    	// dd($locations);
-
-
-    	// $Location::find(2);
-    	// dd($location);
-    	// $locations = Location::with(['rooms' => function ($q) {
-     //        $q->limit(2);
-     //    }, 'rooms.roomDetails' => function ($q) {
-     //        $q->where('lang_id', session('locale'));
-     //    }])->get()->toArray();
 
 
     	$saleroom = Room::where('sale_status',config('common.active.is_active'))->with(['roomDetails' => function($query) {
     		$query->where('lang_id',Session::get('locale'));
     	}, 'properties'])->orderBy('id','desc')->first();
-    	// dd($saleroom);
     	$libraries = $this->libraryRepository->limit(12);
     	// dd($locations);
     	return view('client.home.index',compact(['posts','libraries','saleroom']));
