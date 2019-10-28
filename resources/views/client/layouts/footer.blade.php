@@ -7,8 +7,6 @@
 							<div class="container">
 								<div class="row">
 									<div class="col-sm-12 col-md-3 foot-logo"> <img src="{{ asset(config('common.uploads.logo')) . '/' . $inforWeb->logo_footer }}" alt="logo">
-										<p class="hasimg">Khách sạn Atlantic, dịch vụ đặt phòng nhanh chóng và tiện lợi</p>
-										<p class="hasimg">Hàng đầu về dịch vụ khách sạn khu vực Asian</p>
 									</div>
 									<div class="col-sm-12 col-md-3">
 										<h4>Các cơ sở</h4>
