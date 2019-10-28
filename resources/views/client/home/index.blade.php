@@ -80,25 +80,7 @@
 				</div>
 				<div class="row">
 					<div class="to-ho-hotel">
-						<div class="col-md-4">
-							<div class="to-ho-hotel-con">
-								<div class="to-ho-hotel-con-1">
-									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/3.jpg" alt=""> </div>
-								<div class="to-ho-hotel-con-23">
-									<div class="to-ho-hotel-con-2"> <a href="all-rooms.html"><h4>Master Room</h4></a> </div>
-									<div class="to-ho-hotel-con-3">
-										<ul>
-											<li>City: Hà Nội, Việt Nam
-												<div class="dir-rat-star ho-hot-rat-star"> Rating: <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i> </div>
-											</li>
-											<li><span class="ho-hot-pri-dis">$720</span><span class="ho-hot-pri">$420</span> </li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- end 1 gird -->
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="to-ho-hotel-con">
 								<div class="to-ho-hotel-con-1">
 									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/4.jpg" alt=""> </div>
@@ -114,9 +96,27 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- end 1 gird -->
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
+							<div class="to-ho-hotel-con">
+								<div class="to-ho-hotel-con-1">
+									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/4.jpg" alt=""> </div>
+								<div class="to-ho-hotel-con-23">
+									<div class="to-ho-hotel-con-2"> <a href="all-rooms.html"><h4>Master Room</h4></a> </div>
+									<div class="to-ho-hotel-con-3">
+										<ul>
+											<li>City: Hà Nội, Việt Nam
+												<div class="dir-rat-star ho-hot-rat-star"> Rating: <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i> </div>
+											</li>
+											<li><span class="ho-hot-pri-dis">$720</span><span class="ho-hot-pri">$420</span> </li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div> -->
+						<!-- end 1 gird -->
+						<!-- <div class="col-md-4">
 							<div class="to-ho-hotel-con">
 								<div class="to-ho-hotel-con-1">
 									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/5.jpg" alt=""> </div>
@@ -132,9 +132,9 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- end 1 gird -->
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="to-ho-hotel-con">
 								<div class="to-ho-hotel-con-1">
 									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/6.jpg" alt=""> </div>
@@ -150,9 +150,9 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- end 1 gird -->
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="to-ho-hotel-con">
 								<div class="to-ho-hotel-con-1">
 									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/3.jpg" alt=""> </div>
@@ -168,9 +168,9 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- end 1 gird -->
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="to-ho-hotel-con">
 								<div class="to-ho-hotel-con-1">
 									<div class="hom-hot-av-tic"> Available Tickets: 42 </div> <img src="images/room/3.jpg" alt=""> </div>
@@ -186,45 +186,42 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
 		</div>
+
+		@foreach ($saleroom->roomDetails as $saleroomDetail)
+
+		@php 
+			$precent_sale = (($saleroomDetail->price - $saleroomDetail->sale_price)/$saleroomDetail->price)*100 . "%";
+		@endphp	
 		<div class="offer">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<div class="offer-l"> <span class="ol-1"></span> <span class="ol-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span> <span class="ol-4">Ưu đãi cực lớn cho Omega Room</span> <span class="ol-3"></span> <span class="ol-5">$99/-</span>
+						<div class="offer-l"> <span class="ol-1"></span> <span class="ol-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span> <span class="ol-4">Ưu đãi cực lớn cho {{ $saleroomDetail->name }}</span> <span class="ol-3"></span> <span class="ol-5">{{ number_format($saleroomDetail->sale_price) }}/<sub><del>{{ number_format($saleroomDetail->price) }}</del></sub></span>
 							<ul>
+								@foreach ($saleroom->properties as $properties)
 								<li>
-									<a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis1.png" alt="">
-									</a><span>Free WiFi</span>
+									<a class="waves-effect waves-light btn-large offer-btn"><img src="{{asset('/bower_components/client_layout/images/icon/dis1.png')}}" alt="">
+									</a><span>{{ $properties->name }}</span>
 								</li>
-								<li>
-									<a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/h2.png" alt=""> </a><span>Breakfast</span>
-								</li>
-								<li>
-									<a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis3.png" alt=""> </a><span>Pool</span>
-								</li>
-								<li>
-									<a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis4.png" alt=""> </a><span>Television</span>
-								</li>
-								<li>
-									<a href="#!" class="waves-effect waves-light btn-large offer-btn"><img src="images/icon/dis5.png" alt=""> </a><span>GYM</span>
-								</li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="offer-r">
 							<div class="or-1"> <span class="or-11">go</span> <span class="or-12">Stays</span> </div>
-							<div class="or-2"> <span class="or-21">Giảm tới</span> <span class="or-22">70%</span> <span class="or-23">Off</span> <span class="or-24">use code: RG5481WERQ</span> <span class="or-25"></span> </div>
+							<div class="or-2"> <span class="or-21">Giảm giá lên tới</span> <span class="or-22">{{ $precent_sale }}</span></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		@endforeach
 		<div class="blog hom-com pad-bot-0">
 			<div class="container">
 				<div class="row">
@@ -574,9 +571,12 @@
 						<div class="bot-gal h-gal">
 							<h4>Thư viện ảnh</h4>
 							<ul>
-								<li><img class="materialboxed" data-caption="Captions" src="images/ami/8.jpg" alt="">
-								</li>
-								<li><img class="materialboxed" data-caption="Captions" src="images/ami/9.jpg" alt="">
+								@foreach ( $libraries as $labrary)
+									<li>
+										<img class="materialboxed" src="{{ asset(config('common.uploads.libraries') . '/' . $labrary->name) }}" alt="">
+									</li>
+								@endforeach
+								<!-- <li><img class="materialboxed" data-caption="Captions" src="images/ami/9.jpg" alt="">
 								</li>
 								<li><img class="materialboxed" data-caption="Captions" src="images/ami/10.jpg" alt="">
 								</li>
@@ -597,7 +597,7 @@
 								<li><img class="materialboxed" data-caption="Captions" src="images/ami/7.jpg" alt="">
 								</li>
 								<li><img class="materialboxed" data-caption="Captions" src="images/ami/8.jpg" alt="">
-								</li>
+								</li> -->
 							</ul>
 						</div>
 					</div>
