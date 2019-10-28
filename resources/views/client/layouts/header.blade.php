@@ -1,3 +1,4 @@
+
 		<div class="menu-section">
 			<div class="container">
 				<div class="row">
@@ -75,6 +76,14 @@
 								</li>
 							@endforeach
 						</ul>
+						<ul id='drop-room' class='dropdown-content drop-con-man'>
+							<li><a href="#">Hà Nội</a>
+							</li>
+							<li><a href="#">TP Hồ Chí Minh</a>
+							</li>
+							<li><a href="#">Đà Nẵng</a>
+							</li>
+						</ul>
 					</div>
 				</div>
 				<div class="row">
@@ -88,7 +97,7 @@
 							</li>
 							<li><a href="all_room.html" class='dropdown-button' data-activates='drop-room'>Rooms</a>
 							</li>
-							<li><a href="#">Services</a>
+							<li><a href="#"class='dropdown-button' data-activates='drop-room'>Hotel <i class="fa fa-angle-down"></i></a>
 							</li>
 							<li><a href="blog_list.html">Blog</a>
 							</li>
@@ -101,3 +110,4 @@
 				</div>
 			</div>
 		</div>
+		

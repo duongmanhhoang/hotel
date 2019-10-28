@@ -13,6 +13,10 @@
 
 Route::get('/','Client\HomeController@index')->name('home');
 
+Route::get('/test-client', function () {
+    return view('client.rooms.index');
+});
+
 Route::get('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/login', 'Auth\LoginController@submitLogin')->name('submitLogin');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');

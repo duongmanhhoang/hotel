@@ -9,4 +9,6 @@
 	<link href="{{ asset('bower_components/client_layout/css/style.css') }}" rel="stylesheet">
 	<link href="{{ asset('bower_components/client_layout/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ asset('bower_components/client_layout/css/responsive.css') }}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </head>
