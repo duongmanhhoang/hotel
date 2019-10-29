@@ -7,4 +7,6 @@ return [
     'Price_for_one_night' => 'Giá cho 1 đêm',
     'Detail' => 'Chi tiết',
     'Convenient' => 'Tiện nghi phòng',
+    'Destination' => 'Cơ sở',
+    'Rating' => 'Đánh giá',
 ];
