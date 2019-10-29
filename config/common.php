@@ -60,5 +60,7 @@ return [
     'not_found' => 'Không tìm thấy dữ liệu',
     'limit' => [
         'default' => 10,
+        'gallery' => 12,
+        'home_posts' => 4,
     ],
 ];

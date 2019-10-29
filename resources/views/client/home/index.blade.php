@@ -85,49 +85,53 @@
                         <div class="to-ho-hotel">
                             @foreach ($locations as $location)
                                 @foreach ($location->rooms as $room)
-                                    @php
-                                        $stars = round((int)$room->rating);
-                                        $whiteStars = 5 - (int)$room->rating;
-                                    @endphp
-                                    <div class="col-md-4">
-                                        <div class="to-ho-hotel-con">
-                                            <div class="to-ho-hotel-con-1">
-                                                <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
-                                                     style="height: 250px; object-fit: cover"></div>
-                                            <div class="to-ho-hotel-con-23">
-                                                <div class="to-ho-hotel-con-2">
-                                                    <a href="all-rooms.html">
-                                                        <h4>{{ $baseLang == session('locale') ? $room->roomName->name : $roomNameRepository->findRoomName($room->room_name_id)->name }}</h4>
-                                                    </a></div>
-                                                <div class="to-ho-hotel-con-3">
-                                                    <ul>
-                                                        <li>{{ __('label.Destination') }}
-                                                            : {{ $baseLang == session('locale') ? $location->name : $location->locations->where('lang_id', session('locale'))->first()->name }}
-                                                            <div class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
-                                                                :
-                                                                @for($i = 0; $i < $stars; $i++)
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                @endfor
-                                                                @for($i = 0; $i < $whiteStars; $i++)
-                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                                @endfor
-                                                            </div>
-                                                        </li>
-                                                        @if ($room->sale_status == config('common.active.is_active'))
-                                                            <li>
-                                                                <span class="ho-hot-pri-dis">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
-                                                                <span style="font-size: 30px" class="ho-hot-pri">{{ number_format($room->roomDetails[0]->sale_price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                    @if ($room->roomDetails->toArray())
+                                        @php
+                                            $stars = round((int)$room->rating);
+                                            $whiteStars = 5 - (int)$room->rating;
+                                        @endphp
+                                        <div class="col-md-4">
+                                            <div class="to-ho-hotel-con">
+                                                <div class="to-ho-hotel-con-1">
+                                                    <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
+                                                         style="height: 250px; object-fit: cover"></div>
+                                                <div class="to-ho-hotel-con-23">
+                                                    <div class="to-ho-hotel-con-2">
+                                                        <a href="all-rooms.html">
+                                                            <h4>{{ $baseLang == session('locale') ? $room->roomName->name : $roomNameRepository->findRoomName($room->room_name_id)->name }}</h4>
+                                                        </a></div>
+                                                    <div class="to-ho-hotel-con-3">
+                                                        <ul>
+                                                            <li>{{ __('label.Destination') }}
+                                                                : {{ $baseLang == session('locale') ? $location->name : $location->locations->where('lang_id', session('locale'))->first()->name }}
+                                                                <div class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
+                                                                    :
+                                                                    @for($i = 0; $i < $stars; $i++)
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    @endfor
+                                                                    @for($i = 0; $i < $whiteStars; $i++)
+                                                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                                    @endfor
+                                                                </div>
                                                             </li>
-                                                        @else
-                                                            <li>
-                                                                <span style="font-size: 30px" class="ho-hot-pri">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
-                                                            </li>
-                                                        @endif
-                                                    </ul>
+                                                            @if ($room->sale_status == config('common.active.is_active'))
+                                                                <li>
+                                                                    <span class="ho-hot-pri-dis">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                                    <span style="font-size: 30px"
+                                                                          class="ho-hot-pri">{{ number_format($room->roomDetails[0]->sale_price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                                </li>
+                                                            @else
+                                                                <li>
+                                                                    <span style="font-size: 30px"
+                                                                          class="ho-hot-pri">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                                </li>
+                                                            @endif
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             @endforeach
                         </div>
@@ -179,125 +183,7 @@
                     </div>
                 </div>
             </div>
-            <div class="blog hom-com pad-bot-0">
-                <div class="container">
-                    <div class="row">
-                        <div class="hom1-title">
-                            <h2>Sự kiện và ưu đãi </h2>
-                            <div class="head-title">
-                                <div class="hl-1"></div>
-                                <div class="hl-2"></div>
-                                <div class="hl-3"></div>
-                            </div>
-                            <p>Hãy cùng Atlantic quẩy tung mùa hè cùng những sự kiện và ưu đãi tốt nhất năm nào?! Bạn đã
-                                sẵn sàng chưa</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div>
-                            <div class="col-md-3 n2-event">
-                                <div class="n21-event hovereffect"><img src="images/event/1.jpg" alt="">
-                                    <div class="overlay"><a href="booking.html"><span
-                                                    class="ev-book">Book Now</span></a></div>
-                                </div>
-                                <div class="n22-event"><a href="#!"><h4>Tiệc cưới lộng lẫy</h4></a> <span
-                                            class="event-date">Capacity: 500,</span> <span
-                                            class="event-by"> Price: $900</span>
-                                    <p>Còn gì tuyệt vời hơn khi có một lễ cưới trọn vẹn mà không cần lo lắng quá nhiều?
-                                        Cưới thôi, còn lại để Atlantic lo bạn nhé...</p>
-                                    <div class="event-share">
-                                        <ul>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end 1 gird -->
-                            <div class="col-md-3 n2-event">
-                                <div class="n21-event hovereffect"><img src="images/event/2.jpg" alt="">
-                                    <div class="overlay"><a href="booking.html"><span
-                                                    class="ev-book">Book Now</span></a></div>
-                                </div>
-                                <div class="n22-event"><a href="#!"><h4>Tiệc cưới lộng lẫy</h4></a> <span
-                                            class="event-date">Capacity: 500,</span> <span
-                                            class="event-by"> Price: $900</span>
-                                    <p>Còn gì tuyệt vời hơn khi có một lễ cưới trọn vẹn mà không cần lo lắng quá nhiều?
-                                        Cưới thôi, còn lại để Atlantic lo bạn nhé...</p>
-                                    <div class="event-share">
-                                        <ul>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end 1 gird -->
-                            <div class="col-md-3 n2-event">
-                                <div class="n21-event hovereffect"><img src="images/event/3.jpg" alt="">
-                                    <div class="overlay"><a href="booking.html"><span
-                                                    class="ev-book">Book Now</span></a></div>
-                                </div>
-                                <div class="n22-event"><a href="#!"><h4>Tiệc cưới lộng lẫy</h4></a> <span
-                                            class="event-date">Capacity: 500,</span> <span
-                                            class="event-by"> Price: $900</span>
-                                    <p>Còn gì tuyệt vời hơn khi có một lễ cưới trọn vẹn mà không cần lo lắng quá nhiều?
-                                        Cưới thôi, còn lại để Atlantic lo bạn nhé...</p>
-                                    <div class="event-share">
-                                        <ul>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end 1 gird -->
-                            <div class="col-md-3 n2-event">
-                                <div class="n21-event hovereffect"><img src="images/event/4.jpg" alt="">
-                                    <div class="overlay"><a href="booking.html"><span
-                                                    class="ev-book">Book Now</span></a></div>
-                                </div>
-                                <div class="n22-event"><a href="#!"><h4>Tiệc cưới lộng lẫy</h4></a> <span
-                                            class="event-date">Capacity: 500,</span> <span
-                                            class="event-by"> Price: $900</span>
-                                    <p>Còn gì tuyệt vời hơn khi có một lễ cưới trọn vẹn mà không cần lo lắng quá nhiều?
-                                        Cưới thôi, còn lại để Atlantic lo bạn nhé...</p>
-                                    <div class="event-share">
-                                        <ul>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="blog hom-com pad-bot-0">
                 <div class="container">
                     <div class="row">
@@ -552,7 +438,7 @@
                     </div>
                 </div>
             </div>
-            <div class="blog hom-com">
+            <div class="blog hom-com pad-bot-0">
                 <div class="container">
                     <div class="row">
                         <div class="hom1-title">
@@ -567,50 +453,59 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div>
+                            @foreach ($posts as $post)
+                                <div class="col-md-3 n2-event">
+                                    <div class="n21-event hovereffect">
+                                        <img src="{{ config('common.uploads.posts') }}/{{ $post->image }}" alt="">
+                                        <div class="overlay">
+                                            <a href="booking.html">
+                                                <span class="ev-book">Xem ngay</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="n22-event">
+                                        <a href="#!">
+                                            <h4>{{ $post->title }}</h4>
+                                        </a>
+                                        <p>{{ $post->description }}</p>
+                                        <div class="event-share">
+                                            <ul>
+                                                <li><a href="#"><i class="fa fa-facebook"></i></a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-google-plus"></i></a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-twitter"></i></a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="blog hom-com">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="bot-gal h-gal">
                                 <h4>Thư viện ảnh</h4>
                                 <ul>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/8.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/9.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/10.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/11.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/1.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/2.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/3.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/4.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/5.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/6.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/7.jpg"
-                                             alt="">
-                                    </li>
-                                    <li><img class="materialboxed" data-caption="Captions" src="images/ami/8.jpg"
-                                             alt="">
-                                    </li>
+                                    @foreach($libraries as $library)
+                                        <li>
+                                            <img class="materialboxed"
+                                                 src="{{ config('common.uploads.libraries') }}/{{ $library->name }}"
+                                                 alt="" style="height: 130px; object-fit: cover">
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="bot-gal h-vid">
                                 <h4>Video</h4>
                                 <iframe width="560" height="315" src="https://www.youtube.com/embed/9nOYbcCuktU"
@@ -624,22 +519,22 @@
                                     sự kiện và con người Châu Á nhé! </p>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="bot-gal h-blog">
-                                <h4>Tin tức và sự kiện</h4>
-                                <ul>
-                                    @foreach ($posts as $post)
-                                        <li>
-                                            <a href="#!"> <img src="images/users/2.png" alt="">
-                                                <h5>{{ $post->title }}</h5>
-                                                <span>{{ formatDate($post->created_at) }}</span>
-                                                <p>{{ $post->description }}</p>
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
+                        {{--<div class="col-md-6">--}}
+                        {{--<div class="bot-gal h-blog">--}}
+                        {{--<h4>Tin tức và sự kiện</h4>--}}
+                        {{--<ul>--}}
+                        {{--@foreach ($posts as $post)--}}
+                        {{--<li>--}}
+                        {{--<a href="#!"> <img src="images/users/2.png" alt="">--}}
+                        {{--<h5>{{ $post->title }}</h5>--}}
+                        {{--<span>{{ formatDate($post->created_at) }}</span>--}}
+                        {{--<p>{{ $post->description }}</p>--}}
+                        {{--</a>--}}
+                        {{--</li>--}}
+                        {{--@endforeach--}}
+                        {{--</ul>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                 </div>
             </div>
