@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 
 class Analytic
 {
@@ -20,7 +21,7 @@ class Analytic
         $now = date('Y-m-d h:i:s');
         $ip = $request->ip();
         $page = $request->path();
-        if ($page != 'login' && $page != 'logout') {
+        if (!Str::contains($page, ['login', 'logout', 'change-language'])) {
             if (Redis::exists($ip . $page)) {
 
                 return $next($request);
