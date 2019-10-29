@@ -197,6 +197,17 @@
                             <span class="m-menu__link-text">Danh sách</span>
                         </a>
                     </li>
+
+                    @if(Auth::user()->role_id == config('common.roles.super_admin'))
+                        <li class="m-menu__item" aria-haspopup="true">
+                            <a href="{{ route('admin.post.approveList') }}" class="m-menu__link ">
+                                <i class="m-menu__link-bullet fa fa-list">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">Duyệt bài viết</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </li>

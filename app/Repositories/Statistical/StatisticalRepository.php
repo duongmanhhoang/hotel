@@ -16,15 +16,17 @@ class StatisticalRepository extends EloquentRepository
     {
         $currentTime = Carbon::now();
 
-        $month = $input['month'] ?? $currentTime->month;
-        $year = $input['year'] ?? $currentTime->year;
+        $splitInputDate = explode('-', $input['data_filter']);
+
+        $month = $splitInputDate[1] ?? $currentTime->month;
+        $year = $splitInputDate[0] ?? $currentTime->year;
 
         $whereConditional = [
             $month != null ? ['month', $month] : ['id', '<>', '-1'],
             $year != null ? ['year', $year] : ['id', '<>', '-1'],
         ];
 
-        $result = $this->_model->where($whereConditional)->orderBy('day', 'asc')->limit(30)->get();
+        $result = $this->_model->where($whereConditional)->orderBy('day', 'asc')->limit(31)->get();
 
         $resultData = $this->dataToShowToTable($result);
 
@@ -58,6 +60,7 @@ class StatisticalRepository extends EloquentRepository
             $arr['day'][] = $value['time'];
             $arr['incoming'][] = $value['incoming'];
             $arr['outgoing'][] = $value['outgoing'];
+            $arr['table_message'] = 'Bảng thống kê thu chi tháng ' . $value['month'] . ' - ' . $value['year'];
         }
 
         return $arr;

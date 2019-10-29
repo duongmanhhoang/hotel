@@ -22,13 +22,16 @@ class PostController extends Controller
         $this->languageRepo = $languageRepository;
         $this->categoryRepo = $categoryRepository;
         $this->baseLang = config('common.languages.default');
+        $this->pendingPost = config('common.posts.approve_key.pending');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $status = 'approved')
     {
         $input = $request->all();
+        $approveStatus = config("common.posts.approve_key.$status");
 
         $input['title'] = $input['title'] ?? null;
+        $input['approve'] = $approveStatus;
 
         $request->session()->put('params.search.post_title', $input['title']);
         $titleSearch = $input['title'];
@@ -144,5 +147,32 @@ class PostController extends Controller
         Session::put('locale', $input['lang_id']);
 
         return redirect()->route('admin.post.list');
+    }
+
+    public function getPendingPosts(Request $request)
+    {
+        $input['approve'] = config('common.posts.approve_key.pending');
+
+        $input['title'] = $input['title'] ?? null;
+
+        $request->session()->put('params.search.post_title', $input['title']);
+        $titleSearch = $input['title'];
+
+        $data = $this->postRepo->searchPost($input);
+
+        return view('admin.posts.pending', compact('data', 'titleSearch'));
+    }
+
+    public function approvingPost(Request $request, $id, $approve)
+    {
+        $dataApprove = $this->postRepo->approvePost($id, $approve);
+
+        $message = $approve == config('common.posts.approve_key.approved')
+            ? "Phê duyệt bài viết $dataApprove->title thành công."
+            : "Bài viết $dataApprove->title đã bị từ chối";
+
+        $request->session()->flash('success', $message);
+
+        return redirect()->route('admin.post.approveList');
     }
 }
