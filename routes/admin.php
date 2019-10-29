@@ -46,7 +46,7 @@ Route::prefix('category')->name('category.')->group(function () {
 /** Bài viết */
 Route::prefix('posts')->name('post.')->group(function () {
     $controller = 'Admin\PostController@';
-    Route::get('/', $controller . 'index')->name('list');
+    Route::get('/{status?}', $controller . 'index')->name('list');
     Route::get('/create', $controller . 'addView')->name('addView');
     Route::post('/create', $controller . 'store')->name('addAction');
     Route::get('/show-post/{id}', $controller . 'show')->name('show');
@@ -55,6 +55,8 @@ Route::prefix('posts')->name('post.')->group(function () {
     Route::get('/translate-post/{postId}', $controller . 'addView')->name('translateView');
     Route::post('/translate-post/{postId}', $controller . 'translate')->name('translateAction');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
+    Route::get('/get/approve-posts', $controller . 'getPendingPosts')->name('approveList');
+    Route::get('/approving-post/{id}/{approve}', $controller . 'approvingPost')->name('approvingPost');
 });
 
 /** Phòng */
@@ -183,3 +185,4 @@ Route::prefix('analytics')->name('analytics.')->group(function () {
     Route::post('/user-analytics', $controller . 'userAnalytic')->name('users');
     Route::post('/user-access', $controller . 'userAccess')->name('userAccess');
 });
+

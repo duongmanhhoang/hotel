@@ -4,6 +4,7 @@ namespace App\Repositories\Post;
 
 use App\Repositories\EloquentRepository;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Session;
 
 class PostRepository extends EloquentRepository
@@ -18,13 +19,17 @@ class PostRepository extends EloquentRepository
         $paginate = config('common.pagination.default');
         $language = Session::get('locale');
         $title = $input['title'] ?? null;
+        $approve = $input['approve'] ?? 'null';
 
         $whereConditional = [
             ['title', 'like', '%' . $title . '%'],
-            ['lang_id', $language]
+            ['lang_id', $language],
+            !is_string($approve) ? ['approve', $approve] : ['id', '>', 0]
         ];
 
-        $result = $this->_model->where($whereConditional)->with('category', 'postedBy', 'approveBy', 'parentTranslate')->paginate($paginate);
+        $result = $this->_model->where($whereConditional)
+            ->with('category', 'postedBy', 'approveBy', 'parentTranslate')
+            ->paginate($paginate);
 
         return $result;
     }
@@ -101,6 +106,21 @@ class PostRepository extends EloquentRepository
         ];
 
         $result = $this->_model->where($whereConditional)->get();
+
+        return $result;
+    }
+
+    public function approvePost($id, $approve)
+    {
+        $result = $this->find($id);
+
+        $input['approve'] = $approve;
+
+        $input['approve_by'] = Auth::user()->id;
+
+        $approve == config('common.posts.approve_key.reject') ? $input['message'] = $input['message'] ?? 'Rejected' : null;
+
+        $result->update($input);
 
         return $result;
     }
