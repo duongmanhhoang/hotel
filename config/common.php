@@ -62,5 +62,6 @@ return [
         'default' => 10,
         'gallery' => 12,
         'home_posts' => 4,
+        'list_room_properties' => 5,
     ],
 ];

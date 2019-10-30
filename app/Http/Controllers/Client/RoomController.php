@@ -3,29 +3,56 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Location\LocationRepository;
+use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function __construct(RoomRepository $roomRepository)
+    private $roomRepository;
+    private $locationRepository;
+    private $propertyRepository;
+
+    public function __construct(
+        RoomRepository $roomRepository,
+        LocationRepository $locationRepository,
+        PropertyRepository $propertyRepository
+    )
     {
-        $this->roomRepsitory = $roomRepository;
+        $this->roomRepository = $roomRepository;
+        $this->locationRepository = $locationRepository;
+        $this->propertyRepository = $propertyRepository;
     }
 
-    public function index()
+    public function index($location_id)
     {
-        $rooms = $this->roomRepsitory->paginate(config('common.pagination.default'));
+        $location = $this->locationRepository->findOrFail($location_id);
+        $rooms = $this->roomRepository
+            ->where('location_id', '=', $location_id)
+            ->with([
+                'roomName',
+                'roomDetails' => function ($q) {
+                    $q->where('lang_id', session('locale'));
+                },
+                'properties'
+            ])
+            ->whereHas('roomDetails', function ($q) {
+                $q->where('lang_id', session('locale'));
+            })->paginate(config('common.pagination.default'));
+        $propertyRepository = $this->propertyRepository;
         $data = compact(
-            'rooms'
+            'rooms',
+            'location',
+            'propertyRepository'
         );
 
         return view('client.rooms.index', $data);
     }
 
-    public function detail($id)
+    public function detail($location_id, $id)
     {
-        $room = $this->roomRepsitory->findOrFail($id);
+        $room = $this->roomRepository->findOrFail($id);
         $roomDetail = $room->roomDetails->where('lang_id', session('locale'))->first();
         $stars = round((int)$room->rating);
         $whiteStars = 5 - (int)$room->rating;

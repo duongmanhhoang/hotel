@@ -2,7 +2,6 @@
 <html lang="en">
 
 @include ('client.layouts.head')
-
 <body data-ng-app="">
 	<section>
 @include ('client.layouts.header')
