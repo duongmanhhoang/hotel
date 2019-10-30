@@ -8,7 +8,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <a href="{{ route('admin.post.list', ['status' => config('common.posts.approve_value.1')]) }}"
-                                    class="btn btn-success mr-1"
+                                   class="btn btn-success mr-1"
                                 >
                                     Bài viết được phê duyệt
                                 </a>
@@ -69,6 +69,9 @@
                                         <th>Trạng thái</th>
                                         <th>Đăng bởi</th>
                                         <th>Duyệt bởi</th>
+                                        @if(strpos(url()->current(), config('common.posts.approve_value.-1')))
+                                            <th>Lí do bị từ chối</th>
+                                        @endif
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
@@ -78,8 +81,8 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $value->title }}</td>
-                                            <td><img    style="width: 225px;  height: 225px; object-fit: cover;"
-                                                        src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}">
+                                            <td><img style="width: 225px;  height: 225px; object-fit: cover;"
+                                                     src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}">
                                             </td>
                                             <td>
                                                 {{ $value->description }}
@@ -95,6 +98,9 @@
                                             <td>{{ config("common.posts.approve.$value->approve") }}</td>
                                             <td>{{ $value->postedBy->email }}</td>
                                             <td>{{ $value->approveBy != null ? $value->approveBy->email : config("common.posts.approve.0") }}</td>
+                                            @if(strpos(url()->current(), config('common.posts.approve_value.-1')))
+                                                <td><p class="text-danger">{{ $value->message_reject ?? ''}}</p></td>
+                                            @endif
                                             <td>
                                                 <a href="{{ route('admin.post.editView', ['id' => $value->id]) }}"
                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
@@ -108,10 +114,12 @@
                                                     <i class="la la-file-word-o"></i>
                                                 </a>
                                                 <form id="form-{{ $value->id }}" method="post"
-                                                      action="{{ route('admin.post.delete', $value->id) }}" class="float-left">
+                                                      action="{{ route('admin.post.delete', $value->id) }}"
+                                                      class="float-left">
                                                     @csrf
                                                     <button locationId="{{ $value->id }}"
-                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Xóa"><i
+                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                                            title="Xóa"><i
                                                                 class="la la-trash"></i>
                                                     </button>
                                                 </form>

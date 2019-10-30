@@ -110,15 +110,15 @@ class PostRepository extends EloquentRepository
         return $result;
     }
 
-    public function approvePost($id, $approve)
+    public function approvePost($id, $input)
     {
         $result = $this->find($id);
 
-        $input['approve'] = $approve;
-
         $input['approve_by'] = Auth::user()->id;
 
-        $approve == config('common.posts.approve_key.reject') ? $input['message'] = $input['message'] ?? 'Rejected' : null;
+        $input['approve'] == config('common.posts.approve_key.reject') && $input['message_reject'] != null
+            ? $input['message_reject'] = $input['message_reject'] ?? 'Rejected'
+            : null;
 
         $result->update($input);
 
