@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('content')
-    @include('client.layouts.headerWithFilter')
+    @include('client.layouts.headerWithFilter', ['headerImage' => asset('bower_components/client_layout/images/detailed-banner.jpg')])
     <div class="inn-body-section pad-bot-55">
         <div class="container">
             <div class="row">
@@ -25,7 +25,7 @@
                                         src="{{ asset(config('common.uploads.rooms'))  . '/' . $room->image }}"/>
                             </div>
                             <div class="r2 r-com">
-                                <h4>{{ $room->roomName->name }}</h4>
+                                <h4>{{ session('locale') == config('common.languages.default') ? $room->roomName->name : $room->name }}</h4>
                                 <div class="r2-ratt">
                                     @for ($i = 0; $i < $stars; $i++)
                                         <i class="fa fa-star"></i>
