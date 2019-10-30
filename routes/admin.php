@@ -112,6 +112,7 @@ Route::prefix('users')->name('users.')->middleware('checkSuperAdmin&Admin')->gro
 Route::prefix('invoices')->name('invoices.')->group(function () {
     $controller = 'Admin\InvoiceController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
     Route::get('/get-available-room', $controller . 'getAvailableRoom')->name('getAvailableRoom');
