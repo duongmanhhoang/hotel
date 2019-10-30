@@ -1,5 +1,5 @@
 <div class="hp-banner">
-    <img src="{{ asset('bower_components/client_layout/images/detailed-banner.jpg') }}" alt="">
+    <img src="{{ $headerImage }}" alt="" style="height: 500px; object-fit: cover">
 </div>
 <div class="check-available">
     <div class="container">
