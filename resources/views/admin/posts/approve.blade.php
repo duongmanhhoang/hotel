@@ -53,7 +53,7 @@
                                         <th>Ảnh</th>
                                         <th>Mô tả</th>
                                         <th>Danh mục</th>
-                                        <th>Bản dịch gốc</th>
+                                        <th>Đăng bởi</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
@@ -63,8 +63,8 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $value->title }}</td>
-                                            <td><img    style="width: 225px;  height: 225px; object-fit: cover;"
-                                                        src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}">
+                                            <td><img style="width: 225px;  height: 225px; object-fit: cover;"
+                                                     src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}">
                                             </td>
                                             <td>
                                                 {{ $value->description }}
@@ -73,22 +73,56 @@
                                             <td>{{ $value->postedBy->email }}</td>
                                             <td>
 
-                                                <form id="form-{{ $value->id }}"
-                                                      action="{{ route('admin.post.approvingPost', ['id' => $value->id, 'approve' => config('common.posts.approve_key.reject')]) }}"
-                                                      class="float-left">
-                                                    @csrf
+                                                <a href="{{ route('admin.post.approvingPost', ['id' => $value->id, 'approve' => config('common.posts.approve_key.approved')]) }}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
+                                                   title="Duyệt">
+                                                    <i class="la la-check"></i>
+                                                </a>
 
-                                                    <a href="{{ route('admin.post.approvingPost', ['id' => $value->id, 'approve' => config('common.posts.approve_key.approved')]) }}"
-                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
-                                                       title="Duyệt">
-                                                        <i class="la la-check"></i>
-                                                    </a>
+                                                <a href="javascript:;" data-target="#modalAdvance" data-toggle="modal"
+                                                   class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill">
+                                                    <i class="la la-close"></i>
+                                                </a>
 
-                                                    <button locationId="{{ $value->id }}"
-                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Xóa">
-                                                        <i class="la la-close"></i>
-                                                    </button>
-                                                </form>
+
+                                                <div class="modal fade show" id="modalAdvance" tabindex="-1"
+                                                     role="dialog">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Từ chối bài viết</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="reject-post"
+                                                                      action="{{ route('admin.post.approvingPost', ['id' => $value->id, 'approve' => config('common.posts.approve_key.reject')]) }}"
+                                                                      >
+                                                                    @csrf
+
+                                                                    <div class="form-group m-form__group">
+                                                                        <label>Lí do từ chối <b class="text-danger">*</b></label>
+                                                                        <textarea name="message_reject" class="form-control" style="min-height: 140px"></textarea>
+                                                                        @if ($errors->has('message_reject'))
+                                                                            <b class="text-danger">{{ $errors->first('message_reject') }}</b>
+                                                                        @endif
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="button"
+                                                                        class="btn btn-danger submit-reject-post">
+                                                                    Từ chối
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         @php ($i++)
@@ -109,20 +143,8 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            $('.btn-delete').on('click', function (e) {
-                e.preventDefault();
-                var id = $(this).attr('locationId');
-                var form = $('#form-' + id);
-                swal({
-                    title: "Bạn chắc chắn chứ",
-                    text: "Khi xóa bạn sẽ không thể khôi phục lại dữ liệu",
-                    type: "warning",
-                    showCancelButton: !0,
-                    cancelButtonText: "Hủy",
-                    confirmButtonText: "Đồng ý"
-                }).then(function (e) {
-                    e.value && form.submit();
-                })
+            $('.submit-reject-post').on('click', function() {
+                $('#reject-post').submit();
             })
         });
     </script>

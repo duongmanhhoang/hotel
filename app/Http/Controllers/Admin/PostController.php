@@ -160,12 +160,20 @@ class PostController extends Controller
 
         $data = $this->postRepo->searchPost($input);
 
-        return view('admin.posts.pending', compact('data', 'titleSearch'));
+        return view('admin.posts.approve', compact('data', 'titleSearch'));
     }
 
     public function approvingPost(Request $request, $id, $approve)
     {
-        $dataApprove = $this->postRepo->approvePost($id, $approve);
+        $input = $request->all();
+
+        if($approve == -1 && empty($input['message_reject'])) {
+            return redirect()->back()->with(['error' => 'Không được bỏ trống lí do từ chối']);
+        }
+
+        $input['approve'] = $approve;
+
+        $dataApprove = $this->postRepo->approvePost($id, $input);
 
         $message = $approve == config('common.posts.approve_key.approved')
             ? "Phê duyệt bài viết $dataApprove->title thành công."
