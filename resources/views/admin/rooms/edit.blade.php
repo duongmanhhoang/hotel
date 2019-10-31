@@ -307,6 +307,7 @@
                                     <input type="hidden" name="listRoomsNumber" id="listRoomsNumber"
                                            value="{{ json_encode($listLocationRoomsNumber) }}">
                                     <input type="hidden" name="roomId" value="{{ $room->id }}">
+                                    <input type="hidden" name="locationId" value="{{ $location->id }}">
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Sửa</button>
                                     </div>

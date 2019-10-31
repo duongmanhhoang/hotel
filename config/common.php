@@ -40,6 +40,16 @@ return [
             '-1' => 'Từ chối phê duyệt',
             '0' => 'Chưa được duyệt',
             '1' => 'Đã được duyệt'
+        ],
+        'approve_key' => [
+            'reject' => -1,
+            'pending' => 0,
+            'approved' => 1
+        ],
+        'approve_value' => [
+            -1 => 'reject',
+            0 => 'pending',
+            1 => 'approved'
         ]
     ],
     'currency' => [
@@ -50,5 +60,8 @@ return [
     'not_found' => 'Không tìm thấy dữ liệu',
     'limit' => [
         'default' => 10,
+        'gallery' => 12,
+        'home_posts' => 4,
+        'list_room_properties' => 5,
     ],
 ];

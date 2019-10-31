@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
             'room_name_id' => [
                 'required',
                 'max:191',
-                Rule::unique('rooms'),
+                Rule::unique('rooms')->where('location_id', $this->locationId),
             ],
             'room_number.*' => 'required',
             'price' => 'required|numeric|min:1000',

@@ -21,36 +21,21 @@
                                                         <div class="row">
 
                                                             <div class="form-group col-md-4">
-                                                                <label>Tháng</label>
+                                                                <label>Lọc dữ liệu theo tháng</label>
                                                                 <div class="bs-select">
-                                                                    <select class="bs-select form-control"
-                                                                            tabindex="-98" name="chart-month"
-                                                                            id="chart-month">
-                                                                        <option value=""></option>
-
-                                                                        @for($i = 1; $i <= 12; $i++)
-                                                                            <option value="{{$i}}">
-                                                                                Tháng {{ $i }}</option>
-                                                                        @endfor
-                                                                    </select>
+                                                                    <input type="text"
+                                                                           class="form-control m-input my-datepicker"
+                                                                           id="filter-chart"
+                                                                           name="month"
+                                                                           autocomplete="off"
+                                                                           style="padding-left: 12px"
+                                                                    >
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group col-md-4">
-                                                                <label>Năm</label>
-                                                                <div class="bs-select">
-                                                                    <select class="bs-select form-control"
-                                                                            tabindex="-98" name="chart-year"
-                                                                            id="chart-year">
-                                                                        <option value=""></option>
-                                                                        @for($i = 2018; $i <= 2019; $i++)
-                                                                            <option value="{{$i}}">Năm {{ $i }}</option>
-                                                                        @endfor
-                                                                    </select>
-                                                                </div>
-                                                            </div>
 
                                                         </div>
+
 
                                                     </form>
                                                 </div>
@@ -175,6 +160,13 @@
             }
         });
 
+        $('.my-datepicker').datepicker({
+            todayHighlight: !0,
+            autoclose: !0,
+            format: "yyyy-mm",
+            minViewMode: "months"
+        });
+
         $(document).ready(function () {
             $('.btn-delete').on('click', function (e) {
                 e.preventDefault();
@@ -218,7 +210,7 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: 'Bảng thống kê'
+                    text: statisticalData.table_message
                 },
                 scales: {
                     xAxes: [{
@@ -245,12 +237,10 @@
         };
 
         $('#chart-statistical').on('change', function () {
-            let month = $('#chart-month').val();
-            let year = $('#chart-year').val();
+            let dataFilter = $('#filter-chart').val();
 
             let formData = new FormData();
-            formData.append('month', month);
-            formData.append('year', year);
+            formData.append('data_filter', dataFilter);
 
             $.ajax({
                 contentType: false,
@@ -262,6 +252,7 @@
                 success: function (response) {
 
                     if (typeof response.data !== 'string') {
+                        configChart.options.title.text = response.data.table_message;
                         configChart.data.labels = response.data.day;
                         configChart.data.datasets[0].data = response.data.incoming;
                         configChart.data.datasets[1].data = response.data.outgoing;

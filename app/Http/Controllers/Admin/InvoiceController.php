@@ -34,13 +34,20 @@ class InvoiceController extends Controller
 
     public function index(Request $request)
     {
-        $keyword = $request->keyword;
-        $invoices = $this->invoiceRepository->getAll($keyword);
+        $dataTable = $this->invoiceRepository->makeDataTable()->toJson();
+//        dd($dataTable);
         $data = compact(
-            'invoices'
+            'dataTable'
         );
 
         return view('admin.invoices.index', $data);
+    }
+
+    public function datatable()
+    {
+        $invoices = $this->invoiceRepository->makeDataTable();
+
+        return response()->json($invoices, 200);
     }
 
     public function create()
