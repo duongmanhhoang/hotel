@@ -16,8 +16,8 @@ class HomeController extends Controller
     	$posts = Post::where('lang_id',Session::get('locale'))->limit(4)->orderBy('id','desc')->get();
     	$rooms = RoomDetail::all();  
     	// $rooms = RoomDetail::where('lang_id',Session::get('locale'))->get();
-    	dd($rooms);
-    	return view('client.home.index',compact('posts'));
+    	// dd($rooms);
+    	return view('client.contact.index',compact('posts'));
 
     }
 }
