@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {
+    private $languageRepository;
+
     public function __construct(LanguageRepository $languageRepository)
     {
         $this->languageRepository = $languageRepository;
@@ -28,6 +30,13 @@ class LanguageController extends Controller
         );
 
         return view('admin.languages.index', $data);
+    }
+
+    public function datatable()
+    {
+        $languages = $this->languageRepository->makeDataTable();
+
+        return response()->json(['data' => $languages], 200);
     }
 
     public function create()

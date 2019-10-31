@@ -32,22 +32,16 @@ class InvoiceController extends Controller
         $this->baseLang = config('common.languages.default');
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $dataTable = $this->invoiceRepository->makeDataTable()->toJson();
-//        dd($dataTable);
-        $data = compact(
-            'dataTable'
-        );
-
-        return view('admin.invoices.index', $data);
+        return view('admin.invoices.index');
     }
 
     public function datatable()
     {
         $invoices = $this->invoiceRepository->makeDataTable();
 
-        return response()->json($invoices, 200);
+        return response()->json(['data' => $invoices], 200);
     }
 
     public function create()

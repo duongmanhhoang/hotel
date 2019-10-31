@@ -7,6 +7,7 @@ Route::get('/', 'Admin\DashboardController@index')->name('index');
 Route::prefix('languages')->name('languages.')->middleware('checkSuperAdmin')->group(function () {
     $controller = 'Admin\LanguageController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');
@@ -68,6 +69,7 @@ Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
     $controller = 'Admin\RoomController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/create', $controller . 'create')->name('create');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
     Route::post('/store', $controller . 'store')->name('store');
     Route::get('/show-original/{id}', $controller . 'showOriginal')->name('showOriginal');
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');

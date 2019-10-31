@@ -21,6 +21,14 @@ use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
+    private $locationRepository;
+    private $roomRepository;
+    private $roomDetailRepository;
+    private $propertyRepository;
+    private $libraryRepository;
+    private $roomNameRepository;
+    private $baseLang;
+
     public function __construct
     (
         LocationRepository $locationRepository,
@@ -63,6 +71,13 @@ class RoomController extends Controller
         );
 
         return view('admin.rooms.index', $data);
+    }
+
+    public function datatable($location_id)
+    {
+        $rooms = $this->roomRepository->makeDataTable($location_id);
+
+        return response()->json(['data' => $rooms], 200);
     }
 
     public function create($location_id)
@@ -209,22 +224,27 @@ class RoomController extends Controller
 
     public function delete(Request $request, $location_id, $id)
     {
-        $checkInvoice = $this->roomRepository->checkInvoiceRoom($id);
+        $roomId = $this->roomDetailRepository->find($id)->room_id;
+        $checkInvoice = $this->roomRepository->checkInvoiceRoom($roomId);
 
         if (!$checkInvoice) {
-            $request->session()->flash('error', 'Phòng này đang được sử dụng');
-
-            return redirect()->back();
-        }
-
-        $action = $this->roomDetailRepository->deleteRoom($id);
-
-        if ($action) {
-            $request->session()->flash('success', 'Xóa thành công');
+            $dataResponse = [
+                'messages' => 'used',
+            ];
         } else {
-            $request->session()->flash('error', 'Có lỗi xảy ra');
+            $action = $this->roomDetailRepository->deleteRoom($id);
+            if ($action) {
+                $dataResponse = [
+                    'messages' => 'success',
+                ];
+            } else {
+                $dataResponse = [
+                    'messages' => 'error',
+                ];
+            }
         }
-        return redirect()->back();
+
+        return response()->json($dataResponse, 200);
     }
 
     public function showOriginal($location_id, $id)
