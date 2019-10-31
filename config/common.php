@@ -23,6 +23,7 @@ return [
     ],
     'uploads' => [
         'languages' => '/uploads/languages',
+        'properties' => '/uploads/properties',
         'posts' => '/uploads/posts',
         'rooms' => '/uploads/rooms',
         'libraries' => '/uploads/libraries',

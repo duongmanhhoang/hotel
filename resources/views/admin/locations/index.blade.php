@@ -14,93 +14,43 @@
                         </div>
                     </div>
                     <div class="m-portlet__body">
-                        <div class="m-section">
-                            <div class="m-section__content">
-                                <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
-                                    <div class="row align-items-center">
-                                        <div class="col-xl-8 order-2 order-xl-1">
-                                            <div class="form-group m-form__group row align-items-center">
-                                                <div class="col-md-4">
-                                                    <div class="m-input-icon m-input-icon--left">
-                                                        <form method="get"
-                                                              action="">
-                                                            <input type="text" class="form-control m-input"
-                                                                   name="keyword"
-                                                                   placeholder="Tìm kiếm">
-                                                        </form>
-                                                        <span class="m-input-icon__icon m-input-icon__icon--left">
-                                                            <span><i class="la la-search"></i></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
+                        <!--begin: Search Form -->
+                        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                            <div class="row align-items-center">
+                                <div class="col-xl-8 order-2 order-xl-1">
+                                    <div class="form-group m-form__group row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="m-input-icon m-input-icon--left">
+                                                <input type="text" class="form-control m-input m-input--solid"
+                                                       placeholder="Tìm kiếm..." id="generalSearch">
+                                                <span class="m-input-icon__icon m-input-icon__icon--left">
+															<span>
+																<i class="la la-search"></i>
+															</span>
+														</span>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                            <a href="{{ route('admin.locations.create') }}"
-                                               class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                                <span><i class="la la-plus"></i> Thêm</span>
-                                            </a>
-                                            <div class="m-separator m-separator--dashed d-xl-none"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên</th>
-                                        <th>Email</th>
-                                        <th>SĐT</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @php ($i = 1)
-                                    @foreach ($locations as $location)
-                                        <tr>
-                                            <td>{{ $i }}</td>
-                                            <td>
-                                                {{ $location->name }}
-                                            </td>
-                                            <td>{{ $location->email }}</td>
-                                            <td>{{ $location->phone }}</td>
-                                            <td>{{ $location->address }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.locations.edit', session('locale') == config('common.languages.default') ? $location->id : $location->lang_parent_id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill float-left"
-                                                   title="Chỉnh sửa">
-                                                    <i class="la la-edit"></i>
-                                                </a>
-                                                <a href="{{ route('admin.locations.translation', session('locale') == config('common.languages.default') ? $location->id : $location->lang_parent_id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill float-left"
-                                                   title="Tạo bản dịch">
-                                                    <i class="la la-exchange"></i>
-                                                </a>
-                                                @if ($location->lang_parent_id != 0)
-                                                    <a href="{{ route('admin.locations.showOriginal', $location->lang_parent_id) }}"
-                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill float-left"
-                                                       title="Xem bản gốc">
-                                                        <i class="la la-eye"></i>
-                                                    </a>
-                                                @endif
-                                                <form id="form-{{ $location->id }}" method="post"
-                                                      action="{{ route('admin.locations.delete', $location->id) }}" class="float-left">
-                                                    @csrf
-                                                    <button locationId="{{ $location->id }}"
-                                                            class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Xóa"><i
-                                                                class="la la-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @php ($i++)
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $locations->links() }}
+                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                                    <a href="{{ route('admin.locations.create') }}"
+                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+												<span>
+													<i class="la la-plus"></i>
+													<span>Thêm mới</span>
+												</span>
+                                    </a>
+                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
+                                </div>
                             </div>
                         </div>
+
+                        <!--end: Search Form -->
+
+                        <!--begin: Datatable -->
+                        <div class="m_datatable" id="local_data"></div>
+
+                        <!--end: Datatable -->
                     </div>
                 </div>
             </div>
@@ -110,21 +60,137 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            $('.btn-delete').on('click', function (e) {
-                e.preventDefault();
-                var id = $(this).attr('locationId');
-                var form = $('#form-' + id);
-                swal({
-                    title: "Bạn chắc chắn chứ",
-                    text: "Khi xóa bạn sẽ không thể khôi phục lại dữ liệu",
-                    type: "warning",
-                    showCancelButton: !0,
-                    cancelButtonText: "Hủy",
-                    confirmButtonText: "Đồng ý"
-                }).then(function (e) {
-                    e.value && form.submit();
-                })
-            })
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         });
+        let DataTable = {
+            init: function () {
+                let t;
+                t = $(".m_datatable").mDatatable({
+                    data: {
+                        type: "remote",
+                        source: {
+                            read: {
+                                url: "{{ route('admin.locations.datatable') }}",
+                                method: 'GET',
+                                map: function (t) {
+                                    let e = t;
+                                    return void 0 !== t.data && (e = t.data), e
+                                }
+                            }
+                        },
+                    },
+                    pageSize: 10,
+                    serverPaging: !0,
+                    serverFiltering: !0,
+                    serverSorting: !0,
+                    layout: {theme: "default", class: "", scroll: !1, footer: !1},
+                    sortable: !0,
+                    pagination: !0,
+                    search: {input: $("#generalSearch")},
+                    columns: [
+                        // {
+                        //     field: "id",
+                        //     title: "#",
+                        //     width: 50,
+                        //     sortable: !1,
+                        //     textAlign: "center",
+                        //     selector: {class: "m-checkbox--solid m-checkbox--brand"}
+                        // },
+                        {
+                            field: "name",
+                            title: "Tên"
+                        },
+                        {
+                            field: "email",
+                            title: "Email"
+                        },
+                        {
+                            field: "phone",
+                            title: "SĐT"
+                        },
+                        {
+                            field: "address",
+                            title: "Địa chỉ"
+                        },
+                        {
+                            field: "Actions",
+                            width: 110,
+                            title: "Thao tác",
+                            sortable: !1,
+                            overflow: "visible",
+                            template: function (e, a, i) {
+                                let translateId = e.id;
+                                if (`{{ session('locale') }}` != `{{ config('common.languages.default') }}`) {
+                                    translateId = e.lang_parent_id;
+                                }
+
+                                const edit = `<a href="{{ route('admin.locations.edit', '') }}/${e.id}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Chỉnh sửa"
+                                                    >
+                                                        <i class="la la-edit"></i>
+                                                    </a>`;
+                                const translate = ` <a href="{{ route('admin.locations.translation', '') }}/${translateId}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
+                                                   title="Dịch">
+                                                    <i class="la la-exchange"></i>
+                                                </a>`;
+                                const deleteLocation = `<button
+                                                        locationId="${e.id}"
+                                                        onclick="deleteLocation(this)"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Xóa">
+                                                        <i class="la la-trash"></i>
+                                                    </button>`;
+
+                                return `${edit} ${translate} ${deleteLocation}`
+                            }
+                        }
+                    ]
+                }), $("#m_form_status").on("change", function () {
+                    t.search($(this).val(), "status")
+                }), $("#m_form_status, #m_form_type").selectpicker()
+            }
+        };
+        jQuery(document).ready(function () {
+            DataTable.init()
+        });
+
+        function deleteLocation(t) {
+            let id = $(t).attr('locationId');
+            swal({
+                title: "Bạn chắc chắn chứ",
+                text: "Khi xóa bạn sẽ không thể khôi phục lại dữ liệu",
+                type: "warning",
+                showCancelButton: !0,
+                cancelButtonText: "Hủy",
+                confirmButtonText: "Đồng ý"
+            }).then(function (e) {
+                e.value && $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: `{{ route('admin.locations.delete', '') }}/${id}`,
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.messages == 'hasRooms') {
+                            toastr.error('Cơ sở hiện đang có phòng, không thể xóa', 'Thất bại');
+                        }
+                        if (response.messages == 'error') {
+                            toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
+                        }
+                        if (response.messages == 'success') {
+                            toastr.success('Xóa thành công', 'Thành công');
+                            $('.m_datatable').mDatatable("reload")
+                        }
+                    }, error: function () {
+                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
+                    },
+                });
+            })
+        }
     </script>
 @endsection

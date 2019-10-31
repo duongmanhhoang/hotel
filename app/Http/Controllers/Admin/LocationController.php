@@ -35,6 +35,13 @@ class LocationController extends Controller
         return view('admin.locations.index', $data);
     }
 
+    public function datatable()
+    {
+        $locations = $this->locationRepository->makeDataTable();
+
+        return response()->json(['data' => $locations], 200);
+    }
+
     public function create()
     {
         $provinces = $this->provinceRepository->all();
@@ -118,16 +125,27 @@ class LocationController extends Controller
         return redirect(route('admin.locations.index'));
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-        $action = $this->locationRepository->delete($id);
-        if ($action) {
-            $request->session()->flash('success', 'Xóa thành công');
+        $checkRoom = $this->locationRepository->checkRooms($id);
+        if ($checkRoom) {
+            $dataResponse = [
+                'messages' => 'hasRooms'
+            ];
         } else {
-            $request->session()->flash('error', 'Có lỗi xảy ra');
+            $action = $this->locationRepository->deleteLocation($id);
+            if ($action) {
+                $dataResponse = [
+                    'messages' => 'success'
+                ];
+            } else {
+                $dataResponse = [
+                    'messages' => 'error'
+                ];
+            }
         }
 
-        return redirect()->back();
+        return response()->json($dataResponse, 200);
     }
 
     public function showOriginal($id)
