@@ -19,7 +19,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="m-input-icon m-input-icon--left">
                                                 <input type="text" class="form-control m-input m-input--solid"
                                                        placeholder="Tìm kiếm..." id="generalSearch">
@@ -57,6 +57,42 @@
         </div>
     </div>
     <input type="hidden" id="dataUrl" value="{{ route('admin.rooms.datatable', $location->id) }}">
+    <div class="modal fade" id="modal_prop" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"
+                        id="exampleModalLabel"></h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-6">
+                        <div class="m-scrollable m-scroller ps"
+                             data-scrollbar-shown="true"
+                             data-scrollable="true"
+                             data-height="150">
+                            <form>
+                                <ul id="list-not-use-prop" class="list-not-use-prop">
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="m-scrollable m-scroller ps"
+                             data-scrollbar-shown="true"
+                             data-scrollable="true"
+                             data-height="150">
+                            <ul id="list-props" class="list-props">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
@@ -65,21 +101,6 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
-            $('.btn-delete').on('click', function (e) {
-                e.preventDefault();
-                let id = $(this).attr('roomId');
-                let form = $('#form-' + id);
-                swal({
-                    title: "Bạn chắc chắn chứ",
-                    text: "Khi xóa bạn sẽ không thể khôi phục lại dữ liệu",
-                    type: "warning",
-                    showCancelButton: !0,
-                    cancelButtonText: "Hủy",
-                    confirmButtonText: "Đồng ý"
-                }).then(function (e) {
-                    e.value && form.submit();
-                })
             });
 
             $('body').on('click', '.btn-add-prop', function (e) {
@@ -289,6 +310,8 @@
                                                     </button>`;
                                 const addProps = `<button data-toggle="modal"
                                                             data-target="#modal_prop"
+                                                            onclick="addProps(this)"
+                                                            roomId="${e.id}"
                                                             class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
                                                             title="Thêm tiện nghi"><i
                                                             class="la la-magic"></i></button>`;
@@ -309,5 +332,56 @@
         jQuery(document).ready(function () {
             DataTable.init()
         });
+
+        function addProps(t) {
+            let id = $(t).attr('roomId');
+            $('#list-props').removeClass();
+            $('#list-props li').remove();
+            $('#list-not-use-prop li').remove();
+            $('#list-not-use-prop').removeClass();
+            $('#list-props').addClass(`list-props-${id}`);
+            $('#list-not-use-prop').addClass(`list-not-use-prop-${id}`);
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: `{{ route('admin.properties.getByRoom', '') }}/${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    let listNotUse = $(`.list-not-use-prop-${id}`);
+                    let listUsed = $(`.list-props-${id}`);
+                    let propertiesUsed = response.used.map(item => (
+                        `<li class="list-prop-item-${id}-${item.id}">
+                                    <span class="list-prop-item">${item.name}</span>
+                                    <button
+                                            data-room="${id}"
+                                            id="${item.id}"
+                                            addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                            deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                            class="btn m-btn m-btn--hover-danger m-btn--icon btn-delete-prop">
+                                        <i class="la la-trash"></i>
+                                    </button>
+                                </li>`
+                    ));
+                    let propertiesNotUse = response.notUse.map(item => (
+                        `<li class="item-${id}-${item.id}">
+                                            <span class="add-property-item">${item.name}</span>
+                                            <button
+                                                    data-room="${id}"
+                                                    id="${item.id}"
+                                                    addUrl="{{ route('admin.rooms.addProperties', $location->id) }}"
+                                                    deleteUrl="{{ route('admin.rooms.deleteProperties', $location->id) }}"
+                                                    class="btn m-btn m-btn--hover-success m-btn--icon btn-add-prop">
+                                                <i class="la la-plus"></i>
+                                            </button>
+                                        </li>`));
+                    listNotUse.append(propertiesNotUse);
+                    listUsed.append(propertiesUsed);
+                }, error: function () {
+                    toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                },
+            });
+        }
     </script>
 @endsection

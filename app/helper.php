@@ -5,7 +5,7 @@ if (!function_exists('uploadImage')) {
     {
         $dir = public_path() . '/uploads/' . $dir;
         if (!file_exists($dir)) {
-            mkdir($dir, 0755, true);
+            mkdir($dir, 0777, true);
         }
         $size = $file->getSize();
         if ($isMulti) {

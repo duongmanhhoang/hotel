@@ -287,6 +287,7 @@ class RoomRepository extends EloquentRepository
     public function makeDataTable($location_id)
     {
         $rooms = $this->_model
+            ->orderBy('id', 'desc')
             ->where('location_id', '=', $location_id)
             ->with([
                 'roomName',

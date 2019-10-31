@@ -20,6 +20,7 @@ Route::prefix('languages')->name('languages.')->middleware('checkSuperAdmin')->g
 Route::prefix('locations')->name('locations.')->group(function () {
     $controller = 'Admin\LocationController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
     Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
     Route::get('/show-original/{id}', $controller . 'showOriginal')->name('showOriginal');
@@ -87,8 +88,11 @@ Route::prefix('{location_id}/rooms')->name('rooms.')->group(function () {
 Route::prefix('properties')->name('properties.')->group(function () {
     $controller = 'Admin\PropertyController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
     Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/create', $controller . 'create')->name('create');
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');
+    Route::get('/getByRoom/{room_id}', $controller . 'getByRoom')->name('getByRoom');
     Route::post('/update/{id}', $controller . 'update')->name('update');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');
