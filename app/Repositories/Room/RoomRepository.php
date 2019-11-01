@@ -298,6 +298,8 @@ class RoomRepository extends EloquentRepository
             ->whereHas('roomDetails', function ($q) {
                 $q->where('lang_id', session('locale'));
             })->get();
+
+        $roomNames = RoomName::where('lang_id', session('locale'))->get();
         foreach ($rooms as $room) {
             $room->price = number_format($room->roomDetails[0]->price);
             $room->sale_price = number_format($room->roomDetails[0]->sale_price);
@@ -306,7 +308,10 @@ class RoomRepository extends EloquentRepository
                 $name = $room->roomName->name;
             } else {
                 $currency = '$';
-                $roomName = RoomName::where('lang_parent_id', '=', $room->roomName->id)->first();
+                $roomName = $roomNames->filter(function ($value) use ($room) {
+                   return $value->lang_parent_id == $room->roomName->id;
+                })->first();
+
                 if ($roomName) {
                     $name = $roomName->name;
                 } else {

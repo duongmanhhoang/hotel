@@ -57,6 +57,7 @@ class HomeController extends Controller
         }, 'rooms.roomName' => function ($q) {
             $q->where('lang_id', session('locale'));
         }])->get();
+//        dd($locations);
         $libraries = $this->libraryRepository->limit(config('common.limit.gallery'));
         $baseLang = $this->baseLang;
         $roomNameRepository = $this->roomNameRepository;

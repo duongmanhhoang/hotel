@@ -69,6 +69,7 @@ class RoomController extends Controller
     public function detail(Request $request, $location_id, $id)
     {
         $room = $this->roomRepository->findOrFail($id);
+        $room->load('properties');
         if (session('locale') == $this->baseLang) {
             $name = $room->roomName->name;
         } else {
@@ -87,9 +88,15 @@ class RoomController extends Controller
 
             return redirect(route('rooms.detail', [$location_id, $id]));
         }
+
         $stars = round((int)$room->rating);
         $whiteStars = 5 - (int)$room->rating;
-        $properties = $room->properties()->where('lang_id', session('locale'))->get();
+        if (\session('locale') == $this->baseLang) {
+            $properties = $room->properties;
+        } else {
+            $propertyIds = $room->properties->pluck('id')->toArray();
+            $properties = $this->propertyRepository->whereIn('lang_parent_id', $propertyIds)->where('lang_id', \session('locale'))->get();
+        }
         $data = compact(
             'room',
             'roomDetail',

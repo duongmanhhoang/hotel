@@ -103,8 +103,12 @@
                                                     </a></div>
                                                 <div class="to-ho-hotel-con-3">
                                                     <ul>
-                                                        <li>{{ __('label.Destination') }}
-                                                            : {{ $baseLang == session('locale') ? $location->name : $location->locations->where('lang_id', session('locale'))->first()->name }}
+                                                        <li>{{ __('label.Destination') }}:
+                                                            @if ($baseLang == session('locale'))
+                                                                {{ $location->name }}
+                                                                @else
+                                                                {{ $location->where('lang_id', session('locale'))->first() ? $location->where('lang_id', session('locale'))->first()->name : $location->name }}
+                                                                @endif
                                                             <div class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
                                                                 :
                                                                 @for($i = 0; $i < $stars; $i++)
