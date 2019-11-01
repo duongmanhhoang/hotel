@@ -22,9 +22,11 @@ class CheckAdmin
             if ($user->role_id != Role::MEMBER) {
                 return $next($request);
             }
+
+            return redirect(route('home'));
         }
 
-        return redirect(route('home'));
+        return redirect(route('login'));
 
 
     }
