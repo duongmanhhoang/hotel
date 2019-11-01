@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Client;
-
 use App\Http\Controllers\Controller;
 use App\Repositories\RoomName\RoomNameRepository;
 use App\Repositories\Post\PostRepository;
@@ -11,8 +9,6 @@ use App\Repositories\RoomDetail\RoomDetailRepository;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Library\LibraryRepository;
 use Illuminate\Support\Facades\Session;
-
-
 class HomeController extends Controller
 {
     private $postRepository;
@@ -23,7 +19,6 @@ class HomeController extends Controller
     private $libraryRepository;
     private $roomNameRepository;
     private $baseLang;
-
     public function __construct
     (
         PostRepository $postRepository,
@@ -35,13 +30,6 @@ class HomeController extends Controller
         RoomNameRepository $roomNameRepository
     )
     {
-
-    	$posts = Post::where('lang_id',Session::get('locale'))->limit(4)->orderBy('id','desc')->get();
-    	$rooms = RoomDetail::all();
-    	// $rooms = RoomDetail::where('lang_id',Session::get('locale'))->get();
-    	// dd($rooms);
-    	return view('client.contact.index',compact('posts'));
-
         $this->postRepository = $postRepository;
         $this->languageRepository = $languageRepository;
         $this->locationRepository = $locationRepository;
@@ -51,8 +39,6 @@ class HomeController extends Controller
         $this->roomNameRepository = $roomNameRepository;
         $this->baseLang = config('common.languages.default');
     }
-
-
     public function index()
     {
         $posts = $this->postRepository->limitByLang(Session::get('locale'), config('common.limit.home_posts'));
@@ -74,9 +60,6 @@ class HomeController extends Controller
             'baseLang',
             'roomNameRepository'
         );
-
-    	return view('client.home.index', $data);
-
-
+        return view('client.home.index', $data);
     }
 }
