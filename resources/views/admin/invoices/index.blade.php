@@ -115,81 +115,35 @@ use App\Models\RoomInvoice;
             </div>
         </div>
     </div>
-    <input type="hidden" id="dataTable" value="{{ $dataTable }}">
 @endsection
 @section('script')
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $('body').on('click', '.btn-mark', function () {
-            let url = $(this).attr('url');
-            $('#mark-url').val(url);
-        });
-
-        $('body').on('click', '.submit-mark', function (e) {
-            e.preventDefault();
-            let url = $('#mark-url').val();
-            let status = $('#mark-status').val();
-            let formData = new FormData();
-            formData.append('status', status);
-            swal({
-                title: "Bạn chắc chắn chứ",
-                text: "Khi đã đánh dấu bạn sẽ không thể chỉnh sửa hóa đơn này",
-                type: "warning",
-                showCancelButton: !0,
-                cancelButtonText: "Hủy",
-                confirmButtonText: "Đồng ý"
-            }).then(function (e) {
-                e.value && $.ajax({
-                    contentType: false,
-                    processData: false,
-                    url: url,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: formData,
-                    success: function (response) {
-                        if (response.messages == 'not_found') {
-                            toastr.error('Không tìm thấy hóa đơn', 'Cảnh báo');
-                        }
-                        if (response.messages == 'success') {
-                            toastr.success('Cập nhập trạng thái thành công', 'Thành công');
-                            $(`#edit-${response.data}`).remove();
-                            $(`#mark-${response.data}`).remove();
-                        }
-                    }, error: function () {
-                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
-                    },
-                });
-            });
-
-        });
-
-        var DatatableDataLocalDemo = {
+        let DataTable = {
             init: function () {
-                let e, a;
-                e = JSON.parse($('#dataTable').val()), a = $(".m_datatable").mDatatable({
-                    data: {
-                        type: "local",
-                        source: e,
-                        pageSize: 10
+                let t;
+                t = $(".m_datatable").mDatatable({
+                    data:{
+                        type:"remote",
+                        source:{
+                            read:{
+                                url:"{{ route('admin.invoices.datatable') }}",
+                                method: 'GET',
+                                map:function(t){
+                                    let e=t;
+                                    return void 0!==t.data&&(e=t.data),e
+                                }
+                            }
+                        },
                     },
+                    pageSize:10,
+                    serverPaging:!0,
+                    serverFiltering:!0,
+                    serverSorting:!0,
                     layout: {theme: "default", class: "", scroll: !1, footer: !1},
                     sortable: !0,
                     pagination: !0,
                     search: {input: $("#generalSearch")},
                     columns: [
-                        {
-                            field: "id",
-                            title: "#",
-                            width: 50,
-                            sortable: !1,
-                            textAlign: "center",
-                            selector: {class: "m-checkbox--solid m-checkbox--brand"}
-                        },
                         {
                             field: "code",
                             title: "Mã hóa đơn"
@@ -281,14 +235,60 @@ use App\Models\RoomInvoice;
                         }
                     ]
                 }), $("#m_form_status").on("change", function () {
-                    a.search($(this).val(), "status")
-                }), $("#m_form_type").on("change", function () {
-                    a.search($(this).val(), "Type")
+                    t.search($(this).val(), "status")
                 }), $("#m_form_status, #m_form_type").selectpicker()
             }
         };
         jQuery(document).ready(function () {
-            DatatableDataLocalDemo.init()
+            DataTable.init()
+        });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('body').on('click', '.btn-mark', function () {
+            let url = $(this).attr('url');
+            $('#mark-url').val(url);
+        });
+
+        $('body').on('click', '.submit-mark', function (e) {
+            e.preventDefault();
+            let url = $('#mark-url').val();
+            let status = $('#mark-status').val();
+            let formData = new FormData();
+            formData.append('status', status);
+            swal({
+                title: "Bạn chắc chắn chứ",
+                text: "Khi đã đánh dấu bạn sẽ không thể chỉnh sửa hóa đơn này",
+                type: "warning",
+                showCancelButton: !0,
+                cancelButtonText: "Hủy",
+                confirmButtonText: "Đồng ý"
+            }).then(function (e) {
+                e.value && $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function (response) {
+                        if (response.messages == 'not_found') {
+                            toastr.error('Không tìm thấy hóa đơn', 'Cảnh báo');
+                        }
+                        if (response.messages == 'success') {
+                            toastr.success('Cập nhập trạng thái thành công', 'Thành công');
+                            $(`#edit-${response.data}`).remove();
+                            $(`#mark-${response.data}`).remove();
+                        }
+                    }, error: function () {
+                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                    },
+                });
+            });
+
         });
     </script>
 @endsection
