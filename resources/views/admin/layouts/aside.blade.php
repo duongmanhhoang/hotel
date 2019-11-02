@@ -190,7 +190,7 @@
                         </a>
                     </li>
                     <li class="m-menu__item" aria-haspopup="true">
-                        <a href="{{ route('admin.post.list') }}" class="m-menu__link ">
+                        <a href="{{ route('admin.post.list', ['status' => config('common.posts.approve_value.1')]) }}" class="m-menu__link ">
                             <i class="m-menu__link-bullet fa fa-list">
                                 <span></span>
                             </i>

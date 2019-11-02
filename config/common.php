@@ -42,12 +42,12 @@ return [
             '1' => 'Đã được duyệt'
         ],
         'approve_key' => [
-            'reject' => -1,
+            'rejected' => -1,
             'pending' => 0,
             'approved' => 1
         ],
         'approve_value' => [
-            -1 => 'reject',
+            -1 => 'rejected',
             0 => 'pending',
             1 => 'approved'
         ]

@@ -20,11 +20,13 @@ class PostRepository extends EloquentRepository
         $language = Session::get('locale');
         $title = $input['title'] ?? null;
         $approve = $input['approve'] ?? 'null';
+        $isRequestEdited = $input['request_edited'] ?? null;
 
         $whereConditional = [
             ['title', 'like', '%' . $title . '%'],
             ['lang_id', $language],
-            !is_string($approve) ? ['approve', $approve] : ['id', '>', 0]
+            !is_string($approve) ? ['approve', $approve] : ['id', '>', 0],
+            $isRequestEdited != null ? ['edited_from', '<>', null] : ['edited_from', null],
         ];
 
         $result = $this->_model->where($whereConditional)
@@ -54,7 +56,7 @@ class PostRepository extends EloquentRepository
     {
         $result = $this->find($id);
 
-        if(isset($input['image'])) $input['image'] = uploadImage('posts', $input['image']);
+        if(isset($input['image']) && !is_string($input['image'])) $input['image'] = uploadImage('posts', $input['image']);
 
         $result->update($input);
 
@@ -69,11 +71,31 @@ class PostRepository extends EloquentRepository
         return $result;
     }
 
+    public function editFromApprovedPost($id, $input) {
+        $result = $this->find($id);
+
+        $dataEditPost = $result->toArray();
+        $input['edited_from'] = $id;
+        $input['id'] = null;
+        $input['posted_by'] = Auth::user()->id;
+        $input['lang_id'] = config('common.languages.default');
+        $input['lang_parent_id'] = $dataEditPost['lang_parent_id'];
+        !isset($input['image']) ? $input['image'] = $dataEditPost['image'] : $input['image'] = uploadImage('posts', $input['image']);
+
+        return $this->_model->create($input);
+    }
+
+    public function findEditedPost($id) {
+        return $this->_model->where('id', $id)->with('editedFrom', 'parentEdited')->first();
+    }
+
     public function deletePost($id)
     {
         $result = $this->find($id);
 
         $result->childrenTranslate()->delete();
+
+        $result->editedFrom()->delete();
 
         $result->delete();
 
@@ -83,6 +105,7 @@ class PostRepository extends EloquentRepository
     public function translate($id, $input)
     {
         $post = $this->find($id);
+
 
         $input['lang_parent_id'] = $id;
 
@@ -121,6 +144,26 @@ class PostRepository extends EloquentRepository
             : null;
 
         $result->update($input);
+
+        return $result;
+    }
+
+    public function approveFromPostApproved($post)
+    {
+        $dataPost = $post->toArray();
+
+        $id = $dataPost['parent_edited']['id'];
+        $input = $dataPost;
+        $input['approve_by'] = Auth::user()->id;
+
+        if($dataPost['approve'] == config('common.posts.approve_key.approved')) {
+
+            $result = $this->update($id, $input);
+
+            $this->delete($dataPost['id']);
+        }else {
+            $result = $this->update($dataPost['id'], $dataPost);
+        }
 
         return $result;
     }

@@ -10,17 +10,22 @@
                                 <a href="{{ route('admin.post.list', ['status' => config('common.posts.approve_value.1')]) }}"
                                    class="btn btn-success mr-1"
                                 >
-                                    Bài viết được phê duyệt
+                                    Đã được duyệt
                                 </a>
                                 <a href="{{ route('admin.post.list', ['status' => config('common.posts.approve_value.0')]) }}"
                                    class="btn btn-info mr-1"
                                 >
-                                    Bài viết đang chờ phê duyệt
+                                    Chờ phê duyệt
                                 </a>
                                 <a href="{{ route('admin.post.list', ['status' => config('common.posts.approve_value.-1')]) }}"
                                    class="btn btn-danger mr-1"
                                 >
-                                    Bài viết bị từ chối
+                                    Không được duyệt
+                                </a>
+                                <a href="{{ route('admin.post.list', ['status' => 'requestEdited']) }}"
+                                   class="btn btn-accent mr-1"
+                                >
+                                    Chỉnh sửa từ bài viết đã được duyệt
                                 </a>
                             </div>
                         </div>
@@ -66,7 +71,7 @@
                                         <th>Mô tả</th>
                                         <th>Danh mục</th>
                                         <th>Bản dịch gốc</th>
-                                        <th>Trạng thái</th>
+                                        {{--<th>Trạng thái</th>--}}
                                         <th>Đăng bởi</th>
                                         <th>Duyệt bởi</th>
                                         @if(strpos(url()->current(), config('common.posts.approve_value.-1')))
@@ -81,7 +86,7 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $value->title }}</td>
-                                            <td><img style="width: 225px;  height: 225px; object-fit: cover;"
+                                            <td><img style="width: 125px;  height: 125px; object-fit: cover;"
                                                      src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}">
                                             </td>
                                             <td>
@@ -95,7 +100,7 @@
                                                     Bản gốc
                                                 @endif
                                             </td>
-                                            <td>{{ config("common.posts.approve.$value->approve") }}</td>
+                                            {{--                                            <td>{{ config("common.posts.approve.$value->approve") }}</td>--}}
                                             <td>{{ $value->postedBy->email }}</td>
                                             <td>{{ $value->approveBy != null ? $value->approveBy->email : config("common.posts.approve.0") }}</td>
                                             @if(strpos(url()->current(), config('common.posts.approve_value.-1')))
@@ -108,11 +113,14 @@
                                                     <i class="la la-edit"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.post.translateView', $value->id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
-                                                   title="Ngôn Ngữ">
-                                                    <i class="la la-file-word-o"></i>
-                                                </a>
+                                                @if(!strpos(url()->current(), config('common.posts.approve_value.-1')) && !strpos(url()->current(), 'requestEdited'))
+                                                    <a href="{{ route('admin.post.translateView', $value->id) }}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Ngôn Ngữ">
+                                                        <i class="la la-file-word-o"></i>
+                                                    </a>
+                                                @endif
+
                                                 <form id="form-{{ $value->id }}" method="post"
                                                       action="{{ route('admin.post.delete', $value->id) }}"
                                                       class="float-left">
