@@ -16,4 +16,11 @@ class LanguageRepository extends EloquentRepository
     {
         return $this->_model->all();
     }
+
+    public function makeDataTable()
+    {
+        $languages = $this->_model->all();
+
+        return $languages;
+    }
 }

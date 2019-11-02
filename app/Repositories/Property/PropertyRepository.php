@@ -3,6 +3,7 @@
 namespace App\Repositories\Property;
 
 use App\Models\Property;
+use App\Models\Room;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\DB;
 
@@ -58,4 +59,20 @@ class PropertyRepository extends EloquentRepository
         return $this->_model->whereNotIn('id', $arr_id)->where('lang_id', $lang_id)->get();
     }
 
+    public function getByRoom($room_id)
+    {
+        $room = Room::find($room_id);
+        $usedProperties = $room->properties;
+        $notUse = $this->_model->whereNotIn('id', $usedProperties->pluck('id')->toArray())->where('lang_parent_id', 0)->get();
+
+        return [
+            'notUse' => $notUse,
+            'used' => $usedProperties,
+        ];
+    }
+
+    public function makeDataTable()
+    {
+        return $this->_model->where('lang_id', session('locale'))->orderBy('id', 'desc')->get();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Repositories\Invoice;
 use App\Models\Invoice;
 use App\Models\Room;
 use App\Models\RoomInvoice;
+use App\Models\RoomName;
 use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use http\Env\Request;
@@ -184,5 +185,33 @@ class InvoiceRepository extends EloquentRepository
         $invoiceData = $this->makeData($data);
         $invoice->update($invoiceData);
         $invoiceRoom->update($pivotData);
+    }
+
+    public function makeDataTable()
+    {
+        $invoices = $this->_model->with('rooms', 'rooms.roomName')->get();
+        foreach ($invoices as $invoice) {
+            $invoice->checkIn = $invoice->rooms[0]['pivot']->check_in_date;
+            $invoice->checkOut = $invoice->rooms[0]['pivot']->check_out_date;
+            if (session('locale') == config('common.languages.default')) {
+                $name = $invoice->rooms[0]->roomName->name;
+            } else {
+                $roomName =  $invoice->rooms[0]->roomName;
+                $child = RoomName::where('lang_parent_id', $roomName->id)->first();
+                if ($child) {
+                    $name = $child->name;
+                } else {
+                    $name = $roomName->name;
+                }
+            }
+            $invoice->room_name = $name;
+            $invoice->price = number_format($invoice->rooms[0]['pivot']->price);
+            $invoice->currency = $invoice->rooms[0]['pivot']->currency ? '$' : 'vnđ';
+            $invoice->room_number = $invoice->rooms[0]['pivot']->room_number;
+            $invoice->total = number_format($invoice->total);
+            $invoice->status = $invoice->rooms[0]['pivot']->status;
+        }
+
+        return $invoices;
     }
 }

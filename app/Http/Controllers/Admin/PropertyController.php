@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Properties\StoreRequest;
 use App\Http\Requests\Admin\Properties\TranslationRequest;
+use App\Http\Requests\Admin\Properties\UpdateRequest;
 use App\Repositories\Property\PropertyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,14 +42,30 @@ class PropertyController extends Controller
         return view('admin.properties.index', $data);
     }
 
-    public function store(Request $request)
+    public function datatable()
     {
-        $data = $request->all();
+        $properties = $this->propertyRepository->makeDataTable();
+
+        return response()->json(['data' => $properties], 200);
+    }
+
+    public function create()
+    {
+        return view('admin.properties.create');
+    }
+
+    public function store(StoreRequest $request)
+    {
+        $data = $request->except('_token');
         $data['lang_id'] = $this->baseLang;
         $data['lang_parent_id'] = 0;
         DB::beginTransaction();
         try {
-            $property = $this->propertyRepository->create($data);
+            if ($request->image) {
+                $data['image'] = uploadImage('properties', $data['image']);
+            }
+
+            $this->propertyRepository->create($data);
             DB::commit();
             $request->session()->flash('success', 'Thêm thành công');
 
@@ -58,29 +76,16 @@ class PropertyController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        $data = $request->all();
-        $rules = array(
-            'name' => [
-                'required',
-                'max:191',
-                'unique' => Rule::unique('properties')->where('lang_id', session('locale'))->ignore($id),
-            ],
-        );
-        $messages = array(
-            'name.required' => 'Vui lòng nhập tên',
-            'name.max' => 'Vui lòng không nhập quá' . ' :max ' . 'ký tự',
-            'name.unique' => 'Tên này đã được sử dụng',
-        );
-        $validator = Validator::make($data, $rules, $messages);
-        if ($validator->fails()) {
-
-            return response()->json(['messages' => 'error', 'errors' => $validator->messages()], 200);
+        $data = $request->except('_token');
+        if ($request->image) {
+            $data['image'] = uploadImage('properties', $data['image']);
         }
-        $property = $this->propertyRepository->update($id, $data);
+        $this->propertyRepository->update($id, $data);
+        $request->session()->flash('success', 'Cập nhập thành công');
 
-        return response()->json(['messages' => 'success', 'data' => $property], 200);
+        return redirect()->back();
     }
 
     public function translation(Request $request, $id)
@@ -106,6 +111,8 @@ class PropertyController extends Controller
     {
         $data = $request->all();
         $data['lang_parent_id'] = $id;
+        $origin = $this->propertyRepository->find($id);
+        $data['image'] = $origin->image;
         DB::beginTransaction();
         try {
             $this->propertyRepository->create($data);
@@ -125,12 +132,40 @@ class PropertyController extends Controller
         $delete = $this->propertyRepository->deleteProperty($id);
 
         if ($delete) {
-            $request->session()->flash('success', 'Xóa thành công');
+            $dataResponse = [
+                'messages' => 'success'
+            ];
         } else {
-            $request->session()->flash('error', 'Có lỗi xảy ra, xin vui lòng thử lại');
+            $dataResponse = [
+                'messages' => 'error'
+            ];
         }
 
-        return redirect()->back();
+        return response()->json(['data' => $dataResponse], 200);
+    }
+
+    public function getByRoom($room_id)
+    {
+        $data = $this->propertyRepository->getByRoom($room_id);
+
+        return response()->json($data, 200);
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (\session('locale') == $this->baseLang) {
+            $property = $this->propertyRepository->findOrFail($id);
+        } else {
+            $property = $this->propertyRepository->where('lang_parent_id','=', $id)->first();
+
+            if (!$property) {
+                $request->session()->flash('error', 'Chưa có bản dịch');
+                Session::put('locale', $this->baseLang);
+            }
+        }
+
+        return view('admin.properties.edit', compact('property'));
+
     }
 
 }

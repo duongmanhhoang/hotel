@@ -1,5 +1,7 @@
 <?php
+
 use App\Models\RoomInvoice;
+
 ?>
 @extends('admin.layouts.master')
 @section('content')
@@ -17,132 +19,62 @@ use App\Models\RoomInvoice;
                         </div>
                     </div>
                     <div class="m-portlet__body">
-                        <div class="m-section">
-                            <div class="m-section__content">
-                                <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
-                                    <div class="row align-items-center">
-                                        <div class="col-xl-8 order-2 order-xl-1">
-                                            <div class="form-group m-form__group row align-items-center">
-                                                <div class="col-md-4">
-                                                    <div class="m-input-icon m-input-icon--left">
-                                                        <form method="get"
-                                                              action="">
-                                                            <input type="text" class="form-control m-input"
-                                                                   name="keyword"
-                                                                   placeholder="Tìm kiếm">
-                                                        </form>
-                                                        <span class="m-input-icon__icon m-input-icon__icon--left">
-                                                            <span><i class="la la-search"></i></span>
-                                                        </span>
-                                                    </div>
+                        <!--begin: Search Form -->
+                        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                            <div class="row align-items-center">
+                                <div class="col-xl-8 order-2 order-xl-1">
+                                    <div class="form-group m-form__group row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="m-form__group m-form__group--inline">
+                                                <div class="m-form__label">
+                                                    <label style="width: 60px">Trạng thái:</label>
+                                                </div>
+                                                <div class="m-form__control">
+                                                    <select class="form-control m-bootstrap-select" id="m_form_status">
+                                                        <option value="">Tất cả</option>
+                                                        <option value="0">Chưa thanh toán</option>
+                                                        <option value="1">Thanh toán (Chưa trả phòng)</option>
+                                                        <option value="2">Trả phòng sớm</option>
+                                                        <option value="3">Trả phòng muộn</option>
+                                                        <option value="4">Thanh toán (đã trả phòng)</option>
+                                                        <option value="5">Hủy</option>
+                                                    </select>
                                                 </div>
                                             </div>
+                                            <div class="d-md-none m--margin-bottom-10"></div>
                                         </div>
-                                        <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                            <a href="{{ route('admin.invoices.create') }}"
-                                               class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                                                <span><i class="la la-plus"></i> Thêm</span>
-                                            </a>
-                                            <div class="m-separator m-separator--dashed d-xl-none"></div>
+                                        <div class="col-md-4">
+                                            <div class="m-input-icon m-input-icon--left">
+                                                <input type="text" class="form-control m-input m-input--solid"
+                                                       placeholder="Tìm kiếm..." id="generalSearch">
+                                                <span class="m-input-icon__icon m-input-icon__icon--left">
+															<span>
+																<i class="la la-search"></i>
+															</span>
+														</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Mã hóa đơn</th>
-                                        <th>Ngày đến</th>
-                                        <th>Ngày đi</th>
-                                        <th>Thông tin khách hàng</th>
-                                        <th>Thông tin hóa đơn</th>
-                                        <th>Trạng thái</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @php ($i = 1)
-                                    @foreach ($invoices as $invoice)
-                                        <?php
-                                        $pivot = $invoice->rooms->first()->pivot;
-                                        $room = $invoice->rooms[0];
-                                        $roomDetail = $room->roomDetails()->where('lang_parent_id', 0)->first();
-                                        ?>
-                                        <tr>
-                                            <td>{{ $invoice->code }}</td>
-                                            <td>
-                                                {{ $pivot->check_in_date }}
-                                            </td>
-                                            <td>
-                                                {{ $pivot->check_out_date }}
-                                            </td>
-                                            <td>
-                                                <p>Tên: {{ $invoice->customer_name }}</p>
-                                                <p>Số điện thoại: {{ $invoice->customer_phone }}</p>
-                                                <p>Email: {{ $invoice->customer_email }}</p>
-                                                <p>Địa chỉ: {{ $invoice->customer_address }}</p>
-                                                <p>Ghi chú: {{ $invoice->messages }}</p>
-                                            </td>
-                                            <td>
-                                                <p>Tên phòng:
-                                                    @if (session('locale') == config('common.languages.default'))
-                                                        {{ $room->roomName->name }}
-                                                    @else
-                                                        {{ \App\Models\RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->id)->first()->name }}
-                                                    @endif
-                                                </p>
-                                                <p>Số phòng: {{ $pivot->room_number }}</p>
-                                                <p class="price">
-                                                    Giá: {{ $pivot->price }} {{ !$pivot->currency ? 'vnđ' : '$' }}</p>
-                                                <p class="price">Phí thu thêm: {{ $pivot->extra }}</p>
-                                            </td>
-                                            <td>
-                                                @if ($pivot->status == RoomInvoice::NOT_PAY)
-                                                    Chưa thanh toán
-                                                @elseif ($pivot->status == RoomInvoice::PAID)
-                                                    Thanh toán (Chưa ở hoặc chưa trả phòng)
-                                                @elseif ($pivot->status == RoomInvoice::PAID_AND_RETURN)
-                                                    Thanh toán (Đã trả phòng)
-                                                @elseif ($pivot->status == RoomInvoice::PAID_SOON)
-                                                    Thanh toán sớm
-                                                @elseif ($pivot->status == RoomInvoice::PAID_LATE)
-                                                    Thanh toán muộn
-                                                @elseif ($pivot->status == RoomInvoice::CANCEL)
-                                                    Hủy
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($pivot->status == RoomInvoice::NOT_PAY || $pivot->status == RoomInvoice::PAID)
-                                                    <a href="{{ route('admin.invoices.edit', $invoice->id) }}"
-                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
-                                                       title="Chỉnh sửa"
-                                                       id="edit-{{ $invoice->id }}"
-                                                    >
-                                                        <i class="la la-edit"></i>
-                                                    </a>
-                                                    <a href="javascript:;"
-                                                       url="{{ route('admin.invoices.markAsReturn', $invoice->id) }}"
-                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill btn-mark"
-                                                       data-toggle="modal" data-target="#modal_mark"
-                                                       title="Đánh dấu là khách đã trả phòng"
-                                                       id="mark-{{ $invoice->id }}"
-                                                    >
-                                                        <i class="la la-check"></i>
-                                                    </a>
-                                                @endif
-                                                <a href="{{ route('admin.invoices.show', $invoice->id) }}"
-                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
-                                                   title="Chi tiết">
-                                                    <i class="la la-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @php ($i++)
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $invoices->links() }}
+                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                                    <a href="{{ route('admin.invoices.create') }}"
+                                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+												<span>
+													<i class="la la-plus"></i>
+													<span>Thêm mới</span>
+												</span>
+                                    </a>
+                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
+                                </div>
                             </div>
                         </div>
+
+                        <!--end: Search Form -->
+
+                        <!--begin: Datatable -->
+                        <div class="m_datatable" id="local_data"></div>
+
+                        <!--end: Datatable -->
                     </div>
                 </div>
             </div>
@@ -186,6 +118,130 @@ use App\Models\RoomInvoice;
 @endsection
 @section('script')
     <script>
+        let DataTable = {
+            init: function () {
+                let t;
+                t = $(".m_datatable").mDatatable({
+                    data:{
+                        type:"remote",
+                        source:{
+                            read:{
+                                url:"{{ route('admin.invoices.datatable') }}",
+                                method: 'GET',
+                                map:function(t){
+                                    let e=t;
+                                    return void 0!==t.data&&(e=t.data),e
+                                }
+                            }
+                        },
+                    },
+                    pageSize:10,
+                    serverPaging:!0,
+                    serverFiltering:!0,
+                    serverSorting:!0,
+                    layout: {theme: "default", class: "", scroll: !1, footer: !1},
+                    sortable: !0,
+                    pagination: !0,
+                    search: {input: $("#generalSearch")},
+                    columns: [
+                        {
+                            field: "code",
+                            title: "Mã hóa đơn"
+                        },
+                        {
+                            field: "checkIn",
+                            title: "Ngày đến",
+                        },
+                        {
+                            field: "checkOut",
+                            title: "Ngày về"
+                        },
+                        {
+                            field: "customer_info",
+                            title: "Thông tin khách hàng",
+                            sortable: !1,
+                            overflow: "visible",
+                            template: function (e) {
+                                return `Tên: ${e.customer_name} <br>
+                                 Số điện thoại: ${e.customer_phone} <br>
+                                 Email: ${e.customer_email ? e.customer_email : 'Không có' } <br>
+                                 Địa chỉ: ${e.customer_address ? e.customer_address : 'Không có'} <br>
+                                 `
+                            }
+                        },
+                        {
+                            field: "room_info",
+                            title: "Thông tin hóa đơn",
+                            sortable: !1,
+                            overflow: "visible",
+                            template: function (e) {
+                                return `Hạng phòng: ${e.room_name} <br>
+                                 Số phòng: ${e.room_number} <br>
+                                 Giá theo hóa đơn: ${e.price} ${e.currency}<br>
+                                 Tổng: ${e.total} ${e.currency}
+                                 `
+                            }
+                        },
+                        {
+                            field: "status",
+                            title: "Status",
+                            template: function (e) {
+                                let a = {
+                                    0: {title: "Chưa thanh toán", class: "m-badge--brand"},
+                                    1: {title: "Thanh toán (Chưa trả phòng)", class: "m-badge--primary"},
+                                    2: {title: "Trả phòng sớm", class: "m-badge--info"},
+                                    3: {title: "Trả phòng muộn", class: "m-badge--warning"},
+                                    4: {title: "Thanh toán (đã trả phòng)", class: "m-badge--success"},
+                                    5: {title: "Hủy", class: " m-badge--danger"},
+                                };
+                                return '<span class="m-badge ' + a[e.status].class + ' m-badge--wide">' + a[e.status].title + "</span>"
+                            }
+                        },
+                        {
+                            field: "Actions",
+                            width: 110,
+                            title: "Thao tác",
+                            sortable: !1,
+                            overflow: "visible",
+                            template: function (e, a, i) {
+                                const full = `<a href="{{ route('admin.invoices.edit', '') }}/${e.id}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Chỉnh sửa"
+                                                       id="edit-${e.id}"
+                                                    >
+                                                        <i class="la la-edit"></i>
+                                                    </a>
+                                                    <a href="javascript:;"
+                                                       url="{{ route('admin.invoices.markAsReturn', '') }}/${e.id}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill btn-mark"
+                                                       data-toggle="modal" data-target="#modal_mark"
+                                                       title="Đánh dấu là khách đã trả phòng"
+                                                       id="mark-${e.id}"
+                                                    >
+                                                        <i class="la la-check"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.invoices.show','') }}/${e.id}"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                   title="Chi tiết">
+                                                    <i class="la la-eye"></i>
+                                                </a>`;
+                                const onlyShow = `<a href="{{ route('admin.invoices.show','') }}/${e.id}" class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill" title="Chi tiết"><i class="la la-eye"></i>`
+                                if (e.status == 0 || e.status == 1) {
+                                    return full;
+                                }
+
+                                return onlyShow;
+                            }
+                        }
+                    ]
+                }), $("#m_form_status").on("change", function () {
+                    t.search($(this).val(), "status")
+                }), $("#m_form_status, #m_form_type").selectpicker()
+            }
+        };
+        jQuery(document).ready(function () {
+            DataTable.init()
+        });
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

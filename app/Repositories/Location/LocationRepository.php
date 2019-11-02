@@ -13,10 +13,11 @@ class LocationRepository extends EloquentRepository
         return Location::class;
     }
 
-    public function delete($id)
+    public function deleteLocation($id)
     {
         $check = $this->checkOriginal($id);
         $location = $this->findOrFail($id);
+        $checkRoom = $this->checkRooms($location);
         if ($check) {
             DB::beginTransaction();
             try {
@@ -38,6 +39,23 @@ class LocationRepository extends EloquentRepository
         }
     }
 
+    public function checkRooms($id)
+    {
+        if (session('locale') == config('common.languages.default')) {
+            $location = $this->_model->find($id);
+        } else {
+            $child = $this->_model->find($id);
+            $location = $this->_model->find($child->lang_parent_id);
+        }
+
+        $rooms = $location->rooms;
+        if ($rooms) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getLocation()
     {
         return $this->_model->orderBy('id', 'desc')->get();
@@ -46,5 +64,12 @@ class LocationRepository extends EloquentRepository
     public function getMainLocation()
     {
         return $this->_model->where('lang_parent_id', 0)->orderBy('id', 'desc')->get();
+    }
+
+    public function makeDataTable()
+    {
+        $locations = $this->_model->where('lang_id', session('locale'))->get();
+
+        return $locations;
     }
 }

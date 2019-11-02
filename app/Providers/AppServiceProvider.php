@@ -80,7 +80,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('current_language', $current_language);
 
             //List languages
-            $header_languages = Language::all();
+            $header_languages = Language::where('status', true)->get();
             $view->with('header_languages', $header_languages);
             // Infor website
             $inforWeb = Websetting::all()->first();
