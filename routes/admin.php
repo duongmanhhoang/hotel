@@ -123,11 +123,11 @@ Route::prefix('invoices')->name('invoices.')->group(function () {
     Route::post('/store', $controller . 'store')->name('store');
     Route::get('/get-available-room', $controller . 'getAvailableRoom')->name('getAvailableRoom');
     Route::get('/get-available-room-number/{id}', $controller . 'getAvailableRoomNumbers')->name('getAvailableRoomNumbers');
-
     Route::get('/edit/{id}', $controller . 'edit')->name('edit');
     Route::get('/show/{id}', $controller . 'show')->name('show');
     Route::post('/update/{id}', $controller . 'update')->name('update');
     Route::post('/mark-as-return/{id}', $controller . 'markAsReturn')->name('markAsReturn');
+    Route::get('/get-services/{id}', $controller . 'getServices')->name('getServices');
 });
 
 /** Caft đặt website */
@@ -193,3 +193,46 @@ Route::prefix('analytics')->name('analytics.')->group(function () {
     Route::post('/user-access', $controller . 'userAccess')->name('userAccess');
 });
 
+/** Dịch vụ */
+Route::prefix('services')->name('services.')->group(function () {
+    $controller = 'Admin\ServiceController@';
+    Route::prefix('/categories')->name('categories.')->group(function () {
+        $controller = 'Admin\ServiceController@';
+        Route::get('', $controller . 'categories')->name('index');
+        Route::get('datatable', $controller . 'categoriesData')->name('datatable');
+        Route::get('create', $controller . 'createCategory')->name('create');
+        Route::post('store', $controller . 'storeCategory')->name('store');
+        Route::get('edit/{id}', $controller . 'editCategory')->name('edit');
+        Route::post('update/{id}', $controller . 'updateCategory')->name('update');
+        Route::get('translation/{id}', $controller . 'translationCategory')->name('translation');
+        Route::post('store-translation/{id}', $controller . 'storeTranslationCategory')->name('storeTranslation');
+        Route::post('delete/{id}', $controller . 'deleteCategory')->name('delete');
+    });
+
+    Route::get('', $controller . 'index')->name('index');
+    Route::get('create', $controller . 'create')->name('create');
+    Route::get('datatable', $controller . 'datatable')->name('datatable');
+    Route::post('store', $controller . 'store')->name('store');
+    Route::get('/origin/{id}', $controller . 'origin')->name('origin');
+    Route::get('edit/{id}', $controller . 'edit')->name('edit');
+    Route::post('update/{id}', $controller . 'update')->name('update');
+    Route::get('translation/{id}', $controller . 'translation')->name('translation');
+    Route::post('store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+
+});
+
+/** Đơn vị */
+Route::prefix('units')->name('units.')->group(function () {
+    $controller = 'Admin\UnitController@';
+    Route::get('', $controller . 'index')->name('index');
+    Route::get('/create', $controller . 'create')->name('create');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
+    Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/edit/{id}', $controller . 'edit')->name('edit');
+    Route::get('/origin/{id}', $controller . 'origin')->name('origin');
+    Route::post('/update/{id}', $controller . 'update')->name('update');
+    Route::get('translation/{id}', $controller . 'translation')->name('translation');
+    Route::post('store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
+    Route::post('delete/{id}', $controller . 'delete')->name('delete');
+
+});

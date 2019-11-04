@@ -4,21 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class Unit extends Model
 {
     protected $fillable = [
-        'unit_id',
-        'image',
-        'cate_id',
         'name',
-        'price',
         'lang_id',
         'lang_parent_id',
     ];
 
-    public function category()
+    public function langParent()
     {
-        return $this->belongsTo(Category::class, 'cate_id')->where('type', Category::SERVICE);
+        return $this->belongsTo($this, 'lang_parent_id');
     }
 
     public function langChildren()
