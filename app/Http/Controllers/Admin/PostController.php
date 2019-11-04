@@ -33,7 +33,7 @@ class PostController extends Controller
         $input['title'] = $input['title'] ?? null;
         $input['approve'] = $approveStatus;
 
-        if($status == 'requestEdited'){
+        if($status == 'request-edited'){
             $input['approve'] = null;
             $input['request_edited'] = true;
         }
@@ -176,7 +176,7 @@ class PostController extends Controller
         $input = $request->all();
         $input['approve'] = config("common.posts.approve_key.$status");
 
-        if($status == 'requestEdited'){
+        if($status == 'request-edited'){
             $input['approve'] = null;
             $input['request_edited'] = true;
         }

@@ -22,7 +22,7 @@
                                 >
                                     Không được duyệt
                                 </a>
-                                <a href="{{ route('admin.post.list', ['status' => 'requestEdited']) }}"
+                                <a href="{{ route('admin.post.list', ['status' => 'request-edited']) }}"
                                    class="btn btn-accent mr-1"
                                 >
                                     Chỉnh sửa từ bài viết đã được duyệt

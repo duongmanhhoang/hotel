@@ -22,7 +22,7 @@
                                 >
                                     Không được duyệt
                                 </a>
-                                <a href="{{ route('admin.post.approveList', ['status' => 'requestEdited']) }}"
+                                <a href="{{ route('admin.post.approveList', ['status' => 'request-edited']) }}"
                                    class="btn btn-accent mr-1"
                                 >
                                     Chỉnh sửa từ bài viết đã được duyệt
@@ -59,11 +59,17 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        @if(strpos(url()->current(), 'request-edit'))
+                                            <th>Bài viết gốc</th>
+                                        @endif
                                         <th>Tiêu đề</th>
                                         <th>Ảnh</th>
                                         <th>Mô tả</th>
                                         <th>Danh mục</th>
                                         <th>Đăng bởi</th>
+                                        @if(strpos(url()->current(), config('common.posts.approve_value.-1')))
+                                            <td>Lí do bị từ chối</td>
+                                        @endif
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
@@ -72,6 +78,20 @@
                                     @foreach ($data as $value)
                                         <tr>
                                             <td>{{ $i }}</td>
+                                            @if($value->parentEdited != null && strpos(url()->current(), 'request-edit'))
+                                                <td>
+                                                    <a href="{{ route('admin.post.editView', $value->parentEdited->id) }}">
+                                                        {{ $value->parentEdited->title }}
+                                                        @switch($value->parentEdited->approve)
+                                                            @case(config('common.posts.approve_key.approved')) ( <span class="text-success"> Duyệt </span> ) @break
+                                                            @case(config('common.posts.approve_key.pending')) ( <span class="text-info"> Chờ </span> ) @break
+                                                            @case(config('common.posts.approve_key.rejected')) ( <span class="text-danger"> Từ chối </span> )@break
+                                                        @endswitch
+                                                    </a>
+
+                                                    @if($value->parentEdited->approve  == config('common.posts.approve_key.rejected')) <p>Lí do: <span class="text-danger">{{ $value->parentEdited->message_reject }}</span></p> @endif
+                                                </td>
+                                            @endif
                                             <td>{{ $value->title }}</td>
                                             <td><img style="width: 125px;  height: 125px; object-fit: cover;"
                                                      src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}">
@@ -81,6 +101,9 @@
                                             </td>
                                             <td>{{ $value->category != null ? $value->category->name : config('common.posts.undefined_category') }}</td>
                                             <td>{{ $value->postedBy->email }}</td>
+                                            @if(strpos(url()->current(), config('common.posts.approve_value.-1')))
+                                                <td><p class="text-danger">{{ $value->message_reject ?? ''}}</p></td>
+                                            @endif
                                             <td>
 
                                                 @if(!strpos(url()->current(), config('common.posts.approve_value.-1')))
