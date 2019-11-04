@@ -92,7 +92,7 @@ class PostController extends Controller
 
     public function editView($id)
     {
-        $data = $this->postRepo->getPostById($id);
+        $data = $this->postRepo->findEditedPost($id);
         $categories  = $this->categoryRepo->categoriesAll(null);
         $route = route('admin.post.editAction', ['id' => $id]);
 
@@ -134,9 +134,15 @@ class PostController extends Controller
 
     public function delete($id)
     {
+        $data = $this->postRepo->findEditedPost($id);
+
+        if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
         $this->postRepo->deletePost($id);
 
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Xóa thành công']);
     }
 
     public function translate(Request $request, $postId)

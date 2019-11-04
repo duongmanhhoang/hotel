@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Post;
 
-use App\Repositories\EloquentRepository;
 use App\Models\Post;
+use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
@@ -21,24 +21,19 @@ class PostRepository extends EloquentRepository
         $title = $input['title'] ?? null;
         $approve = $input['approve'] ?? 'null';
         $isRequestEdited = $input['request_edited'] ?? null;
+        $user = Auth::user();
 
         $whereConditional = [
             ['title', 'like', '%' . $title . '%'],
             ['lang_id', $language],
             !is_string($approve) ? ['approve', $approve] : ['id', '>', 0],
             $isRequestEdited != null ? ['edited_from', '<>', null] : ['edited_from', null],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
         $result = $this->_model->where($whereConditional)
             ->with('category', 'postedBy', 'approveBy', 'parentTranslate', 'parentEdited')
             ->paginate($paginate);
-
-        return $result;
-    }
-
-    public function getPostById($id)
-    {
-        $result = $this->_model->where('id', $id)->with('category')->first();
 
         return $result;
     }
@@ -56,11 +51,11 @@ class PostRepository extends EloquentRepository
     {
         $result = $this->find($id);
 
-        if(isset($input['image']) && !is_string($input['image'])) $input['image'] = uploadImage('posts', $input['image']);
+        if (isset($input['image']) && !is_string($input['image'])) $input['image'] = uploadImage('posts', $input['image']);
 
         $result->update($input);
 
-        if(isset($input['image']) || isset($input['category_id'])) {
+        if (isset($input['image']) || isset($input['category_id'])) {
             $dataUpdate = [
                 'category_id' => $result->category_id,
                 'image' => $result->image
@@ -71,7 +66,8 @@ class PostRepository extends EloquentRepository
         return $result;
     }
 
-    public function editFromApprovedPost($id, $input) {
+    public function editFromApprovedPost($id, $input)
+    {
         $result = $this->find($id);
 
         $dataEditPost = $result->toArray();
@@ -85,8 +81,16 @@ class PostRepository extends EloquentRepository
         return $this->_model->create($input);
     }
 
-    public function findEditedPost($id) {
-        return $this->_model->where('id', $id)->with('editedFrom', 'parentEdited')->first();
+    public function findEditedPost($id)
+    {
+        $user = Auth::user();
+
+        $whereConditional = [
+            ['id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category')->first();
     }
 
     public function deletePost($id)
@@ -156,12 +160,12 @@ class PostRepository extends EloquentRepository
         $input = $dataPost;
         $input['approve_by'] = Auth::user()->id;
 
-        if($dataPost['approve'] == config('common.posts.approve_key.approved')) {
+        if ($dataPost['approve'] == config('common.posts.approve_key.approved')) {
 
             $result = $this->update($id, $input);
 
             $this->delete($dataPost['id']);
-        }else {
+        } else {
             $result = $this->update($dataPost['id'], $dataPost);
         }
 
