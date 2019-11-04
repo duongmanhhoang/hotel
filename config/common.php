@@ -57,6 +57,12 @@ return [
         'vi' => 0,
         'en' => 1,
     ],
+    'bill' => [
+        'type' => [
+            'incoming' => 1,
+            'outgoing' => 2
+        ]
+    ],
 
     'not_found' => 'Không tìm thấy dữ liệu',
     'limit' => [

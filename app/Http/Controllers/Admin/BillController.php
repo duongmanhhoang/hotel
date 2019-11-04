@@ -82,6 +82,10 @@ class BillController extends Controller
         $input = $request->all();
         $id = $input['id'];
 
+        $checkUpdateBill = $this->billRepo->find($id);
+
+        $this->statisticalReppo->updateStatisticalAfterUpdateBill($checkUpdateBill, $input);
+
         $this->billRepo->updateBill($id, $input);
 
         $request->session()->flash('success', 'Sửa thành công');
