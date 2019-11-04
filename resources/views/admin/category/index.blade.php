@@ -19,22 +19,43 @@
                                 <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
                                     <div class="row align-items-center">
                                         <div class="col-xl-8 order-2 order-xl-1">
-                                            <div class="form-group m-form__group row align-items-center">
+
+                                            <form method="get"
+                                                  action="{{ route('admin.category.list') }}"
+                                                  class="form-group m-form__group row align-items-center"
+                                            >
                                                 <div class="col-md-4">
                                                     <div class="m-input-icon m-input-icon--left">
-                                                        <form method="get"
-                                                              action="{{ route('admin.category.list') }}">
-                                                            <input type="text" class="form-control m-input"
-                                                                   name="name"
-                                                                   value="{{ $nameSearch ?? '' }}"
-                                                                   placeholder="Tìm kiếm">
-                                                        </form>
+                                                        <input type="text" class="form-control m-input"
+                                                               name="name"
+                                                               value="{{ $nameSearch ?? '' }}"
+                                                               placeholder="Tìm kiếm">
                                                         <span class="m-input-icon__icon m-input-icon__icon--left">
                                                             <span><i class="la la-search"></i></span>
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="m-input-icon m-input-icon--left">
+                                                        <select class="bs-select form-control" tabindex="-98"
+                                                                name="type" onchange="form.submit()">
+
+                                                            @for($i = 0; $i <= 1; $i++)
+                                                                <option value="{{ $i }}" {{ isset($type) && $type == $i ? 'selected' : '' }}>
+                                                                    @switch($i)
+                                                                        @case(0) Bài viết @break;
+                                                                        @case(1) Dịch vụ @break;
+                                                                    @endswitch
+                                                                </option>
+                                                            @endfor
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+
                                         </div>
                                         <div class="col-xl-4 order-1 order-xl-2 m--align-right">
                                             <a href="{{ route('admin.category.postView') }}"

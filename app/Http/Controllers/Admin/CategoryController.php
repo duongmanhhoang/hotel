@@ -28,13 +28,15 @@ class CategoryController extends Controller
         $input = $request->all();
 
         $input['name'] = $input['name'] ?? null;
+        $input['type'] = $input['type'] ?? null;
 
         $request->session()->put('params.search.category', $input['name']);
         $nameSearch = $input['name'];
+        $type = $input['type'];
 
         $data = $this->categoryRepo->getCategory($input);
 
-        $compact = compact('data', 'nameSearch');
+        $compact = compact('data', 'nameSearch', 'type');
 
         return view('admin.category.index', $compact);
     }
@@ -87,7 +89,6 @@ class CategoryController extends Controller
         if($data == null) {
             return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
         }
-
 
         $compact = compact('data', 'categories', 'route');
 
