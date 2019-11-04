@@ -9,7 +9,6 @@ class Post extends Model
     protected $table = 'posts';
 
     protected $fillable = [
-        'id',
         'category_id',
         'title',
         'description',
@@ -20,7 +19,8 @@ class Post extends Model
         'posted_by',
         'approve_by',
         'approve',
-        'message_reject'
+        'message_reject',
+        'edited_from'
     ];
 
     public function language()
@@ -51,5 +51,15 @@ class Post extends Model
     public function approveBy()
     {
         return $this->belongsTo('App\Models\User', 'approve_by');
+    }
+
+    public function editedFrom()
+    {
+        return $this->hasOne($this, 'edited_from');
+    }
+
+    public function parentEdited()
+    {
+        return $this->belongsTo($this, 'edited_from');
     }
 }

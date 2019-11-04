@@ -49,15 +49,15 @@ Route::prefix('category')->name('category.')->group(function () {
 Route::prefix('posts')->name('post.')->group(function () {
     $controller = 'Admin\PostController@';
     Route::get('/{status?}', $controller . 'index')->name('list');
-    Route::get('/create', $controller . 'addView')->name('addView');
-    Route::post('/create', $controller . 'store')->name('addAction');
+    Route::get('/create/new', $controller . 'addView')->name('addView');
+    Route::post('/create/new', $controller . 'store')->name('addAction');
     Route::get('/show-post/{id}', $controller . 'show')->name('show');
     Route::get('/edit/{id}', $controller . 'editView')->name('editView');
     Route::post('/edit/{id}', $controller . 'postEdit')->name('editAction');
-    Route::get('/translate-post/{postId}', $controller . 'addView')->name('translateView');
-    Route::post('/translate-post/{postId}', $controller . 'translate')->name('translateAction');
+    Route::get('/translate/{postId}', $controller . 'addView')->name('translateView');
+    Route::post('/translate/{postId}', $controller . 'translate')->name('translateAction');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
-    Route::get('/get/approve-posts', $controller . 'getPendingPosts')->name('approveList');
+    Route::get('/get/approve-posts/{status?}', $controller . 'getApproveList')->name('approveList');
     Route::get('/approving-post/{id}/{approve}', $controller . 'approvingPost')->name('approvingPost');
 });
 
