@@ -8,6 +8,10 @@ use Session;
 
 class CategoryRepository extends EloquentRepository
 {
+
+    const POSTS = 0;
+    const SERVICES = 1;
+
     public function getModel()
     {
         return Category::class;
@@ -25,10 +29,12 @@ class CategoryRepository extends EloquentRepository
         $paginate = config('common.pagination.default');
         $language = Session::get('locale');
         $name = $input['name'] ?? null;
+        $type = $input['type'] ?? null;
 
         $whereConditional = [
             ['lang_id', $language],
-            ['name', 'like', '%' . $name . '%']
+            ['name', 'like', '%' . $name . '%'],
+            $type != null ? ['type', $type] : ['type', self::POSTS]
         ];
 
         $result = $this->_model->where($whereConditional)->with('parentTranslate', 'childrenTranslate')->paginate($paginate);
@@ -45,7 +51,15 @@ class CategoryRepository extends EloquentRepository
 
     public function editCategory($id, $input)
     {
-        $result = $this->find($id);
+        $result = $this->_model->where('id', $id)->with('childrenTranslate')->first();
+
+        if($result->childrenTranslate != null) {
+            $childrenDateUpdate = [
+                'type' => $input['type']
+            ];
+
+            $result->childrenTranslate()->update($childrenDateUpdate);
+        }
 
         $result->update($input);
 

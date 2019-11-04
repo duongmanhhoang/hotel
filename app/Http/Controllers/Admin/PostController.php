@@ -33,7 +33,7 @@ class PostController extends Controller
         $input['title'] = $input['title'] ?? null;
         $input['approve'] = $approveStatus;
 
-        if($status == 'requestEdited'){
+        if($status == 'request-edited'){
             $input['approve'] = null;
             $input['request_edited'] = true;
         }
@@ -92,7 +92,7 @@ class PostController extends Controller
 
     public function editView($id)
     {
-        $data = $this->postRepo->getPostById($id);
+        $data = $this->postRepo->findEditedPost($id);
         $categories  = $this->categoryRepo->categoriesAll(null);
         $route = route('admin.post.editAction', ['id' => $id]);
 
@@ -134,9 +134,15 @@ class PostController extends Controller
 
     public function delete($id)
     {
+        $data = $this->postRepo->findEditedPost($id);
+
+        if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
         $this->postRepo->deletePost($id);
 
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Xóa thành công']);
     }
 
     public function translate(Request $request, $postId)
@@ -176,7 +182,7 @@ class PostController extends Controller
         $input = $request->all();
         $input['approve'] = config("common.posts.approve_key.$status");
 
-        if($status == 'requestEdited'){
+        if($status == 'request-edited'){
             $input['approve'] = null;
             $input['request_edited'] = true;
         }

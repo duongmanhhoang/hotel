@@ -104,7 +104,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group m-form__group">
-                                        <a href="{{ route('admin.post.list') }}" class="btn btn-danger">Quay lại</a>
+                                        <a href="javascript:history.back()" class="btn btn-danger">Quay lại</a>
                                         <button class="btn btn-primary">
                                             @if(isset($data)) Sửa @elseif(isset($dataTranslate)) Dịch @else
                                                 Tạo @endif
