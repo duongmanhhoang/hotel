@@ -24,6 +24,7 @@ return [
     'uploads' => [
         'languages' => '/uploads/languages',
         'properties' => '/uploads/properties',
+        'services' => '/uploads/services',
         'posts' => '/uploads/posts',
         'rooms' => '/uploads/rooms',
         'libraries' => '/uploads/libraries',

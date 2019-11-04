@@ -89,15 +89,27 @@
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
+                                        <label>Dịch vụ <b class="text-danger">*</b></label>
+                                        <select class="form-control m-select2" multiple="multiple" id="services-select" name="services">
+                                            @foreach($services as $service)
+                                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group m-form__group">
                                         <label>Trạng thái <b class="text-danger">*</b></label>
                                         <select class="form-control" name="status">
-                                            <option value="{{ \App\Models\RoomInvoice::NOT_PAY }}">Chưa thanh toán</option>
-                                            <option value="{{ \App\Models\RoomInvoice::PAID }}">Đã thanh toán (Chưa nhận phòng)</option>
+                                            <option value="{{ \App\Models\RoomInvoice::NOT_PAY }}">Chưa thanh toán
+                                            </option>
+                                            <option value="{{ \App\Models\RoomInvoice::PAID }}">Đã thanh toán (Chưa nhận
+                                                phòng)
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Khoản tiền thu thêm (Nếu có)</label>
-                                        <input type="number" name="extra" class="form-control" min="0" value="{{ old('extra') }}">
+                                        <input type="number" name="extra" class="form-control" min="0"
+                                               value="{{ old('extra') }}">
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú khoản thu thêm (Nếu có)</label>
@@ -156,7 +168,8 @@
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú</label>
-                                        <textarea class="form-control" name="messages" rows="8">{{ old('messages') }}</textarea>
+                                        <textarea class="form-control" name="messages"
+                                                  rows="8">{{ old('messages') }}</textarea>
                                         @if ($errors->has('messages'))
                                             <b class="text-danger">{{ $errors->first('messages') }}</b>
                                         @endif
@@ -175,7 +188,8 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
+            $("#services-select").select2({placeholder: ""})
             $('.my-datepicker').datepicker({
                 todayHighlight: !0,
                 autoclose: !0,

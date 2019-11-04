@@ -11,6 +11,7 @@ use App\Repositories\Invoice\InvoiceRepository;
 use App\Repositories\InvoiceRoom\InvoiceRoomRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomName\RoomNameRepository;
+use App\Repositories\Service\ServiceRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,12 +24,18 @@ class InvoiceController extends Controller
     private $roomRepository;
     private $baseLang;
     private $roomNameRepsitory;
+    private $serviceRepository;
 
-    public function __construct(InvoiceRepository $invoiceRepository, RoomRepository $roomRepository, RoomNameRepository $roomNameRepository)
-    {
+    public function __construct(
+        InvoiceRepository $invoiceRepository,
+        RoomRepository $roomRepository,
+        RoomNameRepository $roomNameRepository,
+        ServiceRepository $serviceRepository
+    ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->roomRepository = $roomRepository;
         $this->roomNameRepsitory = $roomNameRepository;
+        $this->serviceRepository = $serviceRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -47,8 +54,10 @@ class InvoiceController extends Controller
     public function create()
     {
         $rooms = $this->roomRepository->all();
+        $services = $this->serviceRepository->where('lang_parent_id', '=', 0)->get();
         $data = compact(
-            'rooms'
+            'rooms',
+            'services'
         );
 
         return view('admin.invoices.create', $data);
@@ -178,8 +187,8 @@ class InvoiceController extends Controller
     public function getAvailableRoom(Request $request)
     {
         $results = $this->roomRepository->roomAvailable($request);
-        $rooms = Room::whereIn('id', $results['room_id'])->get();
-
+        $rooms = Room::with('roomName')->whereIn('id', $results['room_id'])->get();
+        $roomNames = RoomName::all();
         foreach ($rooms as $room) {
             if (session('locale') == config('common.languages.default')) {
                 $room->name = $room->roomName->name;
@@ -220,5 +229,12 @@ class InvoiceController extends Controller
         }
 
         return response()->json($dataResponse, 200);
+    }
+
+    public function getServices($type)
+    {
+        $services = $this->serviceRepository->getServiceByType($type);
+
+        return response()->json($services, 200);
     }
 }
