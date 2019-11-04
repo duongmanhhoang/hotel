@@ -12,6 +12,7 @@
 @include ('client.layouts.footer')
 @include ('client.layouts.sidebar')
 @include ('client.layouts.bottom')
+@include ('client.layouts.script')
 </body>
 
 </html>

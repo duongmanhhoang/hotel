@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -24,7 +24,8 @@ class User extends Authenticatable
         'phone',
         'address',
         'remember_token',
-        'is_active'
+        'is_active',
+        'email_verified_at'
     ];
 
     /**

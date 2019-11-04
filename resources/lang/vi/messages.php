@@ -1,5 +1,4 @@
 <?php
-
 return [
     'Sign_in' => 'Đăng nhập',
     'Remember_me' => 'Lưu phiên đăng nhập',
@@ -8,7 +7,6 @@ return [
     'Enter_password' => 'Nhập mật khẩu',
     'currency' => 'vnđ',
     'star' => 'sao',
-
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
         'email' => 'Vui lòng nhập đúng định dạng email',
