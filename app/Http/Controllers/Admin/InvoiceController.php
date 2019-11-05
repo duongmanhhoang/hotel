@@ -54,7 +54,7 @@ class InvoiceController extends Controller
     public function create()
     {
         $rooms = $this->roomRepository->all();
-        $services = $this->serviceRepository->where('lang_parent_id', '=', 0)->get();
+        $services = $this->serviceRepository->where('lang_id', '=', session('locale'))->get();
         $data = compact(
             'rooms',
             'services'
@@ -140,6 +140,13 @@ class InvoiceController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->except('_token');
+        dd($data);
+        $check = $this->invoiceRepository->checkDataCurrency($data['room_id'], $data['currency']);
+        if (!$check) {
+            $request->session()->flash('error', 'Chưa có thông tin về đơn vị tiền tệ này');
+
+            return redirect()->back();
+        }
         DB::beginTransaction();
         try {
             $this->invoiceRepository->storeData($data);
@@ -187,15 +194,30 @@ class InvoiceController extends Controller
     public function getAvailableRoom(Request $request)
     {
         $results = $this->roomRepository->roomAvailable($request);
-        $rooms = Room::with('roomName')->whereIn('id', $results['room_id'])->get();
+        $rooms = Room::with('roomName', 'location.locations')->whereIn('id', $results['room_id'])->get();
         $roomNames = RoomName::all();
-        foreach ($rooms as $room) {
+        foreach ($rooms as $key => $room) {
             if (session('locale') == config('common.languages.default')) {
                 $room->name = $room->roomName->name;
+                $room->location_name = $room->getAttribute('location')->name;
             } else {
-                $room->name = RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->room_name_id)->first()->name;
+                $checkDetail = $this->roomRepository->getDetailTranslate($room->id);
+                if ($checkDetail) {
+                    $location = $room->getAttribute('location');
+                    $child = $location->getAttribute('locations')->where('lang_id', session('locale'))->first();
+                    if ($child) {
+                        $room->location_name = $child->name;
+                        $roomName = $roomNames->filter(function ($value) use ($room) {
+                            return $value->lang_parent_id == $room->roomName->id;
+                        })->first();
+                        if ($roomName) {
+                            $room->name = $roomName->name;
+                        }
+                    }
+                } else {
+                    unset($rooms[$key]);
+                }
             }
-
         }
 
         if ($rooms) {

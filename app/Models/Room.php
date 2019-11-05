@@ -38,4 +38,9 @@ class Room extends Model
     {
         return $this->belongsTo(RoomName::class, 'room_name_id');
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 }

@@ -127,7 +127,7 @@ Route::prefix('invoices')->name('invoices.')->group(function () {
     Route::get('/show/{id}', $controller . 'show')->name('show');
     Route::post('/update/{id}', $controller . 'update')->name('update');
     Route::post('/mark-as-return/{id}', $controller . 'markAsReturn')->name('markAsReturn');
-    Route::get('/get-services/{id}', $controller . 'getServices')->name('getServices');
+    Route::get('/get-services/{type}', $controller . 'getServices')->name('getServices');
 });
 
 /** Caft đặt website */

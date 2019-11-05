@@ -83,16 +83,16 @@
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Loại tiền <b class="text-danger">*</b></label>
-                                        <select class="form-control" name="currency">
+                                        <select class="form-control" name="currency" onchange="onChangeCurrency(value)">
                                             <option value="{{ config('common.currency.vi') }}">VNĐ</option>
-                                            <option value="{{ config('common.currency.en') }}">$</option>
+                                            <option {{ session('locale') != config('common.languages.default') ? 'selected' : ''}} value="{{ config('common.currency.en') }}">$</option>
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Dịch vụ <b class="text-danger">*</b></label>
-                                        <select class="form-control m-select2" multiple="multiple" id="services-select" name="services">
+                                        <select class="form-control m-select2" multiple="multiple" id="services-select" name="services[]">
                                             @foreach($services as $service)
-                                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                                <option value="{{ $service->id }}" title={{ $service->price }}>{{ $service->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -109,7 +109,7 @@
                                     <div class="form-group m-form__group">
                                         <label>Khoản tiền thu thêm (Nếu có)</label>
                                         <input type="number" name="extra" class="form-control" min="0"
-                                               value="{{ old('extra') }}">
+                                               value="{{ old('extra') }}" id="extra">
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú khoản thu thêm (Nếu có)</label>
@@ -261,7 +261,7 @@
                             data.forEach(item => {
                                 $('#room_id').append($('<option>', {
                                     value: item.id,
-                                    text: item.name
+                                    text: `${item.name} (${item.location_name})`
                                 }));
                             });
                         }
@@ -271,5 +271,44 @@
                 });
             })
         });
+
+        $("select[name='services[]']").each((i,v)=> {
+            $(v).on('select2:select', (r) => {
+                let extra = $('#extra').val();
+                let price = r.params.data.title;
+                $('#extra').val(Number(extra) + Number(price));
+            });
+
+            $(v).on('select2:unselect', (r) => {
+                let extra = $('#extra').val();
+                let price = r.params.data.title;
+                $('#extra').val(Number(extra) - Number(price));
+            });
+        });
+
+        function onChangeCurrency(type) {
+            $('#extra').val('');
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: `{{ route('admin.invoices.getServices', '') }}/${type}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    let select = $('#services-select');
+                    select. find('option').remove();
+                    response.forEach(item => {
+                        select.append($('<option>', {
+                            value: item.id,
+                            text: item.name,
+                            title: item.price
+                        }));
+                    });
+
+                }, error: function () {
+                    toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                },
+            });
+        }
     </script>
 @endsection
