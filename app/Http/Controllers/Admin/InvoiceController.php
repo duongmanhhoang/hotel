@@ -65,8 +65,9 @@ class InvoiceController extends Controller
 
     public function edit($id)
     {
-        $today = Carbon::today();
+        $today = Carbon::yesterday();
         $invoice = $this->invoiceRepository->findOrFail($id);
+        $invoice->load('services');
         $invoiceRoom = $invoice->rooms->first()->pivot;
         $room = $invoice->rooms->first();
         $checkIn = formatDate($invoiceRoom->check_in_date);
@@ -78,6 +79,8 @@ class InvoiceController extends Controller
         $roomNameRepository = $this->roomNameRepsitory;
         $checkOut = formatDate($invoiceRoom->check_out_date);
         $roomDetail = $room->roomDetails->where('lang_parent_id', 0)->first();
+        $services = $this->invoiceRepository->getServicesEdit($invoiceRoom);
+        $usedServices = $this->invoiceRepository->getUsedServices($invoice);
         $data = compact(
             'invoice',
             'room',
@@ -86,7 +89,9 @@ class InvoiceController extends Controller
             'checkIn',
             'checkOut',
             'disable',
-            'roomNameRepository'
+            'roomNameRepository',
+            'services',
+            'usedServices'
         );
 
         return view('admin.invoices.edit', $data);
@@ -140,8 +145,8 @@ class InvoiceController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->except('_token');
-        dd($data);
         $check = $this->invoiceRepository->checkDataCurrency($data['room_id'], $data['currency']);
+
         if (!$check) {
             $request->session()->flash('error', 'Chưa có thông tin về đơn vị tiền tệ này');
 
@@ -167,10 +172,12 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepository->findOrFail($id);
         $invoiceRoom = $invoice->rooms->first()->pivot;
         $disabled = $request->disabled;
+        $isAfter = true;
 
         if ($disabled == 1) {
             $validator = Validator::make($data, $this->invoiceRepository->makeRulesUpdateAfter(), $this->invoiceRepository->messagesUpdateAfter());
         } else {
+            $isAfter = false;
             $validator = Validator::make($data, $this->invoiceRepository->makeRulesUpdateBefore(), $this->invoiceRepository->messagesUpdateBefore());
         }
 
@@ -180,7 +187,7 @@ class InvoiceController extends Controller
 
         DB::beginTransaction();
         try {
-            $this->invoiceRepository->updateData($data, $invoice, $invoiceRoom);
+            $this->invoiceRepository->updateData($data, $invoice, $invoiceRoom, $isAfter);
             DB::commit();
             $request->session()->flash('success', 'Cập nhập hóa đơn thành công');
 
@@ -219,7 +226,7 @@ class InvoiceController extends Controller
                 }
             }
         }
-
+        $rooms = $rooms->values();
         if ($rooms) {
             $dataResponse = [
                 'messages' => 'success',
