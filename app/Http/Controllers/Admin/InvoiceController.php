@@ -11,6 +11,7 @@ use App\Repositories\Invoice\InvoiceRepository;
 use App\Repositories\InvoiceRoom\InvoiceRoomRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomName\RoomNameRepository;
+use App\Repositories\Service\ServiceRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,12 +24,18 @@ class InvoiceController extends Controller
     private $roomRepository;
     private $baseLang;
     private $roomNameRepsitory;
+    private $serviceRepository;
 
-    public function __construct(InvoiceRepository $invoiceRepository, RoomRepository $roomRepository, RoomNameRepository $roomNameRepository)
-    {
+    public function __construct(
+        InvoiceRepository $invoiceRepository,
+        RoomRepository $roomRepository,
+        RoomNameRepository $roomNameRepository,
+        ServiceRepository $serviceRepository
+    ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->roomRepository = $roomRepository;
         $this->roomNameRepsitory = $roomNameRepository;
+        $this->serviceRepository = $serviceRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -47,8 +54,10 @@ class InvoiceController extends Controller
     public function create()
     {
         $rooms = $this->roomRepository->all();
+        $services = $this->serviceRepository->where('lang_id', '=', session('locale'))->get();
         $data = compact(
-            'rooms'
+            'rooms',
+            'services'
         );
 
         return view('admin.invoices.create', $data);
@@ -131,6 +140,13 @@ class InvoiceController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->except('_token');
+        dd($data);
+        $check = $this->invoiceRepository->checkDataCurrency($data['room_id'], $data['currency']);
+        if (!$check) {
+            $request->session()->flash('error', 'Chưa có thông tin về đơn vị tiền tệ này');
+
+            return redirect()->back();
+        }
         DB::beginTransaction();
         try {
             $this->invoiceRepository->storeData($data);
@@ -178,15 +194,30 @@ class InvoiceController extends Controller
     public function getAvailableRoom(Request $request)
     {
         $results = $this->roomRepository->roomAvailable($request);
-        $rooms = Room::whereIn('id', $results['room_id'])->get();
-
-        foreach ($rooms as $room) {
+        $rooms = Room::with('roomName', 'location.locations')->whereIn('id', $results['room_id'])->get();
+        $roomNames = RoomName::all();
+        foreach ($rooms as $key => $room) {
             if (session('locale') == config('common.languages.default')) {
                 $room->name = $room->roomName->name;
+                $room->location_name = $room->getAttribute('location')->name;
             } else {
-                $room->name = RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->room_name_id)->first()->name;
+                $checkDetail = $this->roomRepository->getDetailTranslate($room->id);
+                if ($checkDetail) {
+                    $location = $room->getAttribute('location');
+                    $child = $location->getAttribute('locations')->where('lang_id', session('locale'))->first();
+                    if ($child) {
+                        $room->location_name = $child->name;
+                        $roomName = $roomNames->filter(function ($value) use ($room) {
+                            return $value->lang_parent_id == $room->roomName->id;
+                        })->first();
+                        if ($roomName) {
+                            $room->name = $roomName->name;
+                        }
+                    }
+                } else {
+                    unset($rooms[$key]);
+                }
             }
-
         }
 
         if ($rooms) {
@@ -220,5 +251,12 @@ class InvoiceController extends Controller
         }
 
         return response()->json($dataResponse, 200);
+    }
+
+    public function getServices($type)
+    {
+        $services = $this->serviceRepository->getServiceByType($type);
+
+        return response()->json($services, 200);
     }
 }

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    const POST = 0;
+    const SERVICE = 1;
+
     protected $table = 'categories';
 
     protected $fillable = ['id', 'name', 'parent_id', 'lang_id', 'lang_parent_id', 'created_at', 'updated_at', 'type'];

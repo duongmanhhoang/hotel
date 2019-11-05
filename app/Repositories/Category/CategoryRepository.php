@@ -3,6 +3,7 @@
 namespace App\Repositories\Category;
 
 use App\Models\Category;
+use App\Models\Service;
 use App\Repositories\EloquentRepository;
 use Session;
 
@@ -126,9 +127,53 @@ class CategoryRepository extends EloquentRepository
         return $result;
     }
 
-    public function dataTable()
-    {
 
+    public function storeServiceCategory($name)
+    {
+        $data = [
+            'type' => Category::SERVICE,
+            'name' => $name,
+            'parent_id' => 0,
+            'lang_id' => config('common.languages.default'),
+            'lang_parent_id' => 0
+        ];
+        $this->_model->create($data);
+    }
+
+    public function makeServiceCategoryData()
+    {
+        return $this->_model->where('type', Category::SERVICE)->where('lang_id', session('locale'))->get();
+
+    }
+
+    public function deleteServiceCategory($id)
+    {
+        $category = $this->_model->find($id);
+        $checkOrigin = $this->checkOriginal($id);
+        if ($checkOrigin) {
+            $category->childrenTranslate()->delete();
+            $this->delete($id);
+        } else {
+            $this->delete($id);
+        }
+    }
+
+    public function checkServices($id)
+    {
+        $category = $this->_model->find($id);
+        $checkOrigin = $this->checkOriginal($id);
+        if ($checkOrigin) {
+            $check = Service::where('cate_id', $id)->first();
+        } else {
+            $cateParent = $category->parentTranslate;
+            $check = Service::where('cate_id', $cateParent->id)->first();
+        }
+
+        if ($check) {
+            return true;
+        }
+
+        return false;
     }
 
 }

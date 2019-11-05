@@ -120,6 +120,46 @@
                         </a>
                     </li>
 
+                    <!-- Dịch vụ -->
+                    <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+                        <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Dịch vụ</span>
+                            <i class="m-menu__ver-arrow la la-angle-right"></i>
+                        </a>
+                        <div class="m-menu__submenu ">
+                            <span class="m-menu__arrow"></span>
+                            <ul class="m-menu__subnav">
+                                <li class="m-menu__item" aria-haspopup="true">
+                                    <a href="{{ route('admin.services.categories.index') }}" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot  ">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Danh mục</span>
+                                    </a>
+                                </li>
+                                <li class="m-menu__item" aria-haspopup="true">
+                                    <a href="{{ route('admin.units.index') }}" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot  ">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Đơn vị</span>
+                                    </a>
+                                </li>
+                                <li class="m-menu__item" aria-haspopup="true">
+                                    <a href="{{ route('admin.services.index') }}" class="m-menu__link ">
+                                        <i class="m-menu__link-bullet m-menu__link-bullet--dot  ">
+                                            <span></span>
+                                        </i>
+                                        <span class="m-menu__link-text">Danh sách</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
                     <!-- Tiện nghi -->
                     <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
                         <a href="{{ route('admin.properties.index') }}" class="m-menu__link m-menu__toggle">

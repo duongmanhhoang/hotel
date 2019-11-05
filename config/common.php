@@ -24,6 +24,7 @@ return [
     'uploads' => [
         'languages' => '/uploads/languages',
         'properties' => '/uploads/properties',
+        'services' => '/uploads/services',
         'posts' => '/uploads/posts',
         'rooms' => '/uploads/rooms',
         'libraries' => '/uploads/libraries',
@@ -31,6 +32,7 @@ return [
     ],
     'languages' => [
         'default' => 1,
+        'english' => 2,
     ],
     'categories' => [
         'default_parent_id' => 0
