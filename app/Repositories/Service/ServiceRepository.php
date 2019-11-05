@@ -74,17 +74,24 @@ class ServiceRepository extends EloquentRepository
 
     public function getServiceByType($type)
     {
-        $services = $this->_model
-            ->with('langChildren')
-            ->where('lang_parent_id', 0)
-            ->whereHas('langChildren', function ($query) {
-                $query->where('lang_id', session('locale'));
-            })
-            ->get();
-        if ($type == config('common.currency.en')) {
-            foreach ($services as $service) {
-                $service->name = $service->getAttribute('langChildren')[0]->name;
-                $service->price = $service->getAttribute('langChildren')[0]->price;
+        $en = config('common.languages.english');
+        $vn = config('common.languages.default');
+        $parentService = Service::with('langChildren')->where('lang_parent_id', 0)->get();
+        $services = Service::where('lang_id', session('locale'))->get();
+        if ($type) {
+            if (session('locale') == $vn) {
+                $services = $parentService;
+                foreach ($services as $service) {
+                    $service->price = $service->langChildren->where('lang_id', $en)->first()->price;
+                }
+            }
+        } else {
+            if (session('locale') != $vn) {
+                foreach ($services as $service) {
+                    $service->price = $parentService->filter(function ($value) use ($service) {
+                        return $value->id == $service->lang_parent_id;
+                    })->first()->price;
+                }
             }
         }
 

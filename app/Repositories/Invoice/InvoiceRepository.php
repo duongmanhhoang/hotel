@@ -4,6 +4,7 @@ namespace App\Repositories\Invoice;
 
 use App\Models\Invoice;
 use App\Models\Room;
+use App\Models\RoomDetail;
 use App\Models\RoomInvoice;
 use App\Models\RoomName;
 use App\Repositories\EloquentRepository;
@@ -189,7 +190,7 @@ class InvoiceRepository extends EloquentRepository
 
     public function makeDataTable()
     {
-        $invoices = $this->_model->with('rooms', 'rooms.roomName')->get();
+        $invoices = $this->_model->with('rooms', 'rooms.roomName')->orderBy('id', 'desc')->get();
         foreach ($invoices as $invoice) {
             $invoice->checkIn = $invoice->rooms[0]['pivot']->check_in_date;
             $invoice->checkOut = $invoice->rooms[0]['pivot']->check_out_date;
@@ -213,5 +214,17 @@ class InvoiceRepository extends EloquentRepository
         }
 
         return $invoices;
+    }
+
+    public function checkDataCurrency($roomId, $currency)
+    {
+        if ($currency == config('common.currency.en')) {
+            $roomDetail = RoomDetail::where('lang_id', config('common.languages.english'))->where('lang_parent_id', $roomId)->first();
+            if (!$roomDetail) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

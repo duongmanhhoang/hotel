@@ -32,6 +32,7 @@ return [
     ],
     'languages' => [
         'default' => 1,
+        'english' => 2,
     ],
     'categories' => [
         'default_parent_id' => 0

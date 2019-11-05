@@ -324,4 +324,11 @@ class RoomRepository extends EloquentRepository
         }
         return $rooms;
     }
+
+    public function getDetailTranslate($id)
+    {
+        return RoomDetail::where('lang_parent_id', $id)
+            ->where('lang_id', session('locale'))
+            ->first();
+    }
 }
