@@ -26,7 +26,7 @@ class CategoryRepository extends EloquentRepository
 
     public function getCategory($input)
     {
-        $paginate = config('common.pagination.default');
+//        $paginate = config('common.pagination.default');
         $language = Session::get('locale');
         $name = $input['name'] ?? null;
         $type = $input['type'] ?? null;
@@ -37,7 +37,7 @@ class CategoryRepository extends EloquentRepository
             $type != null ? ['type', $type] : ['type', self::POSTS]
         ];
 
-        $result = $this->_model->where($whereConditional)->with('parentTranslate', 'childrenTranslate')->paginate($paginate);
+        $result = $this->_model->where($whereConditional)->with('parentTranslate', 'childrenTranslate')->get();
 
         return $result;
     }
@@ -68,10 +68,12 @@ class CategoryRepository extends EloquentRepository
 
     public function deleteCategory($id)
     {
-        $result = $this->_model->where('id', $id)->with('children')->first();
+        $result = $this->_model->where('id', $id)->with('childrenTranslate')->first();
 
-        if (!empty($result->children)) {
-            foreach ($result->children as $child) {
+
+
+        if (!empty($result->childrenTranslate)) {
+            foreach ($result->childrenTranslate as $child) {
                 $child->childrenTranslate()->delete();
                 $child->delete();
             }
@@ -122,6 +124,11 @@ class CategoryRepository extends EloquentRepository
         $result = $this->_model->where($whereConditional)->get();
 
         return $result;
+    }
+
+    public function dataTable()
+    {
+
     }
 
 }

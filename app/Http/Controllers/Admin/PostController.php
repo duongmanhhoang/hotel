@@ -46,6 +46,24 @@ class PostController extends Controller
         return view('admin.posts.index', compact('data', 'titleSearch'));
     }
 
+    public function dataTable(Request $request)
+    {
+        $input = $request->all();
+//        $approveStatus = config("common.posts.approve_key.$status");
+
+        $input['title'] = $input['title'] ?? null;
+//        $input['approve'] = $approveStatus;
+//
+//        if($status == 'request-edited'){
+//            $input['approve'] = null;
+//            $input['request_edited'] = true;
+//        }
+
+        $data = $this->postRepo->searchPost($input);
+
+        return response()->json(['data' => $data]);
+    }
+
     public function addView($postId = false)
     {
         if($postId != false) {
