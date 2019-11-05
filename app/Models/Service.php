@@ -25,4 +25,9 @@ class Service extends Model
     {
         return $this->hasMany($this, 'lang_parent_id');
     }
+
+    public function langParent()
+    {
+        return $this->belongsTo($this, 'lang_parent_id');
+    }
 }

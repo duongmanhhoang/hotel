@@ -7,6 +7,7 @@ use App\Models\Room;
 use App\Models\RoomDetail;
 use App\Models\RoomInvoice;
 use App\Models\RoomName;
+use App\Models\Service;
 use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use http\Env\Request;
@@ -41,6 +42,7 @@ class InvoiceRepository extends EloquentRepository
         $dataPivot = $this->makePivotData($data);
         $dataInvoice = $this->makeData($data);
         $invoice = $this->_model->create($dataInvoice);
+        $invoice->services()->attach($data['services']);
         $invoice->rooms()->attach([$data['room_id'] => $dataPivot]);
 
     }
@@ -177,8 +179,15 @@ class InvoiceRepository extends EloquentRepository
         ];
     }
 
-    public function updateData($data, $invoice, $invoiceRoom)
+    public function updateData($data, $invoice, $invoiceRoom, $isAfter)
     {
+        if ($isAfter) {
+            $data['check_in_date'] = $invoiceRoom->check_in_date;
+            $data['check_out_date'] = $invoiceRoom->check_out_date;
+            $data['room_number'] = $invoiceRoom->room_number;
+            $data['room_id'] = $invoiceRoom->room_id;
+        }
+
         $data['price'] = $this->getRoomPrice($data);
         $data['total'] = $this->getTotal($data);
         $data['code'] = $invoice->code;
@@ -186,6 +195,9 @@ class InvoiceRepository extends EloquentRepository
         $invoiceData = $this->makeData($data);
         $invoice->update($invoiceData);
         $invoiceRoom->update($pivotData);
+        if ($data['services']) {
+            $invoice->services()->sync($data['services']);
+        }
     }
 
     public function makeDataTable()
@@ -226,5 +238,48 @@ class InvoiceRepository extends EloquentRepository
         }
 
         return true;
+    }
+
+    public function getUsedServices($invoice)
+    {
+        $invoice->load('services.langChildren');
+        $services = $invoice->services;
+        foreach ($services as $service) {
+            if ($service->lang_id != session('locale')) {
+                if ($service->lang_parent_id != 0) {
+                    $parent = $service->langParent;
+                    $service->id = $parent->id;
+                } else {
+                    $child = $service->langChildren->where('lang_id', session('locale'))->first();
+                    $service->id = $child->id;
+                }
+
+            }
+        }
+
+        return $services;
+    }
+
+    public function getServicesEdit($invoiceRoom)
+    {
+        $currency = $invoiceRoom->currency;
+        $services = Service::with('langParent', 'langChildren')->where('lang_id', session('locale'))->get();
+        if ($currency == config('common.currency.vi')) {
+            foreach ($services as $service) {
+                if ($service->lang_parent_id != 0) {
+                    $parent = $service->langParent;
+                    $service->price = $parent->price;
+                }
+            }
+        } else {
+            foreach ($services as $service) {
+                if ($service->lang_parent_id == 0) {
+                    $child = $service->langChildren->where('lang_id', config('common.languages.english'))->first();
+                    $service->price = $child->price;
+                }
+            }
+        }
+
+        return $services;
     }
 }

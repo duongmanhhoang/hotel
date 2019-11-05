@@ -49,7 +49,7 @@ use App\Models\RoomInvoice;
                                                        value="{{ old('check_in_date', $checkIn) }}" id="check_in_date"
                                                        name="check_in_date"
                                                        autocomplete="off"
-                                                    {{ $disable ? 'disabled' : '' }}
+                                                        {{ $disable ? 'disabled' : '' }}
                                                 >
                                             </div>
                                             <b class="check_in_date_errors text-danger">
@@ -66,7 +66,7 @@ use App\Models\RoomInvoice;
                                                        id="check_out_date"
                                                        name="check_out_date"
                                                        autocomplete="off"
-                                                    {{ $disable ? 'disabled' : '' }}
+                                                        {{ $disable ? 'disabled' : '' }}
                                                 >
                                             </div>
                                             <b class="check_out_date_errors text-danger">
@@ -94,7 +94,7 @@ use App\Models\RoomInvoice;
                                         <select class="form-control" name="room_number"
                                                 id="room_number" {{ $disable ? 'disabled' : '' }}>
                                             <option
-                                                value="{{ $invoiceRoom->room_number }}">{{ $invoiceRoom->room_number }}</option>
+                                                    value="{{ $invoiceRoom->room_number }}">{{ $invoiceRoom->room_number }}</option>
                                         </select>
                                         @if ($errors->has('room_id'))
                                             <b class="text-danger">{{ $errors->first('room_id') }}</b>
@@ -102,26 +102,45 @@ use App\Models\RoomInvoice;
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Loại tiền <b class="text-danger">*</b></label>
-                                        <select class="form-control" name="currency">
+                                        <select class="form-control" name="currency" onchange="onChangeCurrency(value)">
                                             <option
-                                                value="{{ config('common.currency.vi') }}" {{ !$invoiceRoom->currency ? 'selected' : '' }}>
+                                                    value="{{ config('common.currency.vi') }}" {{ !$invoiceRoom->currency ? 'selected' : '' }}>
                                                 VNĐ
                                             </option>
                                             <option
-                                                value="{{ config('common.currency.en') }}" {{ $invoiceRoom->currency ? 'selected' : '' }}>
+                                                    value="{{ config('common.currency.en') }}" {{ $invoiceRoom->currency ? 'selected' : '' }}>
                                                 $
                                             </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group m-form__group">
+                                        <label>Dịch vụ</label>
+                                        <select class="form-control m-select2" multiple="multiple" id="services-select"
+                                                name="services[]">
+                                            @foreach($services as $service)
+                                                @php
+                                                    $selected = false;
+                                                        $usedService = $usedServices->filter(function ($value) use ($service) {
+                                                                    return $value->id == $service->id;
+                                                                    })->first();
+                                                if ($usedService) {
+                                                    $selected = true;
+                                                }
+                                                @endphp
+                                                <option value="{{ $service->id }}"
+                                                        title={{ $service->price }} {{ $selected ? 'selected' : '' }} >{{ $service->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Trạng thái <b class="text-danger">*</b></label>
                                         <select class="form-control" name="status">
                                             <option
-                                                value="{{ RoomInvoice::NOT_PAY }}" {{ $invoiceRoom->status == RoomInvoice::NOT_PAY ? 'selected' : '' }}>
+                                                    value="{{ RoomInvoice::NOT_PAY }}" {{ $invoiceRoom->status == RoomInvoice::NOT_PAY ? 'selected' : '' }}>
                                                 Chưa thanh toán
                                             </option>
                                             <option
-                                                value="{{ RoomInvoice::PAID }}" {{ $invoiceRoom->status == RoomInvoice::PAID ? 'selected' : '' }}>
+                                                    value="{{ RoomInvoice::PAID }}" {{ $invoiceRoom->status == RoomInvoice::PAID ? 'selected' : '' }}>
                                                 Đã thanh toán (Chưa nhận phòng)
                                             </option>
                                         </select>
@@ -129,7 +148,7 @@ use App\Models\RoomInvoice;
                                     <div class="form-group m-form__group">
                                         <label>Khoản tiền thu thêm (Nếu có)</label>
                                         <input type="number" name="extra" class="form-control" min="0"
-                                               value="{{ old('extra', $invoiceRoom->extra) }}">
+                                               value="{{ old('extra', $invoiceRoom->extra) }}" id="extra">
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú khoản thu thêm (Nếu có)</label>
@@ -211,6 +230,7 @@ use App\Models\RoomInvoice;
 @section('script')
     <script>
         $(document).ready(function () {
+            $("#services-select").select2({placeholder: ""});
             $('.my-datepicker').datepicker({
                 todayHighlight: !0,
                 autoclose: !0,
@@ -294,5 +314,44 @@ use App\Models\RoomInvoice;
                 });
             })
         });
+
+        $("select[name='services[]']").each((i, v) => {
+            $(v).on('select2:select', (r) => {
+                let extra = $('#extra').val();
+                let price = r.params.data.title;
+                $('#extra').val(Number(extra) + Number(price));
+            });
+
+            $(v).on('select2:unselect', (r) => {
+                let extra = $('#extra').val();
+                let price = r.params.data.title;
+                $('#extra').val(Number(extra) - Number(price));
+            });
+        });
+
+        function onChangeCurrency(type) {
+            $('#extra').val('');
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: `{{ route('admin.invoices.getServices', '') }}/${type}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    let select = $('#services-select');
+                    select.find('option').remove();
+                    response.forEach(item => {
+                        select.append($('<option>', {
+                            value: item.id,
+                            text: item.name,
+                            title: item.price
+                        }));
+                    });
+
+                }, error: function () {
+                    toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                },
+            });
+        }
     </script>
 @endsection

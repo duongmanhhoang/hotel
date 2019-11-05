@@ -89,7 +89,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
-                                        <label>Dịch vụ <b class="text-danger">*</b></label>
+                                        <label>Dịch vụ</label>
                                         <select class="form-control m-select2" multiple="multiple" id="services-select" name="services[]">
                                             @foreach($services as $service)
                                                 <option value="{{ $service->id }}" title={{ $service->price }}>{{ $service->name }}</option>
@@ -189,7 +189,7 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            $("#services-select").select2({placeholder: ""})
+            $("#services-select").select2({placeholder: ""});
             $('.my-datepicker').datepicker({
                 todayHighlight: !0,
                 autoclose: !0,
@@ -257,6 +257,7 @@
                         }
                         if (response.messages == 'success') {
                             const {data} = response;
+                            console.log(data);
                             $('#room_id').append($('<option>', {}));
                             data.forEach(item => {
                                 $('#room_id').append($('<option>', {
