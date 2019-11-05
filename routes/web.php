@@ -29,3 +29,10 @@ Route::prefix('/rooms/{location_id}')->name('rooms.')->group(function () {
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/{id}', $controller . 'detail')->name('detail');
 });
+
+/** Danh sách phòng */
+Route::prefix('/posts')->name('post.')->group(function () {
+    $controller = 'Client\PostController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/{id}', $controller . 'detail')->name('detail');
+});

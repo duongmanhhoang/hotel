@@ -129,7 +129,7 @@
                     <li><a href="#" class='dropdown-button' data-activates='drop-room'>Hotel <i
                                     class="fa fa-angle-down"></i></a>
                     </li>
-                    <li><a href="blog_list.html">Blog</a>
+                    <li><a href="{{ route('post.index') }}">Blog</a>
                     </li>
                     <li><a href="about_us.html">About Us</a>
                     </li>
