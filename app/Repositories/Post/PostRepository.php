@@ -188,7 +188,9 @@ class PostRepository extends EloquentRepository
 
     public function clientDetail($id)
     {
-        return $this->_model->where('id', $id)->with('postedBy')->first();
+        $language = Session::get('locale');
+
+        return $this->_model->where('id', $id)->where('lang_id', $language)->with('postedBy')->first();
     }
 
     public function postsSameCategory($data)

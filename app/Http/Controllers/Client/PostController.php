@@ -25,7 +25,7 @@ class PostController extends Controller
     {
         $data = $this->postRepo->clientDetail($id);
 
-        if(empty($data)) return redirect()->back()->with(['error' => 'Không tìm thấy bài viết']);
+        if(empty($data)) return redirect()->route('post.index')->with(['error' => 'Không tìm thấy bài viết']);
 
         $sameCategory = $this->postRepo->postsSameCategory($data);
 
