@@ -25,7 +25,7 @@
 						<div class="row inn-services in-blog">
 							<div class="col-md-4"> <img src="{{ asset(config('common.uploads.posts')) . '/' . $data->image }}" alt="" /> </div>
 							<div class="col-md-8">
-								<span class="blog-date">Date: {{ $data->updated_by }}</span>
+								<span class="blog-date">Date: {{ $data->updated_at }}</span>
 								<span class="blog-author">Author: {{ $data->postedBy->full_name }}</span>
 
 								{!! $data->body !!}

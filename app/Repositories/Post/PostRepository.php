@@ -33,7 +33,7 @@ class PostRepository extends EloquentRepository
 
         $result = $this->_model->where($whereConditional)
             ->with('category', 'postedBy', 'approveBy', 'parentTranslate', 'parentEdited')
-            ->paginate($paginate);
+            ->get();
 
         return $result;
     }

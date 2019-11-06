@@ -50,7 +50,7 @@ Route::prefix('category')->name('category.')->group(function () {
 Route::prefix('posts')->name('post.')->group(function () {
     $controller = 'Admin\PostController@';
     Route::get('/{status?}', $controller . 'index')->name('list');
-    Route::get('/table/datatable', $controller . 'dataTable')->name('datatable');
+    Route::get('/table/datatable/{status?}', $controller . 'dataTable')->name('datatable');
     Route::get('/create/new', $controller . 'addView')->name('addView');
     Route::post('/create/new', $controller . 'store')->name('addAction');
     Route::get('/show-post/{id}', $controller . 'show')->name('show');

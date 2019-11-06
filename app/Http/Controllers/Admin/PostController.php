@@ -46,18 +46,18 @@ class PostController extends Controller
         return view('admin.posts.index', compact('data', 'titleSearch'));
     }
 
-    public function dataTable(Request $request)
+    public function dataTable(Request $request, $status = 'approved')
     {
         $input = $request->all();
-//        $approveStatus = config("common.posts.approve_key.$status");
+        $approveStatus = config("common.posts.approve_key.$status");
 
         $input['title'] = $input['title'] ?? null;
-//        $input['approve'] = $approveStatus;
-//
-//        if($status == 'request-edited'){
-//            $input['approve'] = null;
-//            $input['request_edited'] = true;
-//        }
+        $input['approve'] = $approveStatus;
+
+        if($status == 'request-edited'){
+            $input['approve'] = null;
+            $input['request_edited'] = true;
+        }
 
         $data = $this->postRepo->searchPost($input);
 
@@ -168,7 +168,7 @@ class PostController extends Controller
         $input = $request->all();
         $input['posted_by'] = Auth::user()->id;
 
-        $currentPost = $this->postRepo->getPostById($postId);
+        $currentPost = $this->postRepo->findEditedPost($postId);
 
         if($currentPost->approve == config('common.posts.approve_key.rejected'))
             return redirect()->route('admin.post.list', ['status' => config('common.posts.approve_value.-1')])->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);

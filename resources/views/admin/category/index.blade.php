@@ -295,7 +295,7 @@
                             field: "parentTranslate",
                             title: "Bản dịch gốc",
                             template: function (e) {
-                                let parentCategory = 'none';
+                                let parentCategory = 'Bản gốc';
 
                                 if(e.parent_translate != null) {
                                     const editRoute = "{{ route('admin.category.editView', ':id') }}";
