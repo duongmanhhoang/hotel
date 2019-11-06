@@ -15,3 +15,4 @@
     swal('{{ session('error') }}', '', 'error');
     @endif
 </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtqlBL2XudSG3aIwHNNkBcj37CSjrFXqc&callback=initMap&libraries=geometry,places"></script>

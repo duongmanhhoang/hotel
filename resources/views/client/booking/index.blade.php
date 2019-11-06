@@ -1,15 +1,49 @@
 @extends('client.layouts.master')
-@section('content')	
+@section('content')
 		<div class="inn-body-section inn-booking">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-6">
-						<div class="book-title">
-							<h2>Atlantic Hotel Booking</h2>
-							<p>Nhanh chóng, tiện lợi! Hãy đặt phòng với Atlantic Hotel ngay hôm nay để hưởng mức giá cực ưu đãi cùng muôn vàn dịch vụ và dịch vụ hấp dẫn đang đón chờ quý khách!</p>
+					<div class="col-md-12">
+						<div class="head-typo">
+							<h2 id="text-head">Atlantic - Đặt phòng</h2>
 						</div>
-					</div>
-					<div class="col-md-6">
+                        <div class="col-md-6">
+                            <div class="book-title">
+                                <div class="card-hover">
+                                    <div class="card">
+<!--                                         <div class="card-content">
+                                            <div class="image">
+                                                <img src="{{ asset('bower_components/client_layout/images/room1.jpg') }}" alt="">
+                                            </div>
+                                        </div> -->
+                                     <img id ="img-detail" src="{{ asset('bower_components/client_layout/images/room1.jpg') }}" alt="">
+                                    </div>
+                                    <div class="room-detail">
+                                    	 <h4 class="">Tên phòng: Master Room</h4>
+                                    	 <h4>Giá: 2000000 VNĐ</h4>
+                                    	 <h4>Dịch vụ (bấm để xem chi tiết)</h4>
+                                    </div>
+                                    <ul class="collapsible popout" data-collapsible="accordion">
+								<li>
+									<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									<div class="collapsible-body"><span>lul.</span>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									<div class="collapsible-body"><span>lul.</span>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									<div class="collapsible-body"><span>lul.</span>
+									</div>
+								</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
 						<div class="book-form inn-com-form">
 							<form class="col s12">
 								<div class="row">
@@ -35,7 +69,7 @@
 								<div class="row">
 									<div class="input-field col s6">
 										<input type="text" class="validate">
-										<label>City</label>
+										<label>Cơ sở</label>
 									</div>
 									<div class="input-field col s6">
 										<input type="text" class="validate">
@@ -74,7 +108,7 @@
 								</div>
 								<div class="row">
 									<div class="input-field col s12">
-										<textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
+										<textarea id="textarea12" class="materialize-textarea"></textarea>
 										<label>Message</label>
 									</div>
 								</div>
@@ -84,6 +118,7 @@
 								</div>
 							</form>
 						</div>
+                        </div>
 					</div>
 				</div>
 			</div>

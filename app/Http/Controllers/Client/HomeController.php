@@ -60,6 +60,6 @@ class HomeController extends Controller
             'baseLang',
             'roomNameRepository'
         );
-        return view('client.home.index', $data);
+        return view('client.contact.index', $data);
     }
 }
