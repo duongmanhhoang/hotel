@@ -33,7 +33,7 @@ class PostRepository extends EloquentRepository
 
         $result = $this->_model->where($whereConditional)
             ->with('category', 'postedBy', 'approveBy', 'parentTranslate', 'parentEdited')
-            ->paginate($paginate);
+            ->get();
 
         return $result;
     }
@@ -170,5 +170,43 @@ class PostRepository extends EloquentRepository
         }
 
         return $result;
+    }
+
+    public function getClientPost()
+    {
+        $paginate = config('common.pagination.default');
+        $language = Session::get('locale');
+
+        $whereConditional = [
+            ['lang_id', $language],
+            ['edited_from', null],
+            ['approve', config('common.posts.approve_key.approved')],
+        ];
+
+        return $this->_model->where($whereConditional)->with('postedBy')->orderBy('id', 'desc')->paginate($paginate);
+    }
+
+    public function clientDetail($id)
+    {
+        $language = Session::get('locale');
+
+        return $this->_model->where('id', $id)->where('lang_id', $language)->with('postedBy')->first();
+    }
+
+    public function postsSameCategory($data)
+    {
+        $language = Session::get('locale');
+        $categoryId = $data->category_id;
+        $currentPostId = $data->id;
+
+        $whereConditional = [
+            ['lang_id', $language],
+            ['category_id', $categoryId],
+            ['edited_from', null],
+            ['approve', config('common.posts.approve_key.approved')],
+            ['id', '<>', $currentPostId],
+        ];
+
+        return $this->_model->where($whereConditional)->with('postedBy')->get();
     }
 }

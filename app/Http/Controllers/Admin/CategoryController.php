@@ -41,6 +41,18 @@ class CategoryController extends Controller
         return view('admin.category.index', $compact);
     }
 
+    public function dataTable(Request $request)
+    {
+        $input = $request->all();
+
+        $input['name'] = $input['name'] ?? null;
+        $input['type'] = $input['type'] ?? null;
+
+        $data = $this->categoryRepo->getCategory($input);
+
+        return response()->json(['data' => $data]);
+    }
+
     public function addView($categoryId = false)
     {
         if($categoryId != false) {
@@ -111,13 +123,7 @@ class CategoryController extends Controller
     {
         $data = $this->categoryRepo->deleteCategory($id);
 
-        if ($data == true) {
-            $request->session()->flash('success', 'Xóa thành công');
-        } else {
-            $request->session()->flash('error', 'Có lỗi xảy ra');
-        }
-
-        return redirect()->back();
+        return response()->json(['is_deleted' => $data]);
     }
 
     public function categoryTranslate(PostCategoryRequest $request, $categoryId)

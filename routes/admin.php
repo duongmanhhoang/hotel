@@ -35,6 +35,7 @@ Route::prefix('locations')->name('locations.')->group(function () {
 Route::prefix('category')->name('category.')->group(function () {
     $controller = 'Admin\CategoryController@';
     Route::get('/', $controller . 'index')->name('list');
+    Route::get('/datatable', $controller . 'dataTable')->name('datatable');
     Route::get('/post', $controller . 'addView')->name('postView');
     Route::post('/post', $controller . 'postCategory')->name('postAction');
     Route::get('/edit/{id}', $controller . 'editView')->name('editView');
@@ -49,6 +50,7 @@ Route::prefix('category')->name('category.')->group(function () {
 Route::prefix('posts')->name('post.')->group(function () {
     $controller = 'Admin\PostController@';
     Route::get('/{status?}', $controller . 'index')->name('list');
+    Route::get('/table/datatable/{status?}', $controller . 'dataTable')->name('datatable');
     Route::get('/create/new', $controller . 'addView')->name('addView');
     Route::post('/create/new', $controller . 'store')->name('addAction');
     Route::get('/show-post/{id}', $controller . 'show')->name('show');
