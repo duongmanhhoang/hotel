@@ -45,6 +45,6 @@ class Category extends Model
 
     public function services()
     {
-        return $this->hasMany('App\Model\Service', 'cate_id');
+        return $this->hasMany(Service::class, 'cate_id');
     }
 }

@@ -28,6 +28,7 @@ Route::prefix('/rooms/{location_id}')->name('rooms.')->group(function () {
     $controller = 'Client\RoomController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/{id}', $controller . 'detail')->name('detail');
+    Route::post('/{id}/comment', $controller . 'comment')->name('comment');
 });
 
 /** Danh sách phòng */

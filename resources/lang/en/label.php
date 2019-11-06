@@ -9,4 +9,9 @@ return [
     'Convenient' => 'Convenient',
     'Destination' => 'Destination',
     'Rating' => 'Rating',
+    'Services' => 'Services',
+    'Comment' => 'Comment',
+    'Write_preview' => 'Write preview',
+    'List_comment' => 'List comments',
+
 ];
