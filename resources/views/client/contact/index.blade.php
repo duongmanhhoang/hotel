@@ -38,7 +38,7 @@
                                                     <div class="home-map-search">
                                                         <div  class="home-map-list">
                                                             <div class="home-map-header">
-                                                                <p class="map-title"><i class="fas fa-map-marker-alt"></i>HỆ THỐNG CỬA HÀNG</p>
+                                                                <p class="map-title"><i class="fas fa-map-marker-alt"></i>HỆ THỐNG CƠ SỞ</p>
                                                                 <div class="home-map-search">
 {{--                                                                    <select name="city" id="city">--}}
 {{--                                                                        <option value="ha-noi">Hà Nội</option>--}}
@@ -124,8 +124,5 @@
             </div>
         </div>
     </div>
-{{--    <script async defer--}}
-{{--            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtqlBL2XudSG3aIwHNNkBcj37CSjrFXqc&callback=initMap&libraries=geometry,places">--}}
-{{--    </script>--}}
 
 @endsection
