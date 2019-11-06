@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomName\RoomNameRepository;
+use App\Repositories\Service\ServiceRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Validator;
 
 class RoomController extends Controller
 {
@@ -17,18 +22,27 @@ class RoomController extends Controller
     private $propertyRepository;
     private $baseLang;
     private $roomNameRepository;
+    private $serviceRepository;
+    private $categoryRepository;
+    private $commentRepository;
 
     public function __construct(
         RoomRepository $roomRepository,
         LocationRepository $locationRepository,
         PropertyRepository $propertyRepository,
-        RoomNameRepository $roomNameRepository
+        RoomNameRepository $roomNameRepository,
+        ServiceRepository $serviceRepository,
+        CategoryRepository $categoryRepository,
+        CommentRepository $commentRepository
     )
     {
         $this->roomRepository = $roomRepository;
         $this->locationRepository = $locationRepository;
         $this->propertyRepository = $propertyRepository;
         $this->roomNameRepository = $roomNameRepository;
+        $this->serviceRepository = $serviceRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->commentRepository = $commentRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -69,7 +83,7 @@ class RoomController extends Controller
     public function detail(Request $request, $location_id, $id)
     {
         $room = $this->roomRepository->findOrFail($id);
-        $room->load('properties');
+        $room->load(['properties']);
         if (session('locale') == $this->baseLang) {
             $name = $room->roomName->name;
         } else {
@@ -97,15 +111,30 @@ class RoomController extends Controller
             $propertyIds = $room->properties->pluck('id')->toArray();
             $properties = $this->propertyRepository->whereIn('lang_parent_id', $propertyIds)->where('lang_id', \session('locale'))->get();
         }
+        $categoriesService = $this->categoryRepository->where('type', '=', Category::SERVICE)
+            ->where('lang_id', \session('locale'))->get();
+        $categoriesService->load(['services', 'parentTranslate']);
         $data = compact(
+            'location_id',
             'room',
             'roomDetail',
             'stars',
             'whiteStars',
             'properties',
-            'name'
+            'name',
+            'categoriesService'
         );
 
         return view('client.rooms.detail', $data);
+    }
+
+    public function comment(Request $request, $location_id, $id)
+    {
+        $data = $request->all();
+        $rules =
+
+        $messages =
+
+        $validator = Validator::make($data)
     }
 }

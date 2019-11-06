@@ -1,0 +1,7 @@
+.pagination .disabled {
+    display: none;
+}
+
+.materialize-textarea {
+    height: 130px !important;
+}

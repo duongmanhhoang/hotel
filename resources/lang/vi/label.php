@@ -9,4 +9,8 @@ return [
     'Convenient' => 'Tiện nghi phòng',
     'Destination' => 'Cơ sở',
     'Rating' => 'Đánh giá',
+    'Services' => 'Dịch vụ',
+    'Comment' => 'Bình luận',
+    'Write_preview' => 'Viết bình luận',
+    'List_comment' => 'Danh sách bình luận',
 ];

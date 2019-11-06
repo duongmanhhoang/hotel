@@ -14,6 +14,10 @@ mix.styles([
     'resources/assets/admin/css/style.css',
 ], 'public/css/app.css');
 
+mix.styles([
+    'resources/assets/client/css/custom.css',
+], 'public/css/client/app.css');
+
 
 mix.scripts([
     'resources/assets/admin/js/script.js',

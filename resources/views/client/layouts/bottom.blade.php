@@ -15,3 +15,4 @@
     swal('{{ session('error') }}', '', 'error');
     @endif
 </script>
+@yield('script')
