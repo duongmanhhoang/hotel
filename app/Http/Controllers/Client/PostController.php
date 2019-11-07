@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Post\PostRepository;
-use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -25,10 +24,18 @@ class PostController extends Controller
     {
         $data = $this->postRepo->clientDetail($id);
 
-        if(empty($data)) return redirect()->route('post.index')->with(['error' => 'Không tìm thấy bài viết']);
+        if (empty($data)) return redirect()->route('post.index')->with(['error' => 'Không tìm thấy bài viết']);
 
         $sameCategory = $this->postRepo->postsSameCategory($data);
 
         return view('client.blog.blog_detail', compact('data', 'sameCategory'));
+    }
+
+    public function getPostViaCategoryName($name)
+    {
+        $data = $this->postRepo->getClientPostViaCategoryName($name);
+
+
+        return view('client.blog.index', compact('data'));
     }
 }
