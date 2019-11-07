@@ -8,6 +8,10 @@ return [
     'Enter_password' => 'Nhập mật khẩu',
     'currency' => 'vnđ',
     'star' => 'sao',
+    'Warning' => 'Cảnh báo',
+    'Success' => 'Thành công',
+    'Something_wrong' => 'Có lỗi xảy ra, xin vui lòng thử lại',
+    'Comment_success' => 'Bình luận thành công',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
@@ -27,6 +31,6 @@ return [
         'email_email' => 'Vui lòng nhập đúng định dạng email',
         'email_max' => 'Vui lòng không nhập quá 191 ký tự',
         'body_required' => 'Vui lòng nhập nội dung',
-        'star.required' => 'Vui lòng đánh giá trước khi bình luận',
+        'star_required' => 'Vui lòng đánh giá trước khi bình luận',
     ]
 ];

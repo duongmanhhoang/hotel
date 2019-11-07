@@ -13,4 +13,8 @@ return [
     'Comment' => 'Bình luận',
     'Write_preview' => 'Viết bình luận',
     'List_comment' => 'Danh sách bình luận',
+    'Submit_your_review' => 'Bình luận',
+    'Choose_time' => 'Chọn thời gian',
+    'Arrival_date' => 'Ngày đến',
+    'Departure_date' => 'Ngày đến',
 ];
