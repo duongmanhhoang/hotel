@@ -12,8 +12,10 @@ use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomName\RoomNameRepository;
 use App\Repositories\Service\ServiceRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -82,6 +84,7 @@ class RoomController extends Controller
 
     public function detail(Request $request, $location_id, $id)
     {
+        $location = $this->locationRepository->find($location_id);
         $room = $this->roomRepository->findOrFail($id);
         $room->load(['properties']);
         if (session('locale') == $this->baseLang) {
@@ -114,6 +117,15 @@ class RoomController extends Controller
         $categoriesService = $this->categoryRepository->where('type', '=', Category::SERVICE)
             ->where('lang_id', \session('locale'))->get();
         $categoriesService->load(['services', 'parentTranslate']);
+        $comments = $this->commentRepository->getCommentsByRoom($id);
+        $user = Auth::user();
+        if ($user) {
+            if ($user->role_id == config('common.roles.super_admin') || $user->role_id == config('common.roles.admin')) {
+                $showEmail = true;
+            }
+        } else {
+            $showEmail = false;
+        }
         $data = compact(
             'location_id',
             'room',
@@ -122,7 +134,10 @@ class RoomController extends Controller
             'whiteStars',
             'properties',
             'name',
-            'categoriesService'
+            'categoriesService',
+            'comments',
+            'showEmail',
+            'location'
         );
 
         return view('client.rooms.detail', $data);
@@ -131,10 +146,36 @@ class RoomController extends Controller
     public function comment(Request $request, $location_id, $id)
     {
         $data = $request->all();
-        $rules =
+        $rules = $this->commentRepository->makeRules();
+        $messages = $this->commentRepository->messages();
+        $validator = Validator::make($data, $rules, $messages);
 
-        $messages =
+        if ($validator->fails()) {
+            $dataResponse = [
+                'messages' => 'validation_fail',
+                'data' => $validator->messages(),
+            ];
+        } else {
+            DB::beginTransaction();
+            try {
+                $data = $this->commentRepository->storeData($data, $id);
+                DB::commit();
 
-        $validator = Validator::make($data)
+                $dataResponse = [
+                    'messages' => 'success',
+                    'data' => $data,
+                ];
+            } catch (\Exception $exception) {
+                DB::rollBack();
+
+                $dataResponse = [
+                    'messages' => 'error',
+                    'data' => $exception->getMessage(),
+                ];
+            }
+
+        }
+
+        return response()->json($dataResponse, 200);
     }
 }

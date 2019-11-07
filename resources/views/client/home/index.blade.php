@@ -8,18 +8,24 @@
                         <div class="col-md-6">
                             <div class="book-title">
                                 <h2>Check Availability</h2>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                    unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                    It has survived not only five centuries. </p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="book-form inn-com-form">
                                 <form class="col s12">
                                     <div class="row">
+                                        <div class="input-field col s12">
+                                            <select>
+                                                <option value="" disabled selected>Chọn sơ sở</option>
+                                                @foreach($searchLocations as $searchLocation)
+                                                    <option value="{{ $searchLocation->id }}">{{ $searchLocation->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="input-field col s6">
-                                            <select name="status" id="selectedTest">
+                                            <select name="adults" id="selectedTest">
                                                 <option value="" disabled selected>No of adults</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -28,7 +34,7 @@
                                             </select>
                                         </div>
                                         <div class="input-field col s6">
-                                            <select name="status" id="selectedTest">
+                                            <select name="children" id="selectedTest">
                                                 <option value="" disabled selected>No of childrens</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -39,22 +45,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s6">
-                                            <input type="text" id="from" name="from">
-                                            <label for="from">Check In</label>
+                                            <input type="text" id="from" name="checkin">
+                                            <label for="checkin">Check In</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input type="text" id="to" name="to">
-                                            <label for="to">Check Out</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                            <select>
-                                                <option value="" disabled selected>Chọn sơ sở</option>
-                                                <option value="1">Hà Nội</option>
-                                                <option value="2">TP Hồ Chí Minh</option>
-                                                <option value="3">Đà Nẵng</option>
-                                            </select>
+                                            <input type="text" id="to" name="checkout">
+                                            <label for="checkout">Check Out</label>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -106,9 +102,9 @@
                                                         <li>{{ __('label.Destination') }}:
                                                             @if ($baseLang == session('locale'))
                                                                 {{ $location->name }}
-                                                                @else
+                                                            @else
                                                                 {{ $location->where('lang_id', session('locale'))->first() ? $location->where('lang_id', session('locale'))->first()->name : $location->name }}
-                                                                @endif
+                                                            @endif
                                                             <div class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
                                                                 :
                                                                 @for($i = 0; $i < $stars; $i++)

@@ -1,6 +1,8 @@
 @extends('client.layouts.master')
 @section('content')
-    @include('client.layouts.headerWithFilter', ['headerImage' => asset(config('common.uploads.rooms') . '/' . $room->image)])
+    <div class="hp-banner">
+        <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}" alt="" style="height: 500px; object-fit: cover">
+    </div>
     <div class="hom-com">
         <div class="container">
             <div class="row">
@@ -140,13 +142,16 @@
                             </div>
                             <div class="hp-review">
                                 <div class="hp-review-left">
-                                    <a class="waves-effect waves-light wr-re-btn" href="%21.html#" data-toggle="modal"
+                                    <a class="waves-effect waves-light wr-re-btn" href="javascript:;"
+                                       data-toggle="modal"
                                        data-target="#commend"><i class="fa fa-edit"></i>{{ __('label.Write_preview') }}
                                     </a>
                                 </div>
                                 <div class="hp-review-right">
                                     <h5>{{ __('label.Rating') }}</h5>
-                                    <p><span>4.5 <i class="fa fa-star" aria-hidden="true"></i></span></p>
+                                    <p><span id="room-rating">{{ $room->rating }} <i class="fa fa-star"
+                                                                                     aria-hidden="true"></i></span>
+                                    </p>
 
                                 </div>
                             </div>
@@ -156,41 +161,27 @@
                                 <h4>{{ __('label.List_comment') }}</h4>
                             </div>
                             <div class="lp-ur-all-rat">
-                                <ul>
-                                    <li>
-                                        <div class="lr-user-wr-img"><img
-                                                    src="{{ asset('bower_components/client_layout/images/users/100.png') }}"
-                                                    alt=""></div>
-                                        <div class="lr-user-wr-con">
-                                            <h6>Tran dan <span>4.5 <i class="fa fa-star" aria-hidden="true"></i></span>
-                                            </h6> <span class="lr-revi-date">19th January, 2019</span>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                industry. Lorem Ipsum has been the industry's standard dummy. </p>
-                                            <ul>
-                                                <li><a href="#!"><span>Like</span><i class="fa fa-thumbs-o-up"
-                                                                                     aria-hidden="true"></i></a></li>
-                                                <li><a href="#!"><span>Dis-Like</span><i class="fa fa-thumbs-o-down"
-                                                                                         aria-hidden="true"></i></a>
-                                                </li>
-                                                <li><a href="#!"><span>Report</span> <i class="fa fa-flag-o"
-                                                                                        aria-hidden="true"></i></a></li>
-                                                <li><a href="#!"><span>Comments</span> <i class="fa fa-commenting-o"
-                                                                                          aria-hidden="true"></i></a>
-                                                </li>
-                                                <li><a href="#!"><span>Share Now</span> <i class="fa fa-facebook"
-                                                                                           aria-hidden="true"></i></a>
-                                                </li>
-                                                <li><a href="#!"><i class="fa fa-google-plus"
-                                                                    aria-hidden="true"></i></a></li>
-                                                <li><a href="#!"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                                </li>
-                                                <li><a href="#!"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                                </li>
-                                                <li><a href="#!"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
+                                <ul class="list-comments">
+                                    @foreach ($comments as $comment)
+                                        <li>
+                                            <div class="lr-user-wr-img"><img
+                                                        src="{{ asset('bower_components/client_layout/images/users/100.png') }}"
+                                                        alt=""></div>
+                                            <div class="lr-user-wr-con">
+                                                <h6>@if ($showEmail)
+                                                        {{ $comment->email }}
+                                                    @else
+                                                        Anonymous
+                                                    @endif
+                                                    <span>{{ $comment->rating }} <i
+                                                                class="fa fa-star"
+                                                                aria-hidden="true"></i></span>
+                                                </h6> <span
+                                                        class="lr-revi-date">{{ formatDate($comment->created_at) }}</span>
+                                                <p> {{ $comment->body }} </p>
+                                            </div>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -200,9 +191,9 @@
                     <div class="hp-call hp-right-com">
                         <div class="hp-call-in"><img
                                     src="{{ asset('bower_components/client_layout/images/icon/dbc4.png') }}" alt="">
-                            <h3><span>Check Availability. Call us!</span> +84 376 594 637</h3>
+                            <h3>{{ $location->phone }}</h3>
                             <small>Chúng tôi hỗ trợ 24/7</small>
-                            <a href="#">Call Now</a></div>
+                            <a href="javascript:;" data-toggle="modal" data-target="#booking">Call Now</a></div>
                     </div>
                     <div class="hp-book hp-right-com">
                         <div class="hp-book-in">
@@ -269,17 +260,47 @@
                             <label class="star-5" for="star-5">5</label> <span></span></div>
                         <div>
                             <div class="input-field s4">
-                                <input type="submit" value="Submit Your Review"
+                                <input type="submit" value="{{ __('label.Submit_your_review') }}"
                                        class="waves-effect waves-light log-in-btn" id="submit-comment"></div>
                         </div>
                         <div>
-                            <div class="input-field s12"><a href="#" data-dismiss="modal" data-toggle="modal"
-                                                            data-target="#modal1">Bạn đã có tài khoản ? Đăng nhập</a>
+                            <div class="input-field s12">
                             </div>
                         </div>
                     </form>
                     <div>
                         <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div id="booking" class="modal fade" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ __('label.Choose_time') }}</h5>
+                        <button style="margin-top: -20px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="inn-com-form ">
+                            <form method="post" action="" class="col s12 custom-inn-com-form">
+                                    <div class="input-field col s12 m4 l2">
+                                        <input type="text" id="from" name="from">
+                                        <label for="from">{{ __('label.Arrival_date') }}</label>
+                                    </div>
+                                    <div class="input-field col s12 m4 l2">
+                                        <input type="text" id="to" name="to">
+                                        <label for="to">{{ __('label.Departure_date') }}</label>
+                                    </div>
+                                    <div class="input-field col s12 m4 l2">
+                                        <input type="submit" value="submit" class="form-btn">
+                                    </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -313,9 +334,45 @@
                     dataType: 'json',
                     data: formData,
                     success: function (response) {
-                        console.log(response);
+                        if (response.messages == 'validation_fail') {
+                            console.log(response.data);
+                            if (response.data.email) {
+                                toastr.error(response.data.email[0], '{{ __('messages.Warning') }}');
+                            } else if (response.data.body) {
+                                toastr.error(response.data.body[0], '{{ __('messages.Warning') }}');
+                            } else if (response.data.star[0], '{{ __('messages.Warning') }}') {
+                                toastr.error(response.data.star[0], '{{ __('messages.Warning') }}');
+                            }
+                        }
+
+                        if (response.messages == 'error') {
+                            toastr.error('{{ __('messages.Something_wrong') }}', '{{ __('messages.Warning') }}');
+                        }
+
+                        if (response.messages == 'success') {
+                            const data = response.data.comment;
+                            const html = `<li>
+                                            <div class="lr-user-wr-img"><img
+                                                        src="{{ asset('bower_components/client_layout/images/users/100.png') }}"
+                                                        alt=""></div>
+                                            <div class="lr-user-wr-con">
+                                                <h6>Anonymous <span>${data.rating} <i class="fa fa-star"
+                                                                                          aria-hidden="true"></i></span>
+                                                </h6> <span class="lr-revi-date">{{ date('dd-mm-Y') }}</span>
+                                                <p> ${data.body} </p>
+                                            </div>
+                                        </li>`;
+                            $('.list-comments').prepend(html);
+                            $('#room-rating').html(`${response.data.newRating}<i class="fa fa-star" aria-hidden="true"></i>`);
+                            toastr.success('{{ __('messages.Comment_success') }}', '{{ __('messages.Success') }}');
+                            $("#commend").removeClass("in");
+                            $(".modal-backdrop").remove();
+                            $('body').removeClass('modal-open');
+                            $('body').css('padding-right', '');
+                            $("#commend").hide();
+                        }
                     }, error: function () {
-                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Cảnh báo!!');
+                        toastr.error('{{ __('messages.Something_wrong') }}', '{{ __('messages.Warning') }}');
                     },
                 });
             });

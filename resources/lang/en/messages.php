@@ -8,6 +8,10 @@ return [
     'Enter_password' => 'Enter Password',
     'currency' => '$',
     'star' => 'star',
+    'Warning' => 'Warning',
+    'Success' => 'Success',
+    'Something_wrong' => 'Something went wrong, please try again',
+    'Comment_success' => 'Comment successfully',
 
     'validation' => [
         'required' => 'Must fill this field',
@@ -26,7 +30,7 @@ return [
         'email_required' => 'Please enter email',
         'email_email' => 'Please enter right email type',
         'email_max' => 'Please do not enter more than 191 characters',
-        'body_required' => '',
-        'star.required' => 'Vui lòng đánh giá trước khi bình luận',
+        'body_required' => 'Please enter your review',
+        'star_required' => 'Vui lòng đánh giá trước khi bình luận',
     ]
 ];
