@@ -71,8 +71,6 @@ class CategoryRepository extends EloquentRepository
     {
         $result = $this->_model->where('id', $id)->with('childrenTranslate')->first();
 
-
-
         if (!empty($result->childrenTranslate)) {
             foreach ($result->childrenTranslate as $child) {
                 $child->childrenTranslate()->delete();

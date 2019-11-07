@@ -21,4 +21,9 @@ class StatisticalController extends Controller
 
         return $data;
     }
+
+    public function getStatisticalByMonth()
+    {
+        return $this->statisticalRepo->statisticalByMonth();
+    }
 }
