@@ -13,5 +13,8 @@ return [
     'Comment' => 'Comment',
     'Write_preview' => 'Write preview',
     'List_comment' => 'List comments',
-
+    'Submit_your_review' => 'Submit Your Review',
+    'Choose_time' => 'Choose your time',
+    'Arrival_date' => 'Arrival date',
+    'Departure_date' => 'Departure date',
 ];

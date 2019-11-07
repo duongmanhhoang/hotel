@@ -16,6 +16,7 @@ mix.styles([
 
 mix.styles([
     'resources/assets/client/css/custom.css',
+    'resources/assets/client/css/toastr.css',
 ], 'public/css/client/app.css');
 
 
@@ -25,4 +26,5 @@ mix.scripts([
 
 mix.scripts([
     'resources/assets/client/js/script.js',
+    'resources/assets/client/js/toastr.min.js',
 ], 'public/js/client/app.js');
