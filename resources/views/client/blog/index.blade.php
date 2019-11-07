@@ -35,6 +35,10 @@
                                 <a href=" {{ route('post.detail', $value->id) }} " class="waves-effect waves-light inn-re-mo-btn">Read More</a> </div>
                         </div>
                     @endforeach
+
+                        <div class="col-md-4">
+                            @include('client.pagination.index', ['paginator' => $data])
+                        </div>
                 </div>
                 <div class="col-md-4">
                     <div class="head-typo typo-com rec-post">
