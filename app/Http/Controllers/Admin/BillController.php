@@ -113,8 +113,8 @@ class BillController extends Controller
             $this->statisticalReppo->updateStatisticalAfterDeleteBill($statistical, $bill);
         }
 
-//        $result = $this->billRepo->deleteBill($bill);
+        $result = $this->billRepo->deleteBill($bill);
 
-        return response()->json(['status' => true]);
+        return response()->json(['status' => $result]);
     }
 }
