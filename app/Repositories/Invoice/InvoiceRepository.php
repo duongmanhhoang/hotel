@@ -42,7 +42,10 @@ class InvoiceRepository extends EloquentRepository
         $dataPivot = $this->makePivotData($data);
         $dataInvoice = $this->makeData($data);
         $invoice = $this->_model->create($dataInvoice);
-        $invoice->services()->attach($data['services']);
+        if (isset($data['services'])) {
+            $invoice->services()->attach($data['services']);
+        }
+
         $invoice->rooms()->attach([$data['room_id'] => $dataPivot]);
 
     }

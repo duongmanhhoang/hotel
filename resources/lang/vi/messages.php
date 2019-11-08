@@ -12,6 +12,8 @@ return [
     'Success' => 'Thành công',
     'Something_wrong' => 'Có lỗi xảy ra, xin vui lòng thử lại',
     'Comment_success' => 'Bình luận thành công',
+    'Booking_missing_requirement' => 'Không có đủ dữ liệu để thực hiện hành động này',
+    'Not_enough_info' => 'Không có đủ thông tin ở ngôn ngữ này để hiện thị',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',

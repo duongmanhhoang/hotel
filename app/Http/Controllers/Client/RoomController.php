@@ -178,4 +178,35 @@ class RoomController extends Controller
 
         return response()->json($dataResponse, 200);
     }
+
+    public function search(Request $request)
+    {
+        $rooms = $this->roomRepository->searchRooms($request);
+
+        if ($rooms) {
+            if (session('locale') != $this->baseLang) {
+                foreach ($rooms as $room) {
+                    $roomNameId = $room->roomName->id;
+                    $name = $this->roomNameRepository->where('lang_parent_id', '=', $roomNameId)->first();
+                    if ($name) {
+                        $room->name = $name->name;
+                    }
+                }
+                $propertyRepository = $this->propertyRepository;
+            }
+
+        } else {
+            $request->session()->flash('error', 'Không có phòng phù hợp');
+
+            return redirect()->back();
+        }
+
+        $data = compact(
+            'rooms',
+            'location',
+            'propertyRepository'
+        );
+
+        return view('client.rooms.search', $data);
+    }
 }
