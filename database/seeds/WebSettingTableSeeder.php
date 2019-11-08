@@ -18,6 +18,7 @@ class WebSettingTableSeeder extends Seeder
             'instagram' => 'https://www.instagram.com/',
             'linkedin' => 'https://www.linkedin.com/',
             'tripadvisor' => 'https://www.tripadvisor.com.vn',
+            'logo_footer' => 'logo',
         ];
         \App\Models\WebSetting::insert($data);
     }

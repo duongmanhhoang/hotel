@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\Room;
 use App\Models\RoomDetail;
 use App\Models\RoomInvoice;
+use App\Models\RoomName;
 use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -281,5 +282,53 @@ class RoomRepository extends EloquentRepository
         };
 
         return false;
+    }
+
+    public function makeDataTable($location_id)
+    {
+        $rooms = $this->_model
+            ->orderBy('id', 'desc')
+            ->where('location_id', '=', $location_id)
+            ->with([
+                'roomName',
+                'roomDetails' => function ($q) {
+                    $q->where('lang_id', session('locale'));
+                }
+            ])
+            ->whereHas('roomDetails', function ($q) {
+                $q->where('lang_id', session('locale'));
+            })->get();
+
+        $roomNames = RoomName::where('lang_id', session('locale'))->get();
+        foreach ($rooms as $room) {
+            $room->price = number_format($room->roomDetails[0]->price);
+            $room->sale_price = number_format($room->roomDetails[0]->sale_price);
+            if (session('locale') == config('common.languages.default')) {
+                $currency = 'vnđ';
+                $name = $room->roomName->name;
+            } else {
+                $currency = '$';
+                $roomName = $roomNames->filter(function ($value) use ($room) {
+                   return $value->lang_parent_id == $room->roomName->id;
+                })->first();
+
+                if ($roomName) {
+                    $name = $roomName->name;
+                } else {
+                    $name = $room->roomName->name;
+                }
+            }
+            $room->name = $name;
+            $room->currency = $currency;
+            $room->baseLangId = session('locale') == config('common.languages.default') ? $room->roomDetails[0]->id : $room->roomDetails[0]->lang_parent_id;
+        }
+        return $rooms;
+    }
+
+    public function getDetailTranslate($id)
+    {
+        return RoomDetail::where('lang_parent_id', $id)
+            ->where('lang_id', session('locale'))
+            ->first();
     }
 }

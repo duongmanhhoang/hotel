@@ -24,8 +24,16 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/change-language/{id}', 'LanguageController@change')->name('changeLanguage');
 
 /** Danh sách phòng */
-Route::prefix('/rooms')->name('rooms.')->group(function () {
+Route::prefix('/rooms/{location_id}')->name('rooms.')->group(function () {
     $controller = 'Client\RoomController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::get('/{id}', $controller . 'detail')->name('detail');
+    Route::post('/{id}/comment', $controller . 'comment')->name('comment');
+});
+
+/** Danh sách phòng */
+Route::prefix('/posts')->name('post.')->group(function () {
+    $controller = 'Client\PostController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/{id}', $controller . 'detail')->name('detail');
 });

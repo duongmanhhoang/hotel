@@ -9,7 +9,8 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    @if(isset($data)) Sửa danh mục @elseif(isset($dataTranslate)) Dịch ngôn ngữ @else Thêm danh mục @endif
+                                    @if(isset($data)) Sửa danh mục @elseif(isset($dataTranslate)) Dịch ngôn ngữ @else
+                                        Thêm danh mục @endif
                                 </h3>
                             </div>
                         </div>
@@ -35,6 +36,24 @@
                                             <b class="text-danger">{{ $errors->first('name') }}</b>
                                         @endif
                                     </div>
+
+                                    @if(empty($data->parentTranslate))
+                                        <div class="form-group m-form__group">
+                                            <label>Loại danh mục</label>
+                                            <div class="bs-select">
+                                                <select class="bs-select form-control" tabindex="-98" name="type">
+                                                    @for($i = 0; $i <= 1; $i++)
+                                                        <option value="{{ $i }}" {{ isset($data) && $data->type == $i ? 'selected' : '' }}>
+                                                            @switch($i)
+                                                                @case(0) Bài viết @break;
+                                                                @case(1) Dịch vụ @break;
+                                                            @endswitch
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
 
                                     @if(!isset($dataTranslate))
                                         <div class="form-group m-form__group">

@@ -14,8 +14,8 @@ class UsersTableSeeder extends Seeder
         $data = [
             [
                 'role_id' => config('common.roles.super_admin'),
-                'email' => 'manhhoang3151996@gmail.com',
-                'password' => bcrypt('12345678'),
+                'email' => 'minhku98@gmail.com',
+                'password' => bcrypt('123456'),
                 'full_name' => 'Super Admin',
                 'phone' => '0969200973',
                 'address' => 'Hà Nội',

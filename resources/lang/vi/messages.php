@@ -8,6 +8,10 @@ return [
     'Enter_password' => 'Nhập mật khẩu',
     'currency' => 'vnđ',
     'star' => 'sao',
+    'Warning' => 'Cảnh báo',
+    'Success' => 'Thành công',
+    'Something_wrong' => 'Có lỗi xảy ra, xin vui lòng thử lại',
+    'Comment_success' => 'Bình luận thành công',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
@@ -23,5 +27,10 @@ return [
         'old_password_required' => 'Vui lòng nhập mật khẩu cũ',
         'wrong_old_password' => 'Mật khẩu cũ không đúng',
         'cant_found_user' => 'Không tìm thấy tài khoản này',
+        'email_required' => 'Vui lòng nhập email',
+        'email_email' => 'Vui lòng nhập đúng định dạng email',
+        'email_max' => 'Vui lòng không nhập quá 191 ký tự',
+        'body_required' => 'Vui lòng nhập nội dung',
+        'star_required' => 'Vui lòng đánh giá trước khi bình luận',
     ]
 ];

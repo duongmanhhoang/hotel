@@ -13,56 +13,36 @@
 			<div class="container">
 				<div class="row inn-page-com">
 					<div class="page-head">
-						<h2>Xu hướng du lịch mùa đông tại Hà Nội</h2>
+						<h2> {{ $data->title ?? ''}} </h2>
 						<div class="head-title">
 							<div class="hl-1"></div>
 							<div class="hl-2"></div>
 							<div class="hl-3"></div>
 						</div>
-						<p>Mùa đông tại Hà Nội này bạn đã biết phải đi đâu chưa?! Hãy để Atlantic chỉ đường giúp bạn nhé!</p>
+						<p> {{ $data->description ?? '' }} </p>
 					</div>
 					<div class="col-md-8">
 						<div class="row inn-services in-blog">
-							<div class="col-md-4"> <img src="{{ asset('bower_components/client_layout/images/ami/10.jpg') }}" alt="" /> </div>
+							<div class="col-md-4"> <img src="{{ asset(config('common.uploads.posts')) . '/' . $data->image }}" alt="" /> </div>
 							<div class="col-md-8">
-								<h3>Mùa đông tại Hà Nội này</h3> <span class="blog-date">Date: December 9, 2019</span> <span class="blog-author">Author: Trần Dần</span>
-								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+								<span class="blog-date">Date: {{ $data->updated_at }}</span>
+								<span class="blog-author">Author: {{ $data->postedBy->full_name }}</span>
+
+								{!! $data->body !!}
 							</div>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="head-typo typo-com rec-post">
-							<h3>Bài viết gần nhất</h3>
+							<h3>Bài viết cùng danh mục</h3>
 							<ul>
-								<li>
-									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}" alt="" /> </div>
-									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
-										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
-								</li>
-								<li>
-									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/2.jpg') }}" alt="" /> </div>
-									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
-										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
-								</li>
-								<li>
-									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/3.jpg') }}" alt="" /> </div>
-									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
-										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
-								</li>
-								<li>
-									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/4.jpg') }}" alt="" /> </div>
-									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
-										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
-								</li>
-								<li>
-									<div class="rec-po-img"> <img src="{{ asset('bower_components/client_layout/images/ami/5.jpg') }}" alt="" /> </div>
-									<div class="rec-po-title"> <a href="#"><h4>Omega bài viết</h4></a>
-										<p>TLorem Ipsum is simply dummy text of the printing and typesetting industry.</p> <span class="blog-date">Date: December 9, 2019</span> </div>
-								</li>
+								@foreach($sameCategory as $value)
+									<li>
+										<div class="rec-po-img"> <img src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}" alt="" /> </div>
+										<div class="rec-po-title"> <a href="#"><h4> {{ $value->title }}</h4></a>
+											<p> {{ $value->description }} </p> <span class="blog-date">Date: {{ $value->updated_at }}</span> </div>
+									</li>
+								@endforeach
 							</ul>
 						</div>
 						<div class="head-typo typo-com">

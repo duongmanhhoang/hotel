@@ -22,13 +22,21 @@ class PostController extends Controller
         $this->languageRepo = $languageRepository;
         $this->categoryRepo = $categoryRepository;
         $this->baseLang = config('common.languages.default');
+        $this->pendingPost = config('common.posts.approve_key.pending');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $status = 'approved')
     {
         $input = $request->all();
+        $approveStatus = config("common.posts.approve_key.$status");
 
         $input['title'] = $input['title'] ?? null;
+        $input['approve'] = $approveStatus;
+
+        if($status == 'request-edited'){
+            $input['approve'] = null;
+            $input['request_edited'] = true;
+        }
 
         $request->session()->put('params.search.post_title', $input['title']);
         $titleSearch = $input['title'];
@@ -36,6 +44,24 @@ class PostController extends Controller
         $data = $this->postRepo->searchPost($input);
 
         return view('admin.posts.index', compact('data', 'titleSearch'));
+    }
+
+    public function dataTable(Request $request, $status = 'approved')
+    {
+        $input = $request->all();
+        $approveStatus = config("common.posts.approve_key.$status");
+
+        $input['title'] = $input['title'] ?? null;
+        $input['approve'] = $approveStatus;
+
+        if($status == 'request-edited'){
+            $input['approve'] = null;
+            $input['request_edited'] = true;
+        }
+
+        $data = $this->postRepo->searchPost($input);
+
+        return response()->json(['data' => $data]);
     }
 
     public function addView($postId = false)
@@ -54,8 +80,6 @@ class PostController extends Controller
         $posts = $this->postRepo->searchPost(null);
         $dataTranslate = $postId != false ? true : null;
         $language = $postId != false ? $this->postRepo->getTranslateId($postId) : [];
-
-
 
         if($postId != false && count($language) <= 0)
             return redirect()->route('admin.post.list')->with(['error' => 'Đã đủ bản dịch']);
@@ -81,12 +105,12 @@ class PostController extends Controller
 
         $request->session()->flash('success', 'Thêm bài viết thành công');
 
-        return redirect()->route('admin.post.list');
+        return redirect()->route('admin.post.list', ['status' => config('common.posts.approve_value.0')]);
     }
 
     public function editView($id)
     {
-        $data = $this->postRepo->getPostById($id);
+        $data = $this->postRepo->findEditedPost($id);
         $categories  = $this->categoryRepo->categoriesAll(null);
         $route = route('admin.post.editAction', ['id' => $id]);
 
@@ -103,18 +127,40 @@ class PostController extends Controller
     {
         $input = $request->all();
 
+        $dataToEdit = $this->postRepo->findEditedPost($id);
+
+        if($dataToEdit->editedFrom) {
+            $id = $dataToEdit->editedFrom->id;
+            $dataToEdit = $dataToEdit->editedFrom;
+        }
+
+        if($dataToEdit->approve == config('common.posts.approve_key.approved')) {
+            $this->postRepo->editFromApprovedPost($id, $input);
+
+            $request->session()->flash('success', 'Tạo mới từ bài viết đã được phê duyệt');
+            return redirect()->route('admin.post.list');
+        }
+
         $this->postRepo->editPost($id, $input);
 
-        $request->session()->flash('success', 'Cập nhật thành công');
+        $message = 'Cập nhật thành công';
+
+        $request->session()->flash('success', $message);
 
         return redirect()->route('admin.post.list');
     }
 
     public function delete($id)
     {
+        $data = $this->postRepo->findEditedPost($id);
+
+        if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
         $this->postRepo->deletePost($id);
 
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Xóa thành công']);
     }
 
     public function translate(Request $request, $postId)
@@ -122,13 +168,16 @@ class PostController extends Controller
         $input = $request->all();
         $input['posted_by'] = Auth::user()->id;
 
+        $currentPost = $this->postRepo->findEditedPost($postId);
+
+        if($currentPost->approve == config('common.posts.approve_key.rejected'))
+            return redirect()->route('admin.post.list', ['status' => config('common.posts.approve_value.-1')])->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);
+
         $checkUnique = $this->postRepo->checkUniqueTitle($input);
 
         if(count($checkUnique) > 0) {
             return redirect()->back()->with(['error' => 'Tiêu đề đã tồn tại']);
         }
-
-        $currentPost = $this->postRepo->getPostById($postId);
 
         if($currentPost->category != null) {
             $categoryTranslate = $this->categoryRepo->queryCheckTranslateCategory($currentPost->category->id, $input['lang_id']);
@@ -144,5 +193,53 @@ class PostController extends Controller
         Session::put('locale', $input['lang_id']);
 
         return redirect()->route('admin.post.list');
+    }
+
+    public function getApproveList(Request $request, $status = 'pending')
+    {
+        $input = $request->all();
+        $input['approve'] = config("common.posts.approve_key.$status");
+
+        if($status == 'request-edited'){
+            $input['approve'] = null;
+            $input['request_edited'] = true;
+        }
+
+        $input['title'] = $input['title'] ?? null;
+
+        $request->session()->put('params.search.post_title', $input['title']);
+        $titleSearch = $input['title'];
+
+        $data = $this->postRepo->searchPost($input);
+
+        return view('admin.posts.approve', compact('data', 'titleSearch'));
+    }
+
+    public function approvingPost(Request $request, $id, $approve)
+    {
+        $input = $request->all();
+
+        if($approve == -1 && empty($input['message_reject'])) {
+            return redirect()->back()->with(['error' => 'Không được bỏ trống lí do từ chối']);
+        }
+
+        $checkPost = $this->postRepo->findEditedPost($id);
+
+        if($checkPost->parentEdited) {
+            $checkPost->approve = $approve;
+            $dataApprove = $this->postRepo->approveFromPostApproved($checkPost);
+        }else {
+            $input['approve'] = $approve;
+
+            $dataApprove = $this->postRepo->approvePost($id, $input);
+        }
+
+        $message = $approve == config('common.posts.approve_key.approved')
+            ? "Bài viết $dataApprove->title đã được phê duyệt"
+            : "Bài viết $dataApprove->title đã bị từ chối";
+
+        $request->session()->flash('success', $message);
+
+        return redirect()->route('admin.post.approveList', ['status' => config("common.posts.approve_value.$approve") ]);
     }
 }

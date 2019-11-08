@@ -50,4 +50,9 @@ class RoomNameRepository extends EloquentRepository
         return false;
     }
 
+    public function findRoomName($id)
+    {
+        return $this->_model->where('lang_parent_id', $id)->where('lang_id', session('locale'))->first();
+    }
+
 }
