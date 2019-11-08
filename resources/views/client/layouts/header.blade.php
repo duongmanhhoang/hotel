@@ -112,6 +112,12 @@
                         <li><a href="{{ route('rooms.index', session('locale') == config('common.languages.default') ? $location->id : $location->lang_parent_id) }}">{{ $location->name }}</a>
                     @endforeach
                 </ul>
+
+                <ul id='drop-categories' class='dropdown-content drop-con-man'>
+                    @foreach ($categories as $category)
+                        <li><a href="{{ route('post.categoryPost', ['name' => $category->name]) }}">{{ $category->name }}</a>
+                    @endforeach
+                </ul>
             </div>
         </div>
         <div class="row">
@@ -126,10 +132,11 @@
                     </li>
                     <li><a href="all_room.html" class='dropdown-button' data-activates='drop-room'>Rooms</a>
                     </li>
-                    <li><a href="#" class='dropdown-button' data-activates='drop-room'>Hotel <i
+                    <li><a href="#" class='dropdown-button' data-activates='drop-posts'>Hotel <i
                                     class="fa fa-angle-down"></i></a>
                     </li>
-                    <li><a href="{{ route('post.index') }}">Blog</a>
+                    <li><a href="{{ route('post.index') }}" class='dropdown-button' data-activates='drop-categories'>Blog <i
+                                    class="fa fa-angle-down"></i></a>
                     </li>
                     <li><a href="about_us.html">About Us</a>
                     </li>

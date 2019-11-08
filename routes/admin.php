@@ -163,6 +163,7 @@ Route::prefix('routes')->name('routes.')->middleware('checkSuperAdmin')->group(f
 Route::prefix('bills')->name('bill.')->group(function () {
     $controller = 'Admin\BillController@';
     Route::get('/', $controller . 'index')->name('list');
+    Route::get('/datatable', $controller . 'dataTable')->name('datatable');
     Route::get('/post', $controller . 'addView')->name('postView');
     Route::post('/post', $controller . 'store')->name('postAction');
     Route::get('/edit/{id}', $controller . 'editView')->name('editView');
@@ -186,6 +187,7 @@ Route::prefix('room-name')->name('roomNames.')->group(function () {
 Route::prefix('statistical')->name('statistical.')->group(function () {
     $controller = 'Admin\StatisticalController@';
     Route::post('/', $controller . 'index')->name('list');
+    Route::get('/get-statistical-by-month', $controller . 'getStatisticalByMonth')->name('getByMonth');
 });
 
 /** Thống kê dashboard */

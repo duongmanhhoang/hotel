@@ -35,5 +35,6 @@ Route::prefix('/rooms/{location_id}')->name('rooms.')->group(function () {
 Route::prefix('/posts')->name('post.')->group(function () {
     $controller = 'Client\PostController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::get('/category/{name}', $controller . 'getPostViaCategoryName')->name('categoryPost');
     Route::get('/{id}', $controller . 'detail')->name('detail');
 });

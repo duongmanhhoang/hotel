@@ -14,11 +14,9 @@ class BillRepository extends EloquentRepository
         return Bill::class;
     }
 
-    public function searchBill($input)
+    public function searchBill()
     {
-        $paginate = config('common.pagination.default');
-
-        $result = $this->_model->with('location')->orderBy('id', 'desc')->paginate($paginate);
+        $result = $this->_model->with('location')->orderBy('id', 'desc')->get();
 
         return $result;
     }
@@ -39,13 +37,11 @@ class BillRepository extends EloquentRepository
         return $result;
     }
 
-    public function deleteBill($id)
+    public function deleteBill($bill)
     {
-        $result = $this->find($id);
+        $bill->delete();
 
-        $result->delete();
-
-        return !!$result;
+        return !!$bill;
     }
 
     public function findBillById($id)

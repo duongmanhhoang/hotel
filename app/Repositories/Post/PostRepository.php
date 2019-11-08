@@ -209,4 +209,27 @@ class PostRepository extends EloquentRepository
 
         return $this->_model->where($whereConditional)->with('postedBy')->get();
     }
+
+    public function getClientPostViaCategoryName($name)
+    {
+        $language = Session::get('locale');
+        $paginate = config('common.pagination.default');
+
+        $whereConditional = [
+            ['lang_id', $language],
+            ['edited_from', null],
+            ['approve', config('common.posts.approve_key.approved')],
+        ];
+
+        $result = $this->_model->where($whereConditional)->with('category')->whereHas('category', function ($query) use($name, $language) {
+            $categoryWhereConditional = [
+                ['name', $name],
+                ['type', 0],
+            ];
+
+            $query->where($categoryWhereConditional);
+        })->orderBy('id', 'desc')->paginate($paginate);
+
+        return $result;
+    }
 }
