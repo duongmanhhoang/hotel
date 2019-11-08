@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Client;
-
 use App\Http\Controllers\Controller;
 use App\Repositories\RoomName\RoomNameRepository;
 use App\Repositories\Post\PostRepository;
@@ -11,8 +9,6 @@ use App\Repositories\RoomDetail\RoomDetailRepository;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Library\LibraryRepository;
 use Illuminate\Support\Facades\Session;
-
-
 class HomeController extends Controller
 {
     private $postRepository;
@@ -23,7 +19,6 @@ class HomeController extends Controller
     private $libraryRepository;
     private $roomNameRepository;
     private $baseLang;
-
     public function __construct
     (
         PostRepository $postRepository,
@@ -44,8 +39,6 @@ class HomeController extends Controller
         $this->roomNameRepository = $roomNameRepository;
         $this->baseLang = config('common.languages.default');
     }
-
-
     public function index()
     {
         $posts = $this->postRepository->limitByLang(Session::get('locale'), config('common.limit.home_posts'));
@@ -70,7 +63,8 @@ class HomeController extends Controller
             'searchLocations'
         );
 
-    	return view('client.home.index', $data);
+        return view('client.home.index', $data);
+
 
     }
 }

@@ -5,6 +5,10 @@
 <script src="{{ asset('bower_components/client_layout/js/materialize.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bower_components/client_layout/js/jquery.mixitup.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bower_components/client_layout/js/custom.js') }}"></script>
+
+<script src="{{ asset('js/client/app.js') }}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtqlBL2XudSG3aIwHNNkBcj37CSjrFXqc&callback=initMap&libraries=geometry,places"></script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{ asset('js/client/app.js') }}"></script>
 <script>
@@ -16,3 +20,4 @@
     @endif
 </script>
 @yield('script')
+
