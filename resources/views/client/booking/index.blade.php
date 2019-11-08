@@ -4,14 +4,41 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<div class="book-title">
-							<h2>Atlantic Hotel Booking</h2>
-							<p>Nhanh chóng, tiện lợi! Hãy đặt phòng với Atlantic Hotel ngay hôm nay để hưởng mức giá cực ưu đãi cùng muôn vàn dịch vụ và dịch vụ hấp dẫn đang đón chờ quý khách!</p>
-						</div>
+                        <div class="col-md-6">
+                            <div class="book-title">
+                                <div class="card-hover">
+                                    <div class="card">
+                                     <img id ="img-detail" src="{{ asset('bower_components/client_layout/images/room1.jpg') }}" alt="">
+                                    </div>
+                                    <div class="room-detail">
+                                    	 <h4 class="text-booking">Tên phòng: Master Room</h4>
+                                    	 <h4 class="text-booking">Giá: 2000000 VNĐ</h4>
+                                    	 <h4 class="text-booking">Dịch vụ (bấm để xem chi tiết)</h4>
+                                    </div>
+                                    <ul class="collapsible popout" data-collapsible="accordion">
+								<li>
+									<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									<div class="collapsible-body"><span>lul.</span>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									<div class="collapsible-body"><span>lul.</span>
+									</div>
+								</li>
+								<li>
+									<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+									<div class="collapsible-body"><span>lul.</span>
+									</div>
+								</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 					<div class="col-md-6">
 						<div class="book-form inn-com-form">
-							<form class="col s12">
+							<form class="col s123">
 								<div class="row">
 									<div class="input-field col s6">
 										<input type="text" class="validate">
@@ -35,7 +62,7 @@
 								<div class="row">
 									<div class="input-field col s6">
 										<input type="text" class="validate">
-										<label>City</label>
+										<label>Cơ sở</label>
 									</div>
 									<div class="input-field col s6">
 										<input type="text" class="validate">
@@ -103,8 +130,7 @@
 					</div>
 					<div class="foot-com foot-2">
 						<h5>Phone: (+84) 376 594 637</h5> </div>
-					<div class="foot-com foot-3">
-						<!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
+					<div class="foot-com foot-3"><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
 					<div class="foot-com foot-4">
 						<a href="#"><img src="images/card.png" alt="" />
 						</a>
