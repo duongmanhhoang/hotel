@@ -12,6 +12,9 @@ return [
     'Success' => 'Success',
     'Something_wrong' => 'Something went wrong, please try again',
     'Comment_success' => 'Comment successfully',
+    'Booking_missing_requirement' => 'Dont have enough data to dispatch this action',
+    'Not_enough_info' => 'Dont have enough information in this language',
+
 
     'validation' => [
         'required' => 'Must fill this field',

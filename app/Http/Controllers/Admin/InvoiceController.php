@@ -201,41 +201,47 @@ class InvoiceController extends Controller
     public function getAvailableRoom(Request $request)
     {
         $results = $this->roomRepository->roomAvailable($request);
-        $rooms = Room::with('roomName', 'location.locations')->whereIn('id', $results['room_id'])->get();
-        $roomNames = RoomName::all();
-        foreach ($rooms as $key => $room) {
-            if (session('locale') == config('common.languages.default')) {
-                $room->name = $room->roomName->name;
-                $room->location_name = $room->getAttribute('location')->name;
-            } else {
-                $checkDetail = $this->roomRepository->getDetailTranslate($room->id);
-                if ($checkDetail) {
-                    $location = $room->getAttribute('location');
-                    $child = $location->getAttribute('locations')->where('lang_id', session('locale'))->first();
-                    if ($child) {
-                        $room->location_name = $child->name;
-                        $roomName = $roomNames->filter(function ($value) use ($room) {
-                            return $value->lang_parent_id == $room->roomName->id;
-                        })->first();
-                        if ($roomName) {
-                            $room->name = $roomName->name;
-                        }
-                    }
-                } else {
-                    unset($rooms[$key]);
-                }
-            }
-        }
-        $rooms = $rooms->values();
-        if ($rooms) {
-            $dataResponse = [
-                'messages' => 'success',
-                'data' => $rooms,
-            ];
-        } else {
+        if (!$results) {
             $dataResponse = [
                 'messages' => 'fail',
             ];
+        } else {
+            $rooms = Room::with('roomName', 'location.locations')->whereIn('id', $results['room_id'])->get();
+            $roomNames = RoomName::all();
+            foreach ($rooms as $key => $room) {
+                if (session('locale') == config('common.languages.default')) {
+                    $room->name = $room->roomName->name;
+                    $room->location_name = $room->getAttribute('location')->name;
+                } else {
+                    $checkDetail = $this->roomRepository->getDetailTranslate($room->id);
+                    if ($checkDetail) {
+                        $location = $room->getAttribute('location');
+                        $child = $location->getAttribute('locations')->where('lang_id', session('locale'))->first();
+                        if ($child) {
+                            $room->location_name = $child->name;
+                            $roomName = $roomNames->filter(function ($value) use ($room) {
+                                return $value->lang_parent_id == $room->roomName->id;
+                            })->first();
+                            if ($roomName) {
+                                $room->name = $roomName->name;
+                            }
+                        }
+                    } else {
+                        unset($rooms[$key]);
+                    }
+                }
+            }
+            $rooms = $rooms->values();
+            if ($rooms) {
+                $dataResponse = [
+                    'messages' => 'success',
+                    'data' => $rooms,
+                ];
+            } else {
+                $dataResponse = [
+                    'messages' => 'fail',
+                ];
+            }
         }
 
         return response()->json($dataResponse, 200);

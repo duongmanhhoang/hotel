@@ -13,8 +13,8 @@
 
 .list-comments {
     overflow-y: scroll;
-    max-height:400px;
-    overflow-x:hidden;
+    max-height: 400px;
+    overflow-x: hidden;
 }
 
 /* width */
@@ -37,8 +37,48 @@
     background: #555;
 }
 
-.custom-inn-com-form{
+.custom-inn-com-form {
     background: none !important;
     border: none !important;
     box-shadow: none !important;
+}
+
+.search-room-detail-btn {
+    padding: 15px 10px;
+    box-sizing: border-box;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 2px;
+    font-size: 14px !important;
+    display: inline-block;
+    background: #d0ae64;
+    background: -webkit-linear-gradient(to right, #d6ae7b, #eacda3);
+    background: linear-gradient(to top, #caa65a, #dbbb75);
+    margin-right: 10px;
+}
+
+.search-room-booking-btn {
+    padding: 15px 10px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 2px;
+    font-size: 14px !important;
+    display: inline-block;
+    background: #f4364f;
+    box-sizing: border-box;
+    border: none !important;
+}
+
+.form-redirect {
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+}
+
+.book-title {
+    margin-top: -108px !important;
 }
