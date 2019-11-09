@@ -240,3 +240,13 @@ Route::prefix('units')->name('units.')->group(function () {
     Route::post('delete/{id}', $controller . 'delete')->name('delete');
 
 });
+
+
+/** Liên hệ */
+Route::prefix('contact')->name('contact.')->group(function () {
+    $controller = 'Admin\ContactController@';
+    Route::get('', $controller . 'index')->name('index');
+    Route::get('/datatable', $controller . 'dataTable')->name('dataTable');
+    Route::get('/detail/{id}', $controller . 'detail')->name('detail');
+    Route::post('delete/{id}', $controller . 'delete')->name('delete');
+});

@@ -45,9 +45,13 @@
                                                                                 <div class="home-map-search">
                                                                                     <div class="ul-maps">
                                                                                         <ul id="country" class="no-bullets">
-                                                                                            <li class="textmap" onclick="selectStore(21.0123923, 105.8469904)" data-target="ha-noi">Atlantic Hà Nội</li>
-                                                                                            <li class="textmap" onclick="selectStore(21.0323445, 105.8104005)" data-target="hcm">Atlantic Hồ Chí Minh</li>
-                                                                                            <li class="textmap" onclick="selectStore(21.316355, 105.3874249)" data-target="da-nang">Atlantic Đà Nẵng</li>
+                                                                                            @foreach($locations as $location)
+                                                                                                <li class="textmap locations"
+                                                                                                    onclick="selectStore({{ $location->latitude }}, {{ $location->longitude }})"
+                                                                                                    data-target="ha-noi"
+                                                                                                    locationId="{{ $location->id }}"
+                                                                                                > {{ $location->name }} </li>
+                                                                                            @endforeach
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
@@ -104,51 +108,91 @@
                                 <h2>Liên hệ với <span>Atlantic</span></h2>
                                 <div class="head-typo typo-com collap-expand book-form inn-com-form">
                                     <h4>Đăng kí email để nhận tin tức mới nhất từ Atlantic</h4>
-                                    <form class="col s12">
+                                    <form class="col s12" action="{{ route('contact.postContact') }}" method="post">
+                                        @csrf
+
+                                        <input type="hidden" id="location_id" name="location_id">
+
                                         <div class="row">
                                             <div class="input-field col s6 ">
-                                                <input id="input_text" type="text" >
+                                                <input id="input_text"
+                                                       type="text"
+                                                       name="email"
+                                                       value="{{ $user != null ? $user->email : '' }}"
+                                                       {{ $user != null ? 'readonly' : '' }}
+                                                >
                                                 <label for="input_text">Email</label>
+                                                @if ($errors->has('email'))
+                                                    <b class="text-danger">{{ $errors->first('email') }}</b>
+                                                @endif
+                                            </div>
+
+                                            <div class="input-field col s6 ">
+                                                <input id="input_text"
+                                                       type="text"
+                                                       name="name"
+                                                       value="{{ $user != null ? $user->full_name : '' }}"
+                                                        {{ $user != null ? 'readonly' : '' }}
+                                                >
+                                                <label for="input_text">{{ __('label.contact.name') }}</label>
+                                                @if ($errors->has('name'))
+                                                    <b class="text-danger">{{ $errors->first('name') }}</b>
+                                                @endif
                                             </div>
                                         </div>
+
+
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea" ></textarea>
-                                                <label for="textarea1">Messenger</label>
+                                                <input id="input_text" type="text" name="subject">
+                                                <label for="textarea1">{{ __('label.contact.subject') }}</label>
+                                                @if ($errors->has('subject'))
+                                                    <b class="text-danger">{{ $errors->first('subject') }}</b>
+                                                @endif
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <textarea id="textarea1" class="materialize-textarea" name="text"></textarea>
+                                                <label for="textarea1">{{ __('label.contact.text') }}</label>
+                                                @if ($errors->has('text'))
+                                                    <b class="text-danger">{{ $errors->first('text') }}</b>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <button class="btn waves-effect waves-light inn-re-mo-btn">{{ __('label.contact.submit') }}</button>
+                                            </div>
+                                        </div>
+
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
             </div>
-            <div class="hom-footer-section">
-                <div class="container">
-                    <div class="row">
-                        <div class="foot-com foot-1">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="foot-com foot-2">
-                            <h5>Phone: (+84) 376 594 637</h5> </div>
-                        <div class="foot-com foot-3">
-                            <!--<a class="waves-effect waves-light" href="#">online room booking</a>--><a class="waves-effect waves-light" href="booking.html">Đặt phòng ngay!</a> </div>
-                        <div class="foot-com foot-4">
-                            <a href="#"><img src="images/card.png" alt="" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtqlBL2XudSG3aIwHNNkBcj37CSjrFXqc&callback=initMap&libraries=geometry,places">
             </script>
+        </div>
+    </div>
+@endsection
 
+@section('script')
+    <script>
+
+        let defaultLocationId = "{{ $locations[0]['id'] }}";
+
+        let locationIdInput = $('#location_id');
+
+        locationIdInput.attr('value', defaultLocationId);
+
+        $('.locations').on('click', function () {
+            locationIdInput.attr('value', $(this).attr('locationId'));
+        })
+
+    </script>
 @endsection

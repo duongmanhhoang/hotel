@@ -17,6 +17,19 @@ return [
     'Choose_time' => 'Chọn thời gian',
     'Arrival_date' => 'Ngày đến',
     'Departure_date' => 'Ngày đến',
+
+    'post' => [
+        'list' => 'Danh sách bài viết',
+        'read_more' => 'Chi tiết'
+    ],
+
+    'contact' => [
+        'name' => 'Họ và tên',
+        'subject' => 'Tiêu đề',
+        'text' => 'Nội dung',
+        'submit' => 'Gửi'
+    ],
+
     'Search' => 'Tìm kiếm',
     'Check_in' => 'Ngày đến',
     'Check_out' => 'Ngày rời đi',

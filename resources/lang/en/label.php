@@ -17,6 +17,19 @@ return [
     'Choose_time' => 'Choose your time',
     'Arrival_date' => 'Arrival date',
     'Departure_date' => 'Departure date',
+
+    'post' => [
+        'list' => 'Blog posts',
+        'read_more' => 'Read more'
+    ],
+
+    'contact' => [
+        'name' => 'Full name',
+        'subject' => 'Subject',
+        'text' => 'Message',
+        'submit' => 'Send'
+    ],
+
     'Search' => 'Search',
     'Check_in' => 'Check in',
     'Check_out' => 'Check out',

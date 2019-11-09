@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Post\PostRepository;
 
 class PostController extends Controller
 {
 
-    public function __construct(PostRepository $postRepository)
+    public function __construct(
+        PostRepository $postRepository,
+        CategoryRepository $categoryRepository
+    )
     {
         $this->postRepo = $postRepository;
+        $this->cateRepo = $categoryRepository;
     }
 
     public function index()
@@ -33,8 +38,15 @@ class PostController extends Controller
 
     public function getPostViaCategoryName($name)
     {
-        $data = $this->postRepo->getClientPostViaCategoryName($name);
+//        $currentCategory = $this->cateRepo->getCategoryByName($name);
+//
+//        if($currentCategory == null) return redirect()->back()->with(['error' => __('messages.not_found')]);
+//
+//        $checkCategoryTrans = $this->cateRepo->checkIsTranslateCurrentCategory($currentCategory);
+//
+//        $name = $checkCategoryTrans;
 
+        $data = $this->postRepo->getClientPostViaCategoryName($name);
 
         return view('client.blog.index', compact('data'));
     }
