@@ -3,7 +3,7 @@
     <div class="inn-banner">
         <div class="container">
             <div class="row">
-                <h4>Blog</h4>
+                <h4>{{ __('label.post.list') }}</h4>
                 <p>Cùng Atlantic khám phá những tin tức mới nhất về xu hướng du lịch và nghỉ dưỡng
                 <p>
             </div>
@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row inn-page-com">
                 <div class="page-head">
-                    <h2>Blog Posts</h2>
+                    <h2>{{ __('label.post.list') }}</h2>
                     <div class="head-title">
                         <div class="hl-1"></div>
                         <div class="hl-2"></div>
@@ -32,7 +32,7 @@
                                 <span class="blog-date">{{ $value->updated_at }}</span>
                                 <span class="blog-author">Tác giả: {{ $value->postedBy->full_name }}</span>
                                 <p> {{ $value->description }} </p>
-                                <a href=" {{ route('post.detail', $value->id) }} " class="waves-effect waves-light inn-re-mo-btn">Read More</a> </div>
+                                <a href=" {{ route('post.detail', $value->id) }} " class="waves-effect waves-light inn-re-mo-btn">{{ __('label.post.read_more') }}</a> </div>
                         </div>
                     @endforeach
 

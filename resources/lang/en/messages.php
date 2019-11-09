@@ -32,5 +32,11 @@ return [
         'email_max' => 'Please do not enter more than 191 characters',
         'body_required' => 'Please enter your review',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+    ],
+
+    'not_found' => 'Data not found',
+
+    'contact' => [
+        'post_success' => 'Send success'
     ]
 ];

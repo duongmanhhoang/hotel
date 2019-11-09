@@ -13,4 +13,5 @@
 @include ('client.layouts.bottom')
 </body>
 
+@yield('script')
 </html>

@@ -31,10 +31,17 @@ Route::prefix('/rooms/{location_id}')->name('rooms.')->group(function () {
     Route::post('/{id}/comment', $controller . 'comment')->name('comment');
 });
 
-/** Danh sách phòng */
+/** Danh sách bài viết */
 Route::prefix('/posts')->name('post.')->group(function () {
     $controller = 'Client\PostController@';
     Route::get('/', $controller . 'index')->name('index');
     Route::get('/category/{name}', $controller . 'getPostViaCategoryName')->name('categoryPost');
     Route::get('/{id}', $controller . 'detail')->name('detail');
+});
+
+/** Liên hệ */
+Route::prefix('/contact')->name('contact.')->group(function () {
+    $controller = 'Client\ContactController@';
+    Route::get('/', $controller . 'index')->name('index');
+    Route::post('/post-contact', $controller . 'postContact')->name('postContact');
 });

@@ -32,5 +32,11 @@ return [
         'email_max' => 'Vui lòng không nhập quá 191 ký tự',
         'body_required' => 'Vui lòng nhập nội dung',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+    ],
+
+    'not_found' => 'Không tìm thấy dữ liệu',
+
+    'contact' => [
+        'post_success' => 'Gủi thành công'
     ]
 ];

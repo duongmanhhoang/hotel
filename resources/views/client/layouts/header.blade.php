@@ -138,7 +138,7 @@
                     <li><a href="{{ route('post.index') }}" class='dropdown-button' data-activates='drop-categories'>Blog <i
                                     class="fa fa-angle-down"></i></a>
                     </li>
-                    <li><a href="about_us.html">About Us</a>
+                    <li><a href="{{ route('contact.index') }}">About Us</a>
                     </li>
                     <li><a href="#">Contact</a>
                     </li>

@@ -174,4 +174,30 @@ class CategoryRepository extends EloquentRepository
         return false;
     }
 
+    public function getCategoryByName($name)
+    {
+        return $this->_model->where('name', $name)->with('childrenTranslate')->first();
+    }
+
+    public function checkIsTranslateCurrentCategory($category)
+    {
+        $language = Session::get('locale');
+
+        $sameLang = $category->name;
+
+        // working here bug when change lang
+
+        if($category->lang_id != $language) {
+
+            $childrenTranslate = $this->getCategoryParentTranslate($category->id, $language);
+            $sameLang = $childrenTranslate->name;
+        }
+
+        return $sameLang;
+    }
+
+    public function getCategoryParentTranslate($parentId, $lang) {
+        return $this->_model->where('lang_id', $lang)->where('lang_parent_id', $parentId)->first();
+    }
+
 }

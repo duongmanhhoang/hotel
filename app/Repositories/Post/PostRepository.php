@@ -221,7 +221,7 @@ class PostRepository extends EloquentRepository
             ['approve', config('common.posts.approve_key.approved')],
         ];
 
-        $result = $this->_model->where($whereConditional)->with('category')->whereHas('category', function ($query) use($name, $language) {
+        $result = $this->_model->where($whereConditional)->with('category')->whereHas('category', function ($query) use ($name, $language) {
             $categoryWhereConditional = [
                 ['name', $name],
                 ['type', 0],

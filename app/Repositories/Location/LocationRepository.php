@@ -72,4 +72,9 @@ class LocationRepository extends EloquentRepository
 
         return $locations;
     }
+
+    public function contactGetLocation()
+    {
+        return $this->_model->limit(3)->get();
+    }
 }
