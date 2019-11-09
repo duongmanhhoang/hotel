@@ -24,3 +24,12 @@
 .rooms-image {
     width: 200px;
 }
+
+.custom-headbar {
+    margin-right: 20px !important;
+    right: 0px !important;
+}
+
+.custom-arrow {
+    left: 200px !important;
+}

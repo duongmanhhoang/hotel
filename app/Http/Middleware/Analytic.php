@@ -29,7 +29,7 @@ class Analytic
 
                     return $next($request);
                 } else {
-                    $redis->set($ip . $page, true, 'EX', 10);
+                    $redis->set($ip . $page, true, 'EX', 300);
                     \App\Models\Analytic::create([
                         'time' => $now,
                         'ip' => $ip,

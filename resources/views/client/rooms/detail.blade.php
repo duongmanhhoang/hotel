@@ -1,7 +1,8 @@
 @extends('client.layouts.master')
 @section('content')
     <div class="hp-banner">
-        <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}" alt="" style="height: 500px; object-fit: cover">
+        <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}" alt=""
+             style="height: 500px; object-fit: cover">
     </div>
     <div class="hom-com">
         <div class="container">
@@ -11,6 +12,12 @@
                         <div class="hp-section">
                             <div class="hp-sub-tit">
                                 <h4><span>{{ $name }}</span></h4>
+                                <p>
+                                    {{ __('label.Adults') }}: {{ $room->adults }}
+                                </p>
+                                <p>
+                                    {{ __('label.Children') }}: {{ $room->children }}
+                                </p>
                                 <p>
                                     {{ $roomDetail->short_description }}
                                 </p>
@@ -193,7 +200,8 @@
                                     src="{{ asset('bower_components/client_layout/images/icon/dbc4.png') }}" alt="">
                             <h3>{{ $location->phone }}</h3>
                             <small>Chúng tôi hỗ trợ 24/7</small>
-                            <a href="javascript:;" data-toggle="modal" data-target="#booking">Call Now</a></div>
+                            <a href="javascript:;" data-toggle="modal"
+                               data-target="#booking">{{ __('label.Booking') }}</a></div>
                     </div>
                     <div class="hp-book hp-right-com">
                         <div class="hp-book-in">
@@ -281,24 +289,27 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('label.Choose_time') }}</h5>
-                        <button style="margin-top: -20px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button style="margin-top: -20px;" type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
                             <span aria-hidden="true">X</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="inn-com-form ">
-                            <form method="post" action="" class="col s12 custom-inn-com-form">
-                                    <div class="input-field col s12 m4 l2">
-                                        <input type="text" id="from" name="from">
-                                        <label for="from">{{ __('label.Arrival_date') }}</label>
-                                    </div>
-                                    <div class="input-field col s12 m4 l2">
-                                        <input type="text" id="to" name="to">
-                                        <label for="to">{{ __('label.Departure_date') }}</label>
-                                    </div>
-                                    <div class="input-field col s12 m4 l2">
-                                        <input type="submit" value="submit" class="form-btn">
-                                    </div>
+                            <form class="col s12 custom-inn-com-form">
+                                @csrf
+                                <div class="input-field col s12 m4 l2">
+                                    <input type="text" id="from" name="checkIn" class="checkInBooking">
+                                    <label for="from">{{ __('label.Arrival_date') }}</label>
+                                </div>
+                                <div class="input-field col s12 m4 l2">
+                                    <input type="text" id="to" name="checkOut" class="checkOutBooking">
+                                    <label for="to">{{ __('label.Departure_date') }}</label>
+                                </div>
+                                <input type="hidden" name="roomId" value="{{ $room->id }}" class="roomIdBooking">
+                                <div class="input-field col s12 m4 l2">
+                                    <input type="submit" value="{{ __('label.Submit') }}" class="form-btn submit-booking">
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -316,6 +327,47 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            $('.submit-booking').on('click', function (e) {
+                e.preventDefault();
+                const checkIn = $('.checkInBooking').val();
+                const checkOut = $('.checkOutBooking').val();
+                const roomId = $('.roomIdBooking').val();
+                const formData = new FormData();
+                formData.append('checkIn', checkIn);
+                formData.append('checkOut', checkOut);
+                formData.append('roomId', roomId);
+                formData.append('isAjax', true);
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: '{{ route('booking.redirectBooking') }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function (response) {
+                        if (response.messages == 'validation_fail') {
+                            if (response.data.checkIn) {
+                                toastr.error(response.data.checkIn[0], '{{ __('messages.Warning') }}');
+                            } else if (response.data.checkOut) {
+                                toastr.error(response.data.checkOut[0], '{{ __('messages.Warning') }}');
+                            }
+                        }
+
+                        if (response.messages == 'success') {
+                            window.location.replace('{{ route('booking.index') }}');
+                        }
+
+                        if (response.messages == 'no_room') {
+                            toastr.error('{{ __('messages.No_room_available') }}', '{{ __('messages.Warning') }}');
+                        }
+
+                    }, error: function () {
+                        toastr.error('{{ __('messages.Something_wrong') }}', '{{ __('messages.Warning') }}');
+                    },
+                });
+            });
+
             $('body').on('click', '#submit-comment', function (e) {
                 e.preventDefault();
                 const url = $('#comment-url').val();

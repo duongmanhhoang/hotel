@@ -22,7 +22,7 @@
                     @if ($room->roomDetails->toArray())
                         <div class="room">
                             <div class="r1 r-com"><img
-                                        src="{{ asset(config('common.uploads.rooms'))  . '/' . $room->image }}"/>
+                                    src="{{ asset(config('common.uploads.rooms'))  . '/' . $room->image }}"/>
                             </div>
                             <div class="r2 r-com">
                                 <h4>{{ session('locale') == config('common.languages.default') ? $room->roomName->name : $room->name }}</h4>
@@ -71,10 +71,20 @@
                                 </p>
                             </div>
                             <div class="r5 r-com">
-                                <a style="font-size: 18px"
-                                   href="{{ route('rooms.detail', [$location->id, $room->id]) }}"
-                                   class="inn-room-book">{{ __('label.Detail') }}
+                                <a
+                                    href="{{ route('rooms.detail', [$room->location_id, $room->id]) }}"
+                                    class="search-room-detail-btn">{{ __('label.Detail') }}
                                 </a>
+                                <form class="form-redirect" method="POST" action="{{ route('booking.redirectBooking') }}">
+                                    @csrf
+                                    <input type="hidden" name="checkIn" value="{{ $_GET['checkIn'] }}">
+                                    <input type="hidden" name="checkOut" value="{{ $_GET['checkOut'] }}">
+                                    <input type="hidden" name="roomId" value="{{ $room->id }}">
+                                    <button
+                                        type="submit"
+                                        class="search-room-booking-btn">{{ __('label.Booking') }}
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @endif

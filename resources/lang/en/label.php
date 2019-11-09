@@ -28,5 +28,32 @@ return [
         'subject' => 'Subject',
         'text' => 'Message',
         'submit' => 'Send'
-    ]
+    ],
+
+    'Search' => 'Search',
+    'Check_in' => 'Check in',
+    'Check_out' => 'Check out',
+    'No_adults' => 'No of adults',
+    'No_children' => 'No of children',
+    'Booking' => 'Booking',
+    'Full_name' => 'Full name',
+    'Phone' => 'Phone',
+    'Address' => 'Address',
+    'Note' => 'Note',
+    'Submit' => 'Submit',
+    'My_account' => 'My Account',
+    'My_profile' => 'My Profile',
+    'Register' => 'Register',
+    'Log_in' => 'Login',
+    'Log_out' => 'Log out',
+    'My_booking' => 'My Booking',
+    'Hotel' => 'Hotel',
+    'Blog' => 'Blog',
+    'Home' => 'Home',
+    'Contact' => 'Contact',
+    'Adults' => 'Adults',
+    'Children' => 'Children',
+    'Select_location' => 'Select location',
+    'Check_availability' => 'Check Availability',
+
 ];

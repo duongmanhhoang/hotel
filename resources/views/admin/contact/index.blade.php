@@ -149,10 +149,6 @@
                             }
                         },
                         {
-                            field: "text",
-                            title: "Nội dung"
-                        },
-                        {
                             field: "Actions",
                             width: 150,
                             title: "Thao tác",

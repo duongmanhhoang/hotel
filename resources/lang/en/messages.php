@@ -12,6 +12,10 @@ return [
     'Success' => 'Success',
     'Something_wrong' => 'Something went wrong, please try again',
     'Comment_success' => 'Comment successfully',
+    'Booking_missing_requirement' => 'Dont have enough data to dispatch this action',
+    'Not_enough_info' => 'Dont have enough information in this language',
+    'No_room_available' => 'No room available',
+
 
     'validation' => [
         'required' => 'Must fill this field',
@@ -37,6 +41,10 @@ return [
     'not_found' => 'Data not found',
 
     'contact' => [
-        'post_success' => 'Send success'
+        'post_success' => 'Send success',
+        'checkInAfter' => 'Checkin date must start from today',
+        'checkOutAfter' => 'Checkout date must start after checkin date',
+        'checkInRequired' => 'Please select check in date',
+        'checkOutRequired' => 'Please select checkout date',
     ]
 ];

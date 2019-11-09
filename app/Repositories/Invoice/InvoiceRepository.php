@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use http\Env\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceRepository extends EloquentRepository
 {
@@ -42,15 +43,18 @@ class InvoiceRepository extends EloquentRepository
         $dataPivot = $this->makePivotData($data);
         $dataInvoice = $this->makeData($data);
         $invoice = $this->_model->create($dataInvoice);
-        $invoice->services()->attach($data['services']);
+        if (isset($data['services'])) {
+            $invoice->services()->attach($data['services']);
+        }
+
         $invoice->rooms()->attach([$data['room_id'] => $dataPivot]);
 
     }
 
     protected function makePivotData($data, $isUpdate = false)
     {
-        $data['check_in_date'] = Carbon::parse($data['check_in_date'])->toDateTimeString();
-        $data['check_out_date'] = Carbon::parse($data['check_out_date'])->toDateTimeString();
+        $data['check_in_date'] = Carbon::parse($data['check_in_date'])->toDateString();
+        $data['check_out_date'] = Carbon::parse($data['check_out_date'])->toDateString();
         if ($isUpdate) {
             return [
                 'room_id' => $data['room_id'],
@@ -281,5 +285,23 @@ class InvoiceRepository extends EloquentRepository
         }
 
         return $services;
+    }
+
+    public function submitBookingClient($data, $roomNumber)
+    {
+        $data['code'] = uniqid();
+        $data['check_in_date'] = $data['checkIn'];
+        $data['check_out_date'] = $data['checkOut'];
+        $data['room_number'] = $roomNumber;
+        $data['note'] = null;
+        $data['status'] = RoomInvoice::NOT_PAY;
+        $data['extra'] = null;
+        $dataInvoice = $this->makeData($data);
+        if (Auth::check()) {
+            $dataInvoice = array_merge($dataInvoice, ['user_id' => Auth::user()->id]);
+        }
+        $dataPivot = $this->makePivotData($data);
+        $invoice = $this->_model->create($dataInvoice);
+        $invoice->rooms()->attach([$data['room_id'] => $dataPivot]);
     }
 }

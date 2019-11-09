@@ -189,7 +189,6 @@ class RoomRepository extends EloquentRepository
         foreach ($roomNotSearched as $item) {
             $rooms[$item->id] = [];
         }
-
         $roomAvailables = [];
         foreach ($rooms as $key => $item) {
             $room = $this->_model->find($key);
@@ -211,10 +210,9 @@ class RoomRepository extends EloquentRepository
                 }
             }
         }
-        if (!$roomAvailables) {
+        if (sizeof($roomAvailables) == 0) {
             return false;
         }
-
         $rooms_id = [];
         $i = 0;
         foreach ($roomAvailables as $roomAvailable) {
@@ -226,7 +224,6 @@ class RoomRepository extends EloquentRepository
             'available_rooms' => $roomAvailables,
             'room_id' => $rooms_id,
         );
-
         return $result;
     }
 
@@ -309,7 +306,7 @@ class RoomRepository extends EloquentRepository
             } else {
                 $currency = '$';
                 $roomName = $roomNames->filter(function ($value) use ($room) {
-                   return $value->lang_parent_id == $room->roomName->id;
+                    return $value->lang_parent_id == $room->roomName->id;
                 })->first();
 
                 if ($roomName) {
@@ -330,5 +327,81 @@ class RoomRepository extends EloquentRepository
         return RoomDetail::where('lang_parent_id', $id)
             ->where('lang_id', session('locale'))
             ->first();
+    }
+
+    public function searchRooms($request)
+    {
+        $location_id = $request->location_id;
+        $adults = $request->adults;
+        $children = $request->children;
+        $checkin = $request->checkIn;
+        $checkout = $request->checkOut;
+        $location = Location::find($location_id);
+
+        if ($location->lang_parent_id) {
+            $child = Location::find($location_id);
+            $location = $child->langParent;
+        }
+        $location->load('rooms');
+        $rooms = $location->rooms;
+        $roomsId = $rooms->where('adults', '>=', $adults)->where('children', '>=', $children)->pluck('id')->toArray();
+
+        if (sizeof($roomsId) == 0) {
+            return false;
+        }
+
+        $data = $this->roomAvailable($request);
+
+        if (!$data) {
+            return false;
+        }
+
+        $roomIdFound = [];
+
+        foreach ($roomsId as $item) {
+            $check = in_array($item, $data['room_id']);
+
+            if ($check) {
+                array_push($roomIdFound, $item);
+            }
+        }
+
+        $rooms = $this->_model->whereIn('id', $roomIdFound)
+            ->with([
+                'roomName',
+                'roomDetails' => function ($q) {
+                    $q->where('lang_id', session('locale'));
+                },
+                'properties'
+            ])
+            ->whereHas('roomDetails', function ($q) {
+                $q->where('lang_id', session('locale'));
+            })->paginate(config('common.pagination.default'));
+
+        return $rooms;
+    }
+
+    public function getRoomForBooking($roomId)
+    {
+        $room = $this->_model->find($roomId);
+        $room->load(['roomName.children', 'roomDetails']);
+        $detail = $room->roomDetails->where('lang_id', session('locale'))->first();
+        $name = $room->roomName;
+        if (session('locale') != config('common.languages.default')) {
+            $roomName = $name->children->where('lang_parent_id', $name->id)->first();
+            if ($roomName) {
+                $name = $roomName->name;
+            } else {
+                $name = null;
+            }
+        } else {
+            $name = $name->name;
+        }
+
+        return [
+            'room' => $room,
+            'detail' => $detail,
+            'name' => $name,
+        ];
     }
 }

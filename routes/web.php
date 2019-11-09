@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/','Client\HomeController@index')->name('home');
+Route::get('/', 'Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
-    return view('client.rooms.room-detail');
+    return view('client.contact.index');
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');
@@ -24,6 +24,7 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/change-language/{id}', 'LanguageController@change')->name('changeLanguage');
 
 /** Danh sách phòng */
+Route::get('/search', 'Client\RoomController@search')->name('rooms.search');
 Route::prefix('/rooms/{location_id}')->name('rooms.')->group(function () {
     $controller = 'Client\RoomController@';
     Route::get('/', $controller . 'index')->name('index');
@@ -45,3 +46,13 @@ Route::prefix('/contact')->name('contact.')->group(function () {
     Route::get('/', $controller . 'index')->name('index');
     Route::post('/post-contact', $controller . 'postContact')->name('postContact');
 });
+
+/** Booking */
+Route::prefix('booking')->name('booking.')->group(function () {
+    $controller = 'Client\BookingController@';
+    Route::get('', $controller . 'index')->name('index');
+    Route::post('redirectBooking', $controller . 'redirectBooking')->name('redirectBooking');
+    Route::post('submit', $controller . 'submit')->name('submit');
+});
+
+

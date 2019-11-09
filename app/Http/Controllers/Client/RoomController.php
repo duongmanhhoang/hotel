@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\Rooms\SearchRequest;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Comment\CommentRepository;
@@ -119,12 +120,11 @@ class RoomController extends Controller
         $categoriesService->load(['services', 'parentTranslate']);
         $comments = $this->commentRepository->getCommentsByRoom($id);
         $user = Auth::user();
+        $showEmail = false;
         if ($user) {
             if ($user->role_id == config('common.roles.super_admin') || $user->role_id == config('common.roles.admin')) {
                 $showEmail = true;
             }
-        } else {
-            $showEmail = false;
         }
         $data = compact(
             'location_id',
@@ -177,5 +177,36 @@ class RoomController extends Controller
         }
 
         return response()->json($dataResponse, 200);
+    }
+
+    public function search(SearchRequest $request)
+    {
+        $rooms = $this->roomRepository->searchRooms($request);
+
+        if ($rooms) {
+            if (session('locale') != $this->baseLang) {
+                foreach ($rooms as $room) {
+                    $roomNameId = $room->roomName->id;
+                    $name = $this->roomNameRepository->where('lang_parent_id', '=', $roomNameId)->first();
+                    if ($name) {
+                        $room->name = $name->name;
+                    }
+                }
+                $propertyRepository = $this->propertyRepository;
+            }
+
+        } else {
+            $request->session()->flash('error', 'Không có phòng phù hợp');
+
+            return redirect()->back();
+        }
+
+        $data = compact(
+            'rooms',
+            'location',
+            'propertyRepository'
+        );
+
+        return view('client.rooms.search', $data);
     }
 }

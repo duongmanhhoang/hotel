@@ -7,55 +7,69 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="book-title">
-                                <h2>Check Availability</h2>
+                                <h2>{{ __('label.Check_availability') }}</h2>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="book-form inn-com-form">
-                                <form class="col s12">
+                                <form method="GET" action="{{ route('rooms.search') }}" class="col s12">
                                     <div class="row">
                                         <div class="input-field col s12">
-                                            <select>
-                                                <option value="" disabled selected>Chọn sơ sở</option>
+                                            <select name="location_id">
+                                                <option value="" disabled selected>{{ __('label.Select_location') }}</option>
                                                 @foreach($searchLocations as $searchLocation)
-                                                    <option value="{{ $searchLocation->id }}">{{ $searchLocation->name }}</option>
+                                                    <option
+                                                        value="{{ $searchLocation->id }}">{{ $searchLocation->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @if ($errors->has('location_id'))
+                                                <p class="text-danger">{{ $errors->first('location_id') }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s6">
                                             <select name="adults" id="selectedTest">
-                                                <option value="" disabled selected>No of adults</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="1">4</option>
+                                                <option value="" disabled selected>{{ __('label.No_adults') }}</option>
+                                                @for ($i = 1; $i <= 10; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
                                             </select>
+                                            @if ($errors->has('adults'))
+                                                <p class="text-danger">{{ $errors->first('adults') }}</p>
+                                            @endif
                                         </div>
                                         <div class="input-field col s6">
                                             <select name="children" id="selectedTest">
-                                                <option value="" disabled selected>No of childrens</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="1">4</option>
+                                                <option value="" disabled selected>{{ __('label.No_children') }}</option>
+                                                @for ($i = 1; $i <= 10; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
                                             </select>
+                                            @if ($errors->has('children'))
+                                                <p class="text-danger">{{ $errors->first('children') }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s6">
-                                            <input type="text" id="from" name="checkin">
-                                            <label for="checkin">Check In</label>
+                                            <input type="text" id="from" name="checkIn">
+                                            <label for="checkin">{{ __('label.Check_in') }}</label>
+                                            @if ($errors->has('checkIn'))
+                                                <p class="text-danger">{{ $errors->first('checkIn') }}</p>
+                                            @endif
                                         </div>
                                         <div class="input-field col s6">
-                                            <input type="text" id="to" name="checkout">
-                                            <label for="checkout">Check Out</label>
+                                            <input type="text" id="to" name="checkOut">
+                                            <label for="checkout">{{ __('label.Check_out') }}</label>
+                                            @if ($errors->has('checkOut'))
+                                                <p class="text-danger">{{ $errors->first('checkOut') }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12">
-                                            <input type="submit" value="SREACH" class="form-btn"></div>
+                                            <input type="submit" value="{{ __('label.Search') }}" class="form-btn"></div>
                                     </div>
                                 </form>
                             </div>
@@ -90,8 +104,9 @@
                                     <div class="col-md-4">
                                         <div class="to-ho-hotel-con">
                                             <div class="to-ho-hotel-con-1">
-                                                <img src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
-                                                     style="height: 250px; object-fit: cover"></div>
+                                                <img
+                                                    src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
+                                                    style="height: 250px; object-fit: cover"></div>
                                             <div class="to-ho-hotel-con-23">
                                                 <div class="to-ho-hotel-con-2">
                                                     <a href="all-rooms.html">
@@ -105,7 +120,8 @@
                                                             @else
                                                                 {{ $location->where('lang_id', session('locale'))->first() ? $location->where('lang_id', session('locale'))->first()->name : $location->name }}
                                                             @endif
-                                                            <div class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
+                                                            <div
+                                                                class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
                                                                 :
                                                                 @for($i = 0; $i < $stars; $i++)
                                                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -117,7 +133,8 @@
                                                         </li>
                                                         @if ($room->sale_status == config('common.active.is_active'))
                                                             <li>
-                                                                <span class="ho-hot-pri-dis">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                                <span
+                                                                    class="ho-hot-pri-dis">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
                                                                 <span style="font-size: 30px"
                                                                       class="ho-hot-pri">{{ number_format($room->roomDetails[0]->sale_price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
                                                             </li>
@@ -144,32 +161,32 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="offer-l"><span class="ol-1"></span> <span class="ol-2"><i
-                                        class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                        class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                        class="fa fa-star"></i></span>
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i></span>
                             <span class="ol-4">Ưu đãi cực lớn cho Omega Room</span> <span class="ol-3"></span> <span
-                                    class="ol-5">$99/-</span>
+                                class="ol-5">$99/-</span>
                             <ul>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                                src="images/icon/dis1.png" alt="">
+                                            src="images/icon/dis1.png" alt="">
                                     </a><span>Free WiFi</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                                src="images/icon/h2.png" alt=""> </a><span>Breakfast</span>
+                                            src="images/icon/h2.png" alt=""> </a><span>Breakfast</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                                src="images/icon/dis3.png" alt=""> </a><span>Pool</span>
+                                            src="images/icon/dis3.png" alt=""> </a><span>Pool</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                                src="images/icon/dis4.png" alt=""> </a><span>Television</span>
+                                            src="images/icon/dis4.png" alt=""> </a><span>Television</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                                src="images/icon/dis5.png" alt=""> </a><span>GYM</span>
+                                            src="images/icon/dis5.png" alt=""> </a><span>GYM</span>
                                 </li>
                             </ul>
                         </div>
@@ -179,7 +196,7 @@
                             <div class="or-1"><span class="or-11">go</span> <span class="or-12">Stays</span></div>
                             <div class="or-2"><span class="or-21">Giảm tới</span> <span class="or-22">70%</span>
                                 <span class="or-23">Off</span> <span class="or-24">use code: RG5481WERQ</span> <span
-                                        class="or-25"></span></div>
+                                    class="or-25"></span></div>
                         </div>
                     </div>
                 </div>
@@ -221,7 +238,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/5.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -230,7 +247,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/app/1.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">APP</span></div>
+                                                    class="text-category">APP</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -239,7 +256,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/web/4.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Web design</span></div>
+                                                    class="text-category">Web design</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -248,7 +265,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/card/1.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Business card</span></div>
+                                                    class="text-category">Business card</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -257,7 +274,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/app/3.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">APP</span></div>
+                                                    class="text-category">APP</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -266,7 +283,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/card/4.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Business card</span></div>
+                                                    class="text-category">Business card</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -275,7 +292,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/card/5.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Business card</span></div>
+                                                    class="text-category">Business card</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -284,7 +301,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/1.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -293,7 +310,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/app/2.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">APP</span></div>
+                                                    class="text-category">APP</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -302,7 +319,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/card/2.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Business card</span></div>
+                                                    class="text-category">Business card</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -311,7 +328,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/6.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -320,7 +337,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/7.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -329,7 +346,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/icon/4.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Icon</span></div>
+                                                    class="text-category">Icon</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -338,7 +355,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/web/3.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Web design</span></div>
+                                                    class="text-category">Web design</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -347,7 +364,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/icon/1.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Icon</span></div>
+                                                    class="text-category">Icon</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -356,7 +373,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/web/2.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Web design</span></div>
+                                                    class="text-category">Web design</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -365,7 +382,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/icon/2.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Photo Caption</a> <span
-                                                        class="text-category">Icon</span></div>
+                                                    class="text-category">Icon</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -374,7 +391,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/icon/5.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">3D Map</a> <span
-                                                        class="text-category">Icon</span></div>
+                                                    class="text-category">Icon</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -383,7 +400,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/web/1.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Note</a> <span
-                                                        class="text-category">Web design</span></div>
+                                                    class="text-category">Web design</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -392,7 +409,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/3.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Native Designers</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -401,7 +418,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/4.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Bookworm</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -410,7 +427,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/icon/3.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Sandwich</a> <span
-                                                        class="text-category">Icon</span></div>
+                                                    class="text-category">Icon</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -419,7 +436,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/card/3.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Reality</a> <span
-                                                        class="text-category">Business card</span></div>
+                                                    class="text-category">Business card</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>
@@ -428,7 +445,7 @@
                                     <div class="portfolio-wrapper"><img src="img/portfolios/logo/2.jpg" alt=""/>
                                         <div class="label">
                                             <div class="label-text"><a class="text-title">Speciallisterne</a> <span
-                                                        class="text-category">Logo</span></div>
+                                                    class="text-category">Logo</span></div>
                                             <div class="label-bg"></div>
                                         </div>
                                     </div>

@@ -12,6 +12,9 @@ return [
     'Success' => 'Thành công',
     'Something_wrong' => 'Có lỗi xảy ra, xin vui lòng thử lại',
     'Comment_success' => 'Bình luận thành công',
+    'Booking_missing_requirement' => 'Không có đủ dữ liệu để thực hiện hành động này',
+    'Not_enough_info' => 'Không có đủ thông tin ở ngôn ngữ này để hiện thị',
+    'No_room_available' => 'Không còn phòng phù hợp',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
@@ -37,6 +40,10 @@ return [
     'not_found' => 'Không tìm thấy dữ liệu',
 
     'contact' => [
-        'post_success' => 'Gủi thành công'
+        'post_success' => 'Gủi thành công',
+        'checkInAfter' => 'Ngày tới phải bắt đầu từ hôm nay',
+        'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
+        'checkInRequired' => 'Vui lòng chọn ngày tới',
+        'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
     ]
 ];
