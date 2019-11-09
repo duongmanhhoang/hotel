@@ -82,3 +82,14 @@
 .book-title {
     margin-top: -108px !important;
 }
+
+.btn-logout {
+    margin-left: -12px;
+    padding: 0 !important;
+    color: #353d42;
+    background: none;
+    border: none;
+    font-size: 12px;
+    text-transform: initial;
+    font-family: 'Quicksand', sans-serif;
+}

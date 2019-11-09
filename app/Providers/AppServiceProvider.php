@@ -63,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
             'client.layouts.header',
             'client.layouts.booking',
             'client.layouts.footer',
+            'client.layouts.headerWithFilter'
         ], function ($view) {
             $cateRepo = new CategoryRepository();
 
