@@ -14,6 +14,7 @@ return [
     'Comment_success' => 'Bình luận thành công',
     'Booking_missing_requirement' => 'Không có đủ dữ liệu để thực hiện hành động này',
     'Not_enough_info' => 'Không có đủ thông tin ở ngôn ngữ này để hiện thị',
+    'No_room_available' => 'Không còn phòng phù hợp',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
@@ -34,5 +35,10 @@ return [
         'email_max' => 'Vui lòng không nhập quá 191 ký tự',
         'body_required' => 'Vui lòng nhập nội dung',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+        'checkInAfter' => 'Ngày tới phải bắt đầu từ hôm nay',
+        'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
+        'checkInRequired' => 'Vui lòng chọn ngày tới',
+        'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
+
     ]
 ];

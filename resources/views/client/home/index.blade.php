@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="book-title">
-                                <h2>Check Availability</h2>
+                                <h2>{{ __('label.Check_availability') }}</h2>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -16,12 +16,15 @@
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <select name="location_id">
-                                                <option value="" disabled selected>Chọn sơ sở</option>
+                                                <option value="" disabled selected>{{ __('label.Select_location') }}</option>
                                                 @foreach($searchLocations as $searchLocation)
                                                     <option
                                                         value="{{ $searchLocation->id }}">{{ $searchLocation->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @if ($errors->has('location_id'))
+                                                <p class="text-danger">{{ $errors->first('location_id') }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
@@ -32,6 +35,9 @@
                                                     <option value="{{ $i }}">{{ $i }}</option>
                                                 @endfor
                                             </select>
+                                            @if ($errors->has('adults'))
+                                                <p class="text-danger">{{ $errors->first('adults') }}</p>
+                                            @endif
                                         </div>
                                         <div class="input-field col s6">
                                             <select name="children" id="selectedTest">
@@ -40,16 +46,25 @@
                                                     <option value="{{ $i }}">{{ $i }}</option>
                                                 @endfor
                                             </select>
+                                            @if ($errors->has('children'))
+                                                <p class="text-danger">{{ $errors->first('children') }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s6">
                                             <input type="text" id="from" name="checkIn">
                                             <label for="checkin">{{ __('label.Check_in') }}</label>
+                                            @if ($errors->has('checkIn'))
+                                                <p class="text-danger">{{ $errors->first('checkIn') }}</p>
+                                            @endif
                                         </div>
                                         <div class="input-field col s6">
                                             <input type="text" id="to" name="checkOut">
                                             <label for="checkout">{{ __('label.Check_out') }}</label>
+                                            @if ($errors->has('checkOut'))
+                                                <p class="text-danger">{{ $errors->first('checkOut') }}</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">

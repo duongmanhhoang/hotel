@@ -14,6 +14,7 @@ return [
     'Comment_success' => 'Comment successfully',
     'Booking_missing_requirement' => 'Dont have enough data to dispatch this action',
     'Not_enough_info' => 'Dont have enough information in this language',
+    'No_room_available' => 'No room available',
 
 
     'validation' => [
@@ -35,5 +36,9 @@ return [
         'email_max' => 'Please do not enter more than 191 characters',
         'body_required' => 'Please enter your review',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+        'checkInAfter' => 'Checkin date must start from today',
+        'checkOutAfter' => 'Checkout date must start after checkin date',
+        'checkInRequired' => 'Please select check in date',
+        'checkOutRequired' => 'Please select checkout date',
     ]
 ];

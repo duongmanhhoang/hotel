@@ -247,7 +247,7 @@
                             sortable: !1,
                             overflow: "visible",
                             template: function (e) {
-                                return `<img src="{{ config('common.uploads.rooms') }}/${e.image}" class="rooms-image">`
+                                return `<img src="{{ asset(config('common.uploads.rooms')) }}/${e.image }" class="rooms-image">`
                             }
                         },
                         {

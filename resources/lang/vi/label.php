@@ -28,4 +28,20 @@ return [
     'Address' => 'Địa chỉ',
     'Note' => 'Lưu ý',
     'Submit' => 'Gửi',
+    'My_account' => 'Tài khoản',
+    'My_profile' => 'Thông tin',
+    'Register' => 'Đăng ký',
+    'Log_in' => 'Đăng nhập',
+    'Log_out' => 'Đăng xuất',
+    'My_booking' => 'Lịch sử đặt phòng',
+    'Hotel' => 'Khách sạn',
+    'Blog' => 'Bài viết',
+    'Home' => 'Trang chủ',
+    'Contact' => 'Liên hệ',
+    'Adults' => 'Người lớn',
+    'Children' => 'Trẻ em',
+    'Select_location' => 'Chọn cơ sở',
+    'Check_availability' => 'Tìm kiếm phòng',
+
+
 ];

@@ -114,7 +114,7 @@
                         sortable: !1,
                         overflow: "visible",
                         template: function (e) {
-                            return `<img src="{{ config('common.uploads.languages') }}/${e.flag}" class="flag-languages">`
+                            return `<img src="{{ asset(config('common.uploads.languages')) }}/${e.flag}" class="flag-languages">`
                         }
                     },
                     {

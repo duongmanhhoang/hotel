@@ -71,7 +71,6 @@
                                 </p>
                             </div>
                             <div class="r5 r-com">
-                                <div class="r2-available">Available</div>
                                 <a style="font-size: 18px"
                                    href="{{ route('rooms.detail', [$location->id, $room->id]) }}"
                                    class="inn-room-book">{{ __('label.Detail') }}
