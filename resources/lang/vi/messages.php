@@ -15,6 +15,14 @@ return [
     'Booking_missing_requirement' => 'Không có đủ dữ liệu để thực hiện hành động này',
     'Not_enough_info' => 'Không có đủ thông tin ở ngôn ngữ này để hiện thị',
     'No_room_available' => 'Không còn phòng phù hợp',
+    'got_new_invoice' => 'Bạn đã đặt phòng thành công',
+    'Confirm_cancel_booking' => 'Bạn có chắc rằng sẽ muốn hủy lịch đặt phòng này chứ',
+    'Cancel_booking_success' => 'Lịch đặt phỏng của bạn đã được hủy',
+    'Our_rooms' => 'Atlantic bao gồm hệ thống phòng tiện nghi, hiện đại luôn đem tới cho khách hàng trải nghiệm tốt nhất',
+    'Home_posts' => 'Đọc và đón chờ những tin tức mới nhất về khách sạn du lịch, và cùng săn những sự kiện cực hot cùng Atlantic',
+    'Rooms_list' => 'Đến với Atlantic để trải nghiệm dịch vụ nghỉ dưỡng bậc nhất Việt Nam với hệ thống phòng phong phú',
+    '24/7' => 'Dịch vụ phòng 24/7',
+
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',

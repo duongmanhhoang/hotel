@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\Booking\StoreRequest;
 use App\Models\Room;
 use App\Repositories\Invoice\InvoiceRepository;
+use App\Repositories\Notification\NotificationRepository;
 use App\Repositories\Room\RoomRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,12 +19,14 @@ class BookingController extends Controller
 {
     private $roomRepository;
     private $invoiceRepository;
+    private $notificationRepository;
 
-    public function __construct(RoomRepository $roomRepository, InvoiceRepository $invoiceRepository)
+    public function __construct(RoomRepository $roomRepository, InvoiceRepository $invoiceRepository, NotificationRepository $notificationRepository)
     {
         Redis::connection();
         $this->roomRepository = $roomRepository;
         $this->invoiceRepository = $invoiceRepository;
+        $this->notificationRepository = $notificationRepository;
     }
 
     public function redirectBooking(Request $request)
@@ -34,7 +37,7 @@ class BookingController extends Controller
         if (Redis::exists('bookingData')) {
             Redis::del('bookingData');
         }
-        if (!$data['isAjax']) {
+        if (!isset($data['isAjax'])) {
             if (!$data['checkIn'] || !$data['checkOut']) {
                 $request->session()->flash('error', __('messages.Booking_missing_requirement'));
 
@@ -57,7 +60,7 @@ class BookingController extends Controller
 
         $validator = Validator::make($data, $rules, $messages);
 
-        if ($data['isAjax']) {
+        if (isset($data['isAjax'])) {
             if ($validator->fails()) {
                 $dataResponse = [
                     'messages' => 'validation_fail',
@@ -125,11 +128,12 @@ class BookingController extends Controller
         };
         DB::beginTransaction();
         try {
-            $this->invoiceRepository->submitBookingClient($data, $roomNumber[0]);
+            $invoice = $this->invoiceRepository->submitBookingClient($data, $roomNumber[0]);
+            $this->notificationRepository->sendNotiClientBooking($invoice);
             DB::commit();
             $request->session()->flash('success', 'Đặt phòng thành công');
 
-            return redirect(route('home'));
+            return redirect(route('profile.mybooking'));
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e->getMessage());

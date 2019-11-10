@@ -15,6 +15,14 @@ return [
     'Booking_missing_requirement' => 'Dont have enough data to dispatch this action',
     'Not_enough_info' => 'Dont have enough information in this language',
     'No_room_available' => 'No room available',
+    'got_new_invoice' => 'You got a new booking',
+    'Confirm_cancel_booking' => 'Are you sure that you wanna cancel this booking?',
+    'Cancel_booking_success' => 'You booking has been canceled',
+    'Our_rooms' => 'Atlantic includes comfortable room systems, modern always give customers the best experience',
+    'Home_posts' => 'Read the latest news about traveling, and get more information for big events with Atlantic',
+    'Rooms_list' => 'Travel to the Atlantic to experience one of the best resort in Vietnam with various rooms',
+    '24/7' => 'Room service 24/7',
+
 
 
     'validation' => [

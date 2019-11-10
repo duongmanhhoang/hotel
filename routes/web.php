@@ -62,3 +62,12 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/active', $controller . 'activeUser')->name('active');
 });
 
+/** Profile */
+Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
+    $controller = 'Client\ProfileController@';
+    Route::get('mybooking', $controller . 'mybooking')->name('mybooking');
+    Route::post('mask-as-read/{id}', $controller . 'maskAsRead')->name('maskAsRead');
+    Route::post('mask-all-as-read', $controller . 'maskAllRead')->name('maskAllRead');
+    Route::post('cancel-booking/{id}', $controller . 'cancelBooking')->name('cancelBooking');
+});
+
