@@ -30,6 +30,17 @@ return [
         'submit' => 'Gửi'
     ],
 
+    'register' => [
+        'label' => 'Đăng kí tài khoản',
+        'desc' => 'Khởi tạo tài khoản để cùng Atlantic trải nghiệm những chuyến du lịch nghỉ dưỡng tốt nhất',
+        'password' => 'Mật khẩu',
+        'password_confirmation' => 'Nhập lại mật khẩu',
+        'phone' => 'Số điện thoại',
+        'address' => 'Địa chỉ',
+        'full_name' => 'Họ và tên',
+        'submit' => 'Đăng kí'
+    ],
+
     'Search' => 'Tìm kiếm',
     'Check_in' => 'Ngày đến',
     'Check_out' => 'Ngày rời đi',

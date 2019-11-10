@@ -2,13 +2,22 @@
 
 namespace App\Repositories\User;
 
+use App\Mail\User\RegiseterMail;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\EloquentRepository;
+use Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 
 class UserRepository extends EloquentRepository
 {
+
+    const MEMBER_ROLE = 4;
+    const INACTIVE = 0;
+    const ACTIVE = 1;
+
     public function getModel()
     {
         return User::class;
@@ -50,7 +59,7 @@ class UserRepository extends EloquentRepository
     public function userNotifi($id)
     {
         $user = User::where('role_id', 1)->get();
-        
+
         return $user;
     }
 
@@ -61,30 +70,19 @@ class UserRepository extends EloquentRepository
         // Role của user đã đăng nhập vào quản trị
         $role_user_logged = Auth::User()->role_id;
         $status = false;
-        if ( $role_user_logged == config('common.roles.super_admin') ) 
-        {
-            if ( $role_user_selected == config('common.roles.super_admin') ) 
-            {
+        if ($role_user_logged == config('common.roles.super_admin')) {
+            if ($role_user_selected == config('common.roles.super_admin')) {
                 $status = false;
-            }
-            else 
-            {
+            } else {
                 $status = true;
             }
-        } 
-        else if ( $role_user_logged == config('common.roles.admin') )
-        {
-            if ( $role_user_selected == config('common.roles.super_admin') || $role_user_selected == config('common.roles.admin') )
-            {
+        } else if ($role_user_logged == config('common.roles.admin')) {
+            if ($role_user_selected == config('common.roles.super_admin') || $role_user_selected == config('common.roles.admin')) {
                 $status = false;
-            } 
-            else 
-            {
+            } else {
                 $status = true;
             }
-        }
-        else 
-        {
+        } else {
             $status = false;
         }
         return $status;
@@ -95,16 +93,11 @@ class UserRepository extends EloquentRepository
         // Role của user đã đăng nhập vào quản trị
         $role_user_logged = Auth::User()->role_id;
         $status = false;
-        if ( $role_user_logged == config('common.roles.super_admin') ) 
-        {
+        if ($role_user_logged == config('common.roles.super_admin')) {
             $status = true;
-        } 
-        else if ( $role_user_logged == config('common.roles.admin') )
-        {
+        } else if ($role_user_logged == config('common.roles.admin')) {
             $status = true;
-        }
-        else 
-        {
+        } else {
             $status = false;
         }
         return $status;
@@ -121,45 +114,58 @@ class UserRepository extends EloquentRepository
         // Id của user được chọn để sửa
         $id_user_selected = $id;
         $status = false;
-        if ( $role_user_logged == config('common.roles.super_admin') ) 
-        {
+        if ($role_user_logged == config('common.roles.super_admin')) {
             $status = true;
-        } 
-        else if ( $role_user_logged == config('common.roles.admin') )
-        {
-            if ( $role_user_selected == config('common.roles.super_admin') )
-            {
+        } else if ($role_user_logged == config('common.roles.admin')) {
+            if ($role_user_selected == config('common.roles.super_admin')) {
                 $status = false;
-            } 
-            else if ( $role_user_selected == config('common.roles.admin') )
-            {
-                if ( $role_user_selected == $role_user_logged && $id_user_logged == $id_user_selected ) 
-                {
+            } else if ($role_user_selected == config('common.roles.admin')) {
+                if ($role_user_selected == $role_user_logged && $id_user_logged == $id_user_selected) {
                     $status = true;
-                }
-                else 
-                {
+                } else {
                     $status = false;
                 }
-            }
-            else
-            {
+            } else {
                 $status = true;
             }
-        }
-        else 
-        {
-            if ( $role_user_selected == $role_user_logged && $id_user_logged == $id_user_selected )
-            {
+        } else {
+            if ($role_user_selected == $role_user_logged && $id_user_logged == $id_user_selected) {
                 $status = true;
-            }
-            else
-            {
+            } else {
                 $status = false;
             }
-            
+
         }
         return $status;
+    }
+
+    public function clientRegister($input)
+    {
+        $input['password'] = Hash::make($input['password']);
+        $input['remember_token'] = Hash::make(time());
+
+        $user = $this->_model->create($input);
+
+        $cookie = [
+            'userId' => $user->id,
+            'token' => $input['remember_token']
+        ];
+
+        Cookie::queue('active_token', json_encode($cookie), 7200);
+
+        $this->sendMailActive($input);
+    }
+
+    public function activeUser($user)
+    {
+        $user->update(['is_active' => self::ACTIVE]);
+    }
+
+    public function sendMailActive($input)
+    {
+        $input['remember_token'] = $input['remember_token'] ?? Hash::make(time());
+
+        Mail::to($input['email'])->send(new RegiseterMail($input, $input['remember_token']));
     }
 }
 

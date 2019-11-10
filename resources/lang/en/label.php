@@ -30,6 +30,17 @@ return [
         'submit' => 'Send'
     ],
 
+    'register' => [
+        'label' => 'Register',
+        'desc' => 'Create account to get best travelling experience with Atlantic',
+        'password' => 'Password',
+        'password_confirmation' => 'Confirm password',
+        'phone' => 'Phone number',
+        'address' => 'Address',
+        'full_name' => 'Full name',
+        'submit' => 'Register'
+    ],
+
     'Search' => 'Search',
     'Check_in' => 'Check in',
     'Check_out' => 'Check out',

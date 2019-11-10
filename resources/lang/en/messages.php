@@ -46,5 +46,14 @@ return [
         'checkOutAfter' => 'Checkout date must start after checkin date',
         'checkInRequired' => 'Please select check in date',
         'checkOutRequired' => 'Please select checkout date',
-    ]
+    ],
+
+    'user' => [
+        'register_success' => 'Register success, we send you a mail to active your account. Check it!!',
+        'already_active' => 'This account is already active',
+        'active_success' => 'Active success',
+        'expire_token' => 'Expire email, please send another email to active',
+        'not_found' => 'Account not found',
+        'resend_active_email' => 'Resend success',
+    ],
 ];
