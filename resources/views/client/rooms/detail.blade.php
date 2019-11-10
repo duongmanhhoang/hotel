@@ -199,7 +199,7 @@
                         <div class="hp-call-in"><img
                                     src="{{ asset('bower_components/client_layout/images/icon/dbc4.png') }}" alt="">
                             <h3>{{ $location->phone }}</h3>
-                            <small>Chúng tôi hỗ trợ 24/7</small>
+                            <small>{{ __('messages.24/7') }}</small>
                             <a href="javascript:;" data-toggle="modal"
                                data-target="#booking">{{ __('label.Booking') }}</a></div>
                     </div>

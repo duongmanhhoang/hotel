@@ -24,7 +24,7 @@
                                         alt=""> {{ __('label.My_profile') }}</a>
                         </li>
                         <li>
-                            <a href="db-booking.html"><img
+                            <a href="{{ route('profile.mybooking') }}"><img
                                         src="{{asset('/bower_components/client_layout/images/icon/16.png')}}"
                                         alt=""> {{ __('label.My_booking') }}</a>
                         </li>
