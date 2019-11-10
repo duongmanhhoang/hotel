@@ -45,5 +45,14 @@ return [
         'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
         'checkInRequired' => 'Vui lòng chọn ngày tới',
         'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
-    ]
+    ],
+
+    'user' => [
+        'register_success' => 'Đăng kí thành công, chúng tôi đã gửi cho bạn mail để kích hoạt tài khoảnh',
+        'already_active' => 'Tài khoản này đã được kích hoạt',
+        'active_success' => 'Kích hoạt thành công',
+        'expire_token' => 'Hết hạn token. Gửi lại mail để kích hoạt',
+        'not_found' => 'Tài khoản không tồn tại',
+        'resend_active_email' => 'Gửi lại thành công',
+    ],
 ];

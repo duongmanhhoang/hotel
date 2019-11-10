@@ -14,7 +14,7 @@
 Route::get('/', 'Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
-    return view('client.contact.index');
+    return view('client.user.regiser');
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');
@@ -55,4 +55,10 @@ Route::prefix('booking')->name('booking.')->group(function () {
     Route::post('submit', $controller . 'submit')->name('submit');
 });
 
+/** User */
+Route::prefix('user')->name('user.')->group(function () {
+    $controller = 'Client\UserController@';
+    Route::post('/register', $controller . 'register')->name('register');
+    Route::get('/active', $controller . 'activeUser')->name('active');
+});
 
