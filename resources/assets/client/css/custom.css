@@ -93,3 +93,29 @@
     text-transform: initial;
     font-family: 'Quicksand', sans-serif;
 }
+
+.my-booking-list-noti {
+    overflow-y: scroll;
+    max-height: 600px;
+    overflow-x: hidden;
+}
+
+/* width */
+.my-booking-list-noti::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.my-booking-list-noti::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.my-booking-list-noti::-webkit-scrollbar-thumb {
+    background: #c7a354;
+}
+
+/* Handle on hover */
+.my-booking-list-noti::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

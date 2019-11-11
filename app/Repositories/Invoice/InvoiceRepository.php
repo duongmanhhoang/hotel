@@ -296,6 +296,7 @@ class InvoiceRepository extends EloquentRepository
         $data['note'] = null;
         $data['status'] = RoomInvoice::NOT_PAY;
         $data['extra'] = null;
+        $data['total'] = $this->getTotal($data);
         $dataInvoice = $this->makeData($data);
         if (Auth::check()) {
             $dataInvoice = array_merge($dataInvoice, ['user_id' => Auth::user()->id]);
@@ -303,5 +304,33 @@ class InvoiceRepository extends EloquentRepository
         $dataPivot = $this->makePivotData($data);
         $invoice = $this->_model->create($dataInvoice);
         $invoice->rooms()->attach([$data['room_id'] => $dataPivot]);
+
+        return $invoice;
+    }
+
+    public function makeDataMyBooking($invoices)
+    {
+        foreach ($invoices as $invoice)
+        {
+            $room = $invoice->rooms[0];
+            $invoice->room = $room;
+            $roomName = $room->roomName;
+            $invoice->roomName = null;
+            $invoice->show_delete = false;
+            if ($room['pivot']->status == RoomInvoice::NOT_PAY || $room['pivot']->status == RoomInvoice::PAID) {
+                $invoice->show_delete = true;
+            }
+            if (session('locale') == config('common.languages.default')) {
+                $invoice->roomName = $roomName->name;
+            } else {
+                $child = $roomName->children->where('lang_id', session('locale'))->first();
+
+                if ($child) {
+                    $invoice->roomName = $child->name;
+                }
+            }
+        }
+
+        return $invoices;
     }
 }

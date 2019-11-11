@@ -11,8 +11,7 @@
                         <div class="hl-2"></div>
                         <div class="hl-3"></div>
                     </div>
-                    <p>Đến với Atlantic để trải nghiệm dịch vụ nghỉ dưỡng bậc nhất Việt Nam với hệ thống phòng phong
-                        phú</p>
+                    <p>{{ __('messages.Rooms_list') }}</p>
                 </div>
                 @foreach ($rooms as $room)
                     @php
