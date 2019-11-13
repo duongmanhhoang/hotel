@@ -2,5 +2,7 @@
     "/css/app.css": "/css/app.css",
     "/css/client/app.css": "/css/client/app.css",
     "/js/app.js": "/js/app.js",
-    "/js/client/app.js": "/js/client/app.js"
+    "/js/chat.js": "/js/chat.js",
+    "/js/client/app.js": "/js/client/app.js",
+    "/js/client/chat.js": "/js/client/chat.js"
 }

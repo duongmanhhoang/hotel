@@ -17,6 +17,7 @@ mix.styles([
 mix.styles([
     'resources/assets/client/css/custom.css',
     'resources/assets/client/css/toastr.css',
+    'resources/assets/client/css/chat.css',
 ], 'public/css/client/app.css');
 
 
@@ -25,6 +26,15 @@ mix.scripts([
 ], 'public/js/app.js');
 
 mix.scripts([
+    'resources/assets/admin/js/chat.js',
+], 'public/js/chat.js');
+
+mix.scripts([
     'resources/assets/client/js/script.js',
     'resources/assets/client/js/toastr.min.js',
 ], 'public/js/client/app.js');
+
+mix.scripts([
+    'resources/assets/client/js/chat.js',
+], 'public/js/client/chat.js');
+

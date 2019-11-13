@@ -28,3 +28,21 @@ if (!function_exists('formatDate')) {
         return $result;
     }
 }
+
+if (!function_exists('cutRedisKey')) {
+    function cutRedisKey($key)
+    {
+        $new = str_replace('laravel_database_', '', $key);
+
+        return $new;
+    }
+}
+
+if (!function_exists('getEmailRedis')) {
+    function getEmailRedis($key)
+    {
+        $email = str_replace('chat_log:', '', $key);
+
+        return $email;
+    }
+}

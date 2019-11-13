@@ -17,6 +17,8 @@ return [
     'Choose_time' => 'Choose your time',
     'Arrival_date' => 'Arrival date',
     'Departure_date' => 'Departure date',
+    'Chat_with_admin' => 'Chat with admin',
+
 
     'post' => [
         'list' => 'Blog posts',
