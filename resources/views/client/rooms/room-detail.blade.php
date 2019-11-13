@@ -257,53 +257,14 @@
                             <div class="">
                                 <div class="h-gal">
                                     <ul>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"
-                                                 alt="">
+                                        <li>
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/2.jpg') }}"
-                                                 alt="">
+                                        <li>
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/3.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/4.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/5.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/6.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/2.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/3.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/4.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/5.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/6.jpg') }}"
-                                                 alt="">
+                                        <li>
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
                                     </ul>
                                 </div>

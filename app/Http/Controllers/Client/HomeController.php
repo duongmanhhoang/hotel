@@ -63,7 +63,7 @@ class HomeController extends Controller
             'searchLocations'
         );
 
-        return view('client.home.index', $data);
+        return view('client.rooms.room-detail', $data);
 
 
     }
