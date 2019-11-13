@@ -151,15 +151,15 @@
                                                    title="Dịch">
                                                     <i class="la la-exchange"></i>
                                                 </a>`;
-                                const deleteProp = `<button
-                                                        propId="${e.id}"
-                                                        onclick="deleteProp(this)"
+                                const deleteService = `<button
+                                                        serviceId="${e.id}"
+                                                        onclick="deleteService(this)"
                                                        class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
                                                        title="Xóa">
                                                         <i class="la la-trash"></i>
                                                     </button>`;
 
-                                return `${edit} ${translate} ${deleteProp}`
+                                return `${edit} ${translate} ${deleteService}`
                             }
                         }
                     ]
@@ -172,8 +172,8 @@
             DataTable.init()
         });
 
-        function deleteProp(t) {
-            let id = $(t).attr('propId');
+        function deleteService(t) {
+            let id = $(t).attr('serviceId');
             swal({
                 title: "Bạn chắc chắn chứ",
                 text: "Khi xóa bạn sẽ không thể khôi phục lại dữ liệu",
@@ -185,15 +185,19 @@
                 e.value && $.ajax({
                     contentType: false,
                     processData: false,
-                    url: `{{ route('admin.properties.delete', '') }}/${id}`,
+                    url: `{{ route('admin.services.delete', '') }}/${id}`,
                     type: 'POST',
                     success: function (response) {
-                        if (response.data.messages == 'error') {
+                        if (response.messages == 'error') {
                             toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
                         }
-                        if (response.data.messages == 'success') {
+                        if (response.messages == 'success') {
                             toastr.success('Xóa thành công', 'Thành công');
                             $('.m_datatable').mDatatable("reload")
+                        }
+
+                        if (response.messages == 'used') {
+                            toastr.error('Dịch vụ đang tồn tại trong hóa đơn', 'Thất bại');
                         }
                     }, error: function () {
                         toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
