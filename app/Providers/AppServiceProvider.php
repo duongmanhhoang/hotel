@@ -10,6 +10,7 @@ use App\Repositories\Category\CategoryRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
@@ -63,7 +64,8 @@ class AppServiceProvider extends ServiceProvider
             'client.layouts.header',
             'client.layouts.booking',
             'client.layouts.footer',
-            'client.layouts.headerWithFilter'
+            'client.layouts.headerWithFilter',
+            'client.layouts.chat',
         ], function ($view) {
             $cateRepo = new CategoryRepository();
 
@@ -90,6 +92,13 @@ class AppServiceProvider extends ServiceProvider
             // Categories
             $categories = $cateRepo->getCategory(null);
             $view->with('categories', $categories);
+
+            // chat logs
+            if (session('chat_with_admin_email')) {
+                $email_client = \session('chat_with_admin_email');
+                $client_logs = json_decode(Redis::get('chat_log:' . $email_client), true);
+                $view->with('client_logs', $client_logs);
+            }
         });
     }
 }

@@ -17,6 +17,7 @@ return [
     'Choose_time' => 'Chọn thời gian',
     'Arrival_date' => 'Ngày đến',
     'Departure_date' => 'Ngày đến',
+    'Chat_with_admin' => 'Trò chuyện cùng quản trị viên',
 
     'post' => [
         'list' => 'Danh sách bài viết',
