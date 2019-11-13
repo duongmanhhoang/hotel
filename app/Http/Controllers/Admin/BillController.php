@@ -35,6 +35,13 @@ class BillController extends Controller
         return view('admin.bill.index', $compact);
     }
 
+    public function dataTable()
+    {
+        $data = $this->billRepo->searchBill();
+
+        return response()->json(['data' => $data]);
+    }
+
     public function test()
     {
         $test = $this->statisticalReppo->statisticalByMonth();
@@ -82,6 +89,10 @@ class BillController extends Controller
         $input = $request->all();
         $id = $input['id'];
 
+        $checkUpdateBill = $this->billRepo->find($id);
+
+        $this->statisticalReppo->updateStatisticalAfterUpdateBill($checkUpdateBill, $input);
+
         $this->billRepo->updateBill($id, $input);
 
         $request->session()->flash('success', 'Sửa thành công');
@@ -91,18 +102,19 @@ class BillController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $data = $this->billRepo->deleteBill($id);
 
-        if($data == null) {
-            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        $bill = $this->billRepo->find($id);
+
+        $dayTime = explode(' ', $bill->created_at);
+
+        $statistical = $this->statisticalReppo->findStatisticalByTime($dayTime);
+
+        if($statistical != null) {
+            $this->statisticalReppo->updateStatisticalAfterDeleteBill($statistical, $bill);
         }
 
-        if ($data == true) {
-            $request->session()->flash('success', 'Xóa thành công');
-        } else {
-            $request->session()->flash('error', 'Có lỗi xảy ra');
-        }
+        $result = $this->billRepo->deleteBill($bill);
 
-        return redirect()->back();
+        return response()->json(['status' => $result]);
     }
 }

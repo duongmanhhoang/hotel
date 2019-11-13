@@ -26,6 +26,11 @@ class Location extends Model
         return $this->hasMany(Room::class);
     }
 
+    public function langParent()
+    {
+        return $this->belongsTo($this, 'lang_parent_id');
+    }
+
     public function listRoomsNumber()
     {
         return $this->hasManyThrough(

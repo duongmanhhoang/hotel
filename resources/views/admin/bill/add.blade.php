@@ -84,8 +84,8 @@
                                     </div>
 
                                     <div class="form-group m-form__group">
-                                        <button class="btn btn-primary">@if(isset($data)) Sửa  @else Tạo @endif</button>
                                         <a href="{{ route('admin.bill.list') }}" class="btn btn-danger">Quay lại</a>
+                                        <button class="btn btn-primary">@if(isset($data)) Sửa  @else Tạo @endif</button>
                                     </div>
                                 </form>
                             </div>

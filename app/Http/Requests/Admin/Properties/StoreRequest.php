@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'image' => 'required|mimes:jpg,png,jpeg|max:2000',
             'name' => [
                 'required',
                 'max:191',
@@ -36,6 +37,9 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
+            'image.required' => 'Vui lòng chọn ảnh',
+            'image.mimes' => 'Vui lòng chỉ chọn ảnh định dạng jpg, png, jpeg',
+            'image.max' => 'Vui lòng không chọn ảnh quá 2MB',
             'name.required' => 'Vui lòng nhập tên',
             'name.max' => 'Vui lòng không nhập quá ' . ' :max ' . ' ký tự',
             'name.unique' => 'Tên này đã được sử dụng',

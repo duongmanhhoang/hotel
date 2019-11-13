@@ -40,4 +40,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'user_id');
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
 }

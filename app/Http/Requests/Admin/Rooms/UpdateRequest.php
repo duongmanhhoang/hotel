@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
             'room_name_id' => [
                 'required',
                 'max:191',
-                Rule::unique('rooms')->ignore($this->roomId),
+                Rule::unique('rooms')->ignore($this->roomId)->where('location_id', $this->locationId),
             ],
             'price' => 'required|numeric|min:1000',
             'sale_price' => 'nullable|lt:price|numeric',

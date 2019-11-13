@@ -8,6 +8,21 @@ return [
     'Enter_password' => 'Nhập mật khẩu',
     'currency' => 'vnđ',
     'star' => 'sao',
+    'Warning' => 'Cảnh báo',
+    'Success' => 'Thành công',
+    'Something_wrong' => 'Có lỗi xảy ra, xin vui lòng thử lại',
+    'Comment_success' => 'Bình luận thành công',
+    'Booking_missing_requirement' => 'Không có đủ dữ liệu để thực hiện hành động này',
+    'Not_enough_info' => 'Không có đủ thông tin ở ngôn ngữ này để hiện thị',
+    'No_room_available' => 'Không còn phòng phù hợp',
+    'got_new_invoice' => 'Bạn đã đặt phòng thành công',
+    'Confirm_cancel_booking' => 'Bạn có chắc rằng sẽ muốn hủy lịch đặt phòng này chứ',
+    'Cancel_booking_success' => 'Lịch đặt phỏng của bạn đã được hủy',
+    'Our_rooms' => 'Atlantic bao gồm hệ thống phòng tiện nghi, hiện đại luôn đem tới cho khách hàng trải nghiệm tốt nhất',
+    'Home_posts' => 'Đọc và đón chờ những tin tức mới nhất về khách sạn du lịch, và cùng săn những sự kiện cực hot cùng Atlantic',
+    'Rooms_list' => 'Đến với Atlantic để trải nghiệm dịch vụ nghỉ dưỡng bậc nhất Việt Nam với hệ thống phòng phong phú',
+    '24/7' => 'Dịch vụ phòng 24/7',
+
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
@@ -23,5 +38,29 @@ return [
         'old_password_required' => 'Vui lòng nhập mật khẩu cũ',
         'wrong_old_password' => 'Mật khẩu cũ không đúng',
         'cant_found_user' => 'Không tìm thấy tài khoản này',
-    ]
+        'email_required' => 'Vui lòng nhập email',
+        'email_email' => 'Vui lòng nhập đúng định dạng email',
+        'email_max' => 'Vui lòng không nhập quá 191 ký tự',
+        'body_required' => 'Vui lòng nhập nội dung',
+        'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+    ],
+
+    'not_found' => 'Không tìm thấy dữ liệu',
+
+    'contact' => [
+        'post_success' => 'Gủi thành công',
+        'checkInAfter' => 'Ngày tới phải bắt đầu từ hôm nay',
+        'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
+        'checkInRequired' => 'Vui lòng chọn ngày tới',
+        'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
+    ],
+
+    'user' => [
+        'register_success' => 'Đăng kí thành công, chúng tôi đã gửi cho bạn mail để kích hoạt tài khoảnh',
+        'already_active' => 'Tài khoản này đã được kích hoạt',
+        'active_success' => 'Kích hoạt thành công',
+        'expire_token' => 'Hết hạn token. Gửi lại mail để kích hoạt',
+        'not_found' => 'Tài khoản không tồn tại',
+        'resend_active_email' => 'Gửi lại thành công',
+    ],
 ];

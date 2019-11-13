@@ -48,7 +48,7 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'is_active' => 1], $remember)) {
             $user = Auth::user();
             if ($user->role_id == config('common.roles.member')) {
-                return redirect(route('index'));
+                return redirect(route('home'));
             } else {
                 return redirect(route('admin.index'));
             }

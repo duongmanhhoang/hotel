@@ -6,6 +6,7 @@ use App\Models\Language;
 use App\Models\Location;
 use App\Models\User;
 use App\Models\WebSetting;
+use App\Repositories\Category\CategoryRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
@@ -16,11 +17,6 @@ use View;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
         //
@@ -67,7 +63,10 @@ class AppServiceProvider extends ServiceProvider
             'client.layouts.header',
             'client.layouts.booking',
             'client.layouts.footer',
+            'client.layouts.headerWithFilter'
         ], function ($view) {
+            $cateRepo = new CategoryRepository();
+
             //Current language
             if (Session::get('locale')) {
                 $current_language = Language::find(Session::get('locale'));
@@ -80,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('current_language', $current_language);
 
             //List languages
-            $header_languages = Language::all();
+            $header_languages = Language::where('status', true)->get();
             $view->with('header_languages', $header_languages);
             // Infor website
             $inforWeb = Websetting::all()->first();
@@ -88,6 +87,9 @@ class AppServiceProvider extends ServiceProvider
             // Location
             $locations = Location::where('lang_id', Session::get('locale'))->get();
             $view->with('locations', $locations);
+            // Categories
+            $categories = $cateRepo->getCategory(null);
+            $view->with('categories', $categories);
         });
     }
 }

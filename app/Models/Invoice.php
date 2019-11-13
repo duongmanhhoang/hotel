@@ -30,4 +30,9 @@ class Invoice extends Model
         )->withPivot('id', 'room_number', 'price', 'check_in_date', 'check_out_date', 'extra', 'currency', 'note', 'status');
     }
 
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'invoice_service');
+    }
+
 }

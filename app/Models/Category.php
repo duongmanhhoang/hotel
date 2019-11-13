@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    const POST = 0;
+    const SERVICE = 1;
+
     protected $table = 'categories';
 
-    protected $fillable = ['id', 'name', 'parent_id', 'lang_id', 'lang_parent_id', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'name', 'parent_id', 'lang_id', 'lang_parent_id', 'created_at', 'updated_at', 'type'];
 
     public function language()
     {
@@ -38,5 +41,10 @@ class Category extends Model
     public function childrenTranslate()
     {
         return $this->hasMany($this, 'lang_parent_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class, 'cate_id');
     }
 }

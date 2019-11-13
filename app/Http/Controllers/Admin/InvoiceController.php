@@ -11,6 +11,7 @@ use App\Repositories\Invoice\InvoiceRepository;
 use App\Repositories\InvoiceRoom\InvoiceRoomRepository;
 use App\Repositories\Room\RoomRepository;
 use App\Repositories\RoomName\RoomNameRepository;
+use App\Repositories\Service\ServiceRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,31 +24,40 @@ class InvoiceController extends Controller
     private $roomRepository;
     private $baseLang;
     private $roomNameRepsitory;
+    private $serviceRepository;
 
-    public function __construct(InvoiceRepository $invoiceRepository, RoomRepository $roomRepository, RoomNameRepository $roomNameRepository)
-    {
+    public function __construct(
+        InvoiceRepository $invoiceRepository,
+        RoomRepository $roomRepository,
+        RoomNameRepository $roomNameRepository,
+        ServiceRepository $serviceRepository
+    ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->roomRepository = $roomRepository;
         $this->roomNameRepsitory = $roomNameRepository;
+        $this->serviceRepository = $serviceRepository;
         $this->baseLang = config('common.languages.default');
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $keyword = $request->keyword;
-        $invoices = $this->invoiceRepository->getAll($keyword);
-        $data = compact(
-            'invoices'
-        );
+        return view('admin.invoices.index');
+    }
 
-        return view('admin.invoices.index', $data);
+    public function datatable()
+    {
+        $invoices = $this->invoiceRepository->makeDataTable();
+
+        return response()->json(['data' => $invoices], 200);
     }
 
     public function create()
     {
         $rooms = $this->roomRepository->all();
+        $services = $this->serviceRepository->where('lang_id', '=', session('locale'))->get();
         $data = compact(
-            'rooms'
+            'rooms',
+            'services'
         );
 
         return view('admin.invoices.create', $data);
@@ -55,8 +65,9 @@ class InvoiceController extends Controller
 
     public function edit($id)
     {
-        $today = Carbon::today();
+        $today = Carbon::yesterday();
         $invoice = $this->invoiceRepository->findOrFail($id);
+        $invoice->load('services');
         $invoiceRoom = $invoice->rooms->first()->pivot;
         $room = $invoice->rooms->first();
         $checkIn = formatDate($invoiceRoom->check_in_date);
@@ -68,6 +79,8 @@ class InvoiceController extends Controller
         $roomNameRepository = $this->roomNameRepsitory;
         $checkOut = formatDate($invoiceRoom->check_out_date);
         $roomDetail = $room->roomDetails->where('lang_parent_id', 0)->first();
+        $services = $this->invoiceRepository->getServicesEdit($invoiceRoom);
+        $usedServices = $this->invoiceRepository->getUsedServices($invoice);
         $data = compact(
             'invoice',
             'room',
@@ -76,7 +89,9 @@ class InvoiceController extends Controller
             'checkIn',
             'checkOut',
             'disable',
-            'roomNameRepository'
+            'roomNameRepository',
+            'services',
+            'usedServices'
         );
 
         return view('admin.invoices.edit', $data);
@@ -130,6 +145,13 @@ class InvoiceController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->except('_token');
+        $check = $this->invoiceRepository->checkDataCurrency($data['room_id'], $data['currency']);
+
+        if (!$check) {
+            $request->session()->flash('error', 'Chưa có thông tin về đơn vị tiền tệ này');
+
+            return redirect()->back();
+        }
         DB::beginTransaction();
         try {
             $this->invoiceRepository->storeData($data);
@@ -150,10 +172,12 @@ class InvoiceController extends Controller
         $invoice = $this->invoiceRepository->findOrFail($id);
         $invoiceRoom = $invoice->rooms->first()->pivot;
         $disabled = $request->disabled;
+        $isAfter = true;
 
         if ($disabled == 1) {
             $validator = Validator::make($data, $this->invoiceRepository->makeRulesUpdateAfter(), $this->invoiceRepository->messagesUpdateAfter());
         } else {
+            $isAfter = false;
             $validator = Validator::make($data, $this->invoiceRepository->makeRulesUpdateBefore(), $this->invoiceRepository->messagesUpdateBefore());
         }
 
@@ -163,7 +187,7 @@ class InvoiceController extends Controller
 
         DB::beginTransaction();
         try {
-            $this->invoiceRepository->updateData($data, $invoice, $invoiceRoom);
+            $this->invoiceRepository->updateData($data, $invoice, $invoiceRoom, $isAfter);
             DB::commit();
             $request->session()->flash('success', 'Cập nhập hóa đơn thành công');
 
@@ -177,26 +201,47 @@ class InvoiceController extends Controller
     public function getAvailableRoom(Request $request)
     {
         $results = $this->roomRepository->roomAvailable($request);
-        $rooms = Room::whereIn('id', $results['room_id'])->get();
-
-        foreach ($rooms as $room) {
-            if (session('locale') == config('common.languages.default')) {
-                $room->name = $room->roomName->name;
-            } else {
-                $room->name = RoomName::where('lang_id', session('locale'))->where('lang_parent_id', $room->room_name_id)->first()->name;
-            }
-
-        }
-
-        if ($rooms) {
-            $dataResponse = [
-                'messages' => 'success',
-                'data' => $rooms,
-            ];
-        } else {
+        if (!$results) {
             $dataResponse = [
                 'messages' => 'fail',
             ];
+        } else {
+            $rooms = Room::with('roomName', 'location.locations')->whereIn('id', $results['room_id'])->get();
+            $roomNames = RoomName::all();
+            foreach ($rooms as $key => $room) {
+                if (session('locale') == config('common.languages.default')) {
+                    $room->name = $room->roomName->name;
+                    $room->location_name = $room->getAttribute('location')->name;
+                } else {
+                    $checkDetail = $this->roomRepository->getDetailTranslate($room->id);
+                    if ($checkDetail) {
+                        $location = $room->getAttribute('location');
+                        $child = $location->getAttribute('locations')->where('lang_id', session('locale'))->first();
+                        if ($child) {
+                            $room->location_name = $child->name;
+                            $roomName = $roomNames->filter(function ($value) use ($room) {
+                                return $value->lang_parent_id == $room->roomName->id;
+                            })->first();
+                            if ($roomName) {
+                                $room->name = $roomName->name;
+                            }
+                        }
+                    } else {
+                        unset($rooms[$key]);
+                    }
+                }
+            }
+            $rooms = $rooms->values();
+            if ($rooms) {
+                $dataResponse = [
+                    'messages' => 'success',
+                    'data' => $rooms,
+                ];
+            } else {
+                $dataResponse = [
+                    'messages' => 'fail',
+                ];
+            }
         }
 
         return response()->json($dataResponse, 200);
@@ -219,5 +264,12 @@ class InvoiceController extends Controller
         }
 
         return response()->json($dataResponse, 200);
+    }
+
+    public function getServices($type)
+    {
+        $services = $this->serviceRepository->getServiceByType($type);
+
+        return response()->json($services, 200);
     }
 }

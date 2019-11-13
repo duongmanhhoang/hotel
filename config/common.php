@@ -23,6 +23,8 @@ return [
     ],
     'uploads' => [
         'languages' => '/uploads/languages',
+        'properties' => '/uploads/properties',
+        'services' => '/uploads/services',
         'posts' => '/uploads/posts',
         'rooms' => '/uploads/rooms',
         'libraries' => '/uploads/libraries',
@@ -30,6 +32,7 @@ return [
     ],
     'languages' => [
         'default' => 1,
+        'english' => 2,
     ],
     'categories' => [
         'default_parent_id' => 0
@@ -40,15 +43,34 @@ return [
             '-1' => 'Từ chối phê duyệt',
             '0' => 'Chưa được duyệt',
             '1' => 'Đã được duyệt'
+        ],
+        'approve_key' => [
+            'rejected' => -1,
+            'pending' => 0,
+            'approved' => 1
+        ],
+        'approve_value' => [
+            -1 => 'rejected',
+            0 => 'pending',
+            1 => 'approved'
         ]
     ],
     'currency' => [
         'vi' => 0,
         'en' => 1,
     ],
+    'bill' => [
+        'type' => [
+            'incoming' => 1,
+            'outgoing' => 2
+        ]
+    ],
 
     'not_found' => 'Không tìm thấy dữ liệu',
     'limit' => [
         'default' => 10,
+        'gallery' => 12,
+        'home_posts' => 4,
+        'list_room_properties' => 5,
     ],
 ];

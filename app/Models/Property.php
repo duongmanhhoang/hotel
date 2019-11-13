@@ -9,7 +9,8 @@ class Property extends Model
     protected $fillable = [
         'name',
         'lang_id',
-        'lang_parent_id'
+        'lang_parent_id',
+        'image'
     ];
 
     public function rooms()
