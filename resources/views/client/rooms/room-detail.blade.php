@@ -266,6 +266,9 @@
                                         <li>
                                             <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
+                                        <li>
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
