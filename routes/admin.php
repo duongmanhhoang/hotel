@@ -250,3 +250,11 @@ Route::prefix('contact')->name('contact.')->group(function () {
     Route::get('/detail/{id}', $controller . 'detail')->name('detail');
     Route::post('delete/{id}', $controller . 'delete')->name('delete');
 });
+
+/** Chat */
+Route::prefix('chat')->name('chat.')->group(function () {
+    $controller = 'Admin\ChatController@';
+    Route::post('/send', $controller . 'send')->name('send');
+    Route::get('/{email}', $controller . 'index')->name('index');
+    Route::post('/update-status/{email}', $controller . 'updateStatus')->name('updateStatus');
+});
