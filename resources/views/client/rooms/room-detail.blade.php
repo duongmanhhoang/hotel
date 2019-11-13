@@ -255,7 +255,7 @@
                                 <p>ALorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
                             </div>
                             <div class="">
-                                <div class="h-gal">
+                                <div class="h-gal">p
                                     <ul>
                                         <li>
                                             <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
