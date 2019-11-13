@@ -68,7 +68,7 @@
                                         @endif
                                     </div>
 
-                                    @if(isset($categories))
+                                    @if(isset($categories) && !isset($dataTranslate))
                                         <div class="form-group m-form__group">
                                             <label>Danh mục</label>
                                             <div class="bs-select">

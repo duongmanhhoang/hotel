@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Post\PostRepository;
+use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
@@ -22,7 +23,9 @@ class PostController extends Controller
     {
         $data = $this->postRepo->getClientPost();
 
-        return view('client.blog.index', compact('data'));
+        $randomPost = $this->postRepo->getRandomPost();
+
+        return view('client.blog.index', compact('data', 'randomPost'));
     }
 
     public function detail($id)
@@ -38,16 +41,20 @@ class PostController extends Controller
 
     public function getPostViaCategoryName($name)
     {
-//        $currentCategory = $this->cateRepo->getCategoryByName($name);
-//
-//        if($currentCategory == null) return redirect()->back()->with(['error' => __('messages.not_found')]);
-//
-//        $checkCategoryTrans = $this->cateRepo->checkIsTranslateCurrentCategory($currentCategory);
-//
-//        $name = $checkCategoryTrans;
+        $language = Session::get('locale');
+
+        $currentCategory = $this->cateRepo->getCategoryByName($name);
+
+        if ($currentCategory == null) return redirect()->back()->with(['error' => __('messages.not_found')]);
+
+        $checkCategoryTrans = $this->cateRepo->checkIsTranslateCurrentCategory($currentCategory, $language);
+
+        $name = $checkCategoryTrans;
 
         $data = $this->postRepo->getClientPostViaCategoryName($name);
 
-        return view('client.blog.index', compact('data'));
+        $randomPost = $this->postRepo->getRandomPost();
+
+        return view('client.blog.index', compact('data', 'randomPost'));
     }
 }

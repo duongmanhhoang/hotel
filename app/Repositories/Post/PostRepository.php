@@ -5,6 +5,7 @@ namespace App\Repositories\Post;
 use App\Models\Post;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Session;
 
 class PostRepository extends EloquentRepository
@@ -110,12 +111,9 @@ class PostRepository extends EloquentRepository
     {
         $post = $this->find($id);
 
-
         $input['lang_parent_id'] = $id;
 
         $input['image'] = $post->image;
-
-        $input['category_id'] = $post->category_id;
 
         $result = $this->_model->create($input);
 
@@ -221,7 +219,8 @@ class PostRepository extends EloquentRepository
             ['approve', config('common.posts.approve_key.approved')],
         ];
 
-        $result = $this->_model->where($whereConditional)->with('category')->whereHas('category', function ($query) use ($name, $language) {
+        $result = $this->_model->where($whereConditional)->with('category')
+            ->whereHas('category', function ($query) use ($name, $language) {
             $categoryWhereConditional = [
                 ['name', $name],
                 ['type', 0],
@@ -231,5 +230,13 @@ class PostRepository extends EloquentRepository
         })->orderBy('id', 'desc')->paginate($paginate);
 
         return $result;
+    }
+
+    public function getRandomPost()
+    {
+        $language = Session::get('locale');
+        $approve = config('common.posts.approve_key.approved');
+
+        return $this->_model->where('approve', $approve)->where('lang_id', $language)->orderBy(DB::raw('RAND()'))->limit(5)->get();
     }
 }
