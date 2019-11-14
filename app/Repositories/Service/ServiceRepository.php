@@ -3,6 +3,7 @@
 namespace App\Repositories\Service;
 
 use App\Models\Category;
+use App\Models\RoomInvoice;
 use App\Models\Service;
 use App\Models\Unit;
 use App\Repositories\EloquentRepository;
@@ -97,5 +98,48 @@ class ServiceRepository extends EloquentRepository
 
         return $services;
 
+    }
+
+    public function deleteService($id)
+    {
+        $checkOrigin = $this->checkOriginal($id);
+
+        if ($checkOrigin) {
+            $service = $this->_model->find($id);
+            $checkInvoice = $this->checkInvoices($service);
+
+            if ($checkInvoice) {
+                return false;
+            }
+
+            $service->langChildren()->delete();
+            $service->delete();
+        } else {
+            $child = $this->_model->find($id);
+            $service = $this->_model->find($child->lang_parent_id);
+
+            $checkInvoice = $this->checkInvoices($service);
+
+            if ($checkInvoice) {
+                return false;
+            }
+
+            $child->delete();
+        }
+
+        return true;
+    }
+
+    protected function checkInvoices($service)
+    {
+        $service->load('invoices:code');
+        $invoices = $service->invoices->pluck('code')->toArray();
+        $check = RoomInvoice::whereIn('invoice_code', $invoices)->whereIn('status', [RoomInvoice::NOT_PAY, RoomInvoice::PAID])->get()->toArray();
+
+        if ($check) {
+            return true;
+        }
+
+        return false;
     }
 }

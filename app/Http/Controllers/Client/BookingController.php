@@ -129,11 +129,19 @@ class BookingController extends Controller
         DB::beginTransaction();
         try {
             $invoice = $this->invoiceRepository->submitBookingClient($data, $roomNumber[0]);
-            $this->notificationRepository->sendNotiClientBooking($invoice);
+
+            if (Auth::check())  {
+                $this->notificationRepository->sendNotiClientBooking($invoice);
+            }
+
             DB::commit();
             $request->session()->flash('success', 'Đặt phòng thành công');
 
-            return redirect(route('profile.mybooking'));
+            if (Auth::check()) {
+                return redirect(route('profile.mybooking'));
+            }
+
+            return redirect(route('home'));
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e->getMessage());

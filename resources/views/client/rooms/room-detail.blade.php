@@ -244,7 +244,7 @@
                                             Lorem Ipsum has been the industry's standard dummy text ever since the
                                             1500s, when an unknown printer took a galley of type and scrambled it to
                                             make a type specimen book. It has survived not only five centuries, but also
-                                            the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                            the leap into electronic typesetting, remaining essentially unchangedhihi.</p>
                                     </div>
                                 </div>
                             </div>
@@ -255,55 +255,19 @@
                                 <p>ALorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
                             </div>
                             <div class="">
-                                <div class="h-gal">
-                                    <ul>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"
-                                                 alt="">
+                                <div class="h-gal" id="wrap">
+                                    <ul id="slider">
+                                        <li class="slide-item">
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/2.jpg') }}"
-                                                 alt="">
+                                        <li class="slide-item">
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/3.jpg') }}"
-                                                 alt="">
+                                        <li class="slide-item">
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/4.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/5.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/6.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/2.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/3.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/4.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/5.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/6.jpg') }}"
-                                                 alt="">
+                                        <li class="slide-item">
+                                            <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
                                     </ul>
                                 </div>

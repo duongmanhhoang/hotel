@@ -30,4 +30,9 @@ class Service extends Model
     {
         return $this->belongsTo($this, 'lang_parent_id');
     }
+
+    public function invoices()
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_service');
+    }
 }

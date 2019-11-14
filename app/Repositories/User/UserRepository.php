@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Jobs\SendEmailRegisterJob;
 use App\Mail\User\RegiseterMail;
 use App\Models\Role;
 use App\Models\User;
@@ -165,7 +166,7 @@ class UserRepository extends EloquentRepository
     {
         $input['remember_token'] = $input['remember_token'] ?? Hash::make(time());
 
-        Mail::to($input['email'])->send(new RegiseterMail($input, $input['remember_token']));
+        SendEmailRegisterJob::dispatch($input);
     }
 }
 

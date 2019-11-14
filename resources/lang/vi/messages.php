@@ -43,16 +43,16 @@ return [
         'email_max' => 'Vui lòng không nhập quá 191 ký tự',
         'body_required' => 'Vui lòng nhập nội dung',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+        'checkInAfter' => 'Ngày tới phải bắt đầu từ hôm nay',
+        'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
+        'checkInRequired' => 'Vui lòng chọn ngày tới',
+        'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
     ],
 
     'not_found' => 'Không tìm thấy dữ liệu',
 
     'contact' => [
         'post_success' => 'Gủi thành công',
-        'checkInAfter' => 'Ngày tới phải bắt đầu từ hôm nay',
-        'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
-        'checkInRequired' => 'Vui lòng chọn ngày tới',
-        'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
     ],
 
     'user' => [
