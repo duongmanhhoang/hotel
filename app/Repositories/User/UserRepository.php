@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Repositories\EloquentRepository;
 use Hash;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
@@ -193,9 +194,9 @@ class UserRepository extends EloquentRepository
 
         $checkingPassword = Hash::check($oldPassword, $user->password);
 
-        if($checkingPassword == false) return __('messages.user.incorrect_password');
+        if ($checkingPassword == false) return __('messages.user.incorrect_password');
 
-        if($password == $oldPassword) return __('messages.user.password_equal');
+        if ($password == $oldPassword) return __('messages.user.password_equal');
 
         $password = Hash::make($password);
 
@@ -204,6 +205,14 @@ class UserRepository extends EloquentRepository
         $user->update(['password' => $password]);
 
         return true;
+    }
+
+    public function resetPassword($user, $password)
+    {
+        $password = bcrypt($password);
+        $user->password = $password;
+        $user->save();
+        Artisan::call('cache:clear');
     }
 }
 

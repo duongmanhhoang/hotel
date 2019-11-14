@@ -22,12 +22,17 @@ return [
     'Home_posts' => 'Read the latest news about traveling, and get more information for big events with Atlantic',
     'Rooms_list' => 'Travel to the Atlantic to experience one of the best resort in Vietnam with various rooms',
     '24/7' => 'Room service 24/7',
-
+    'reset-password-mail' => 'Click this button to reset your password',
+    'Send_reset_email_successfully' => 'Link reset password has been sent. Please check your email',
+    'Reset-password-fail' => 'Fail to reset password',
+    'user-not-found' => 'User not found',
+    'reset-password-success' => 'Reset password successfully',
 
 
     'validation' => [
         'required' => 'Must fill this field',
         'email' => 'Must enter correct email type',
+        'email_exists' => 'Email is not exist',
         'max' => 'Please do not enter greater than :number characters',
         'min' => 'Please do not enter less than :number characters',
         'character' => 'character',

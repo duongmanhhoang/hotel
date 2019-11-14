@@ -94,4 +94,7 @@ return [
     'Tv' => 'Tivi Internet 4K',
     'Gym' => 'Gym',
     'Welcome' => 'Glad to see you',
+    'Reset_password' => 'Reset password',
+    'New_password' => 'New password',
+    'Re_new_password' => 'Re-enter new password',
 ];

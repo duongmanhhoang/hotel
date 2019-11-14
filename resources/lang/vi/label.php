@@ -93,5 +93,8 @@ return [
     'Tv' => 'Tivi Internet 4K',
     'Gym' => 'Phòng gym',
     'Welcome' => 'Hân hạnh chào đón bạn',
+    'Reset_password' => 'Đặt lại mật khẩu',
+    'New_password' => 'Mật khẩu mới',
+    'Re_new_password' => 'Nhập lại mật khẩu mới',
 
 ];
