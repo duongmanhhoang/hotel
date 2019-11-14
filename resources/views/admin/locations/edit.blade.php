@@ -72,6 +72,18 @@
                                             <b class="text-danger">{{ $errors->first('address') }}</b>
                                         @endif
                                     </div>
+
+                                    <div class="form-group m-form__group">
+                                        <label>Longitude</label>
+                                        <input type="text" class="form-control m-input" name="longitude"
+                                               value="{{ old('longitude', $location->longitude) }}">
+                                    </div>
+
+                                    <div class="form-group m-form__group">
+                                        <label>Latitude</label>
+                                        <input type="text" class="form-control m-input" name="latitude"
+                                               value="{{ old('latitude', $location->latitude) }}">
+                                    </div>
                                     <div class="form-group m-form__group">
                                         <button class="btn btn-primary">Chỉnh sửa</button>
                                     </div>

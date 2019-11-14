@@ -14,6 +14,8 @@ class Location extends Model
         'province_id',
         'lang_id',
         'lang_parent_id',
+        'longitude',
+        'latitude'
     ];
 
     public function locations()
