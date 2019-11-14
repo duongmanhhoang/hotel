@@ -71,3 +71,10 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function (
     Route::post('cancel-booking/{id}', $controller . 'cancelBooking')->name('cancelBooking');
 });
 
+/** Chat */
+Route::prefix('chat-with-admin')->name('chatWithAdmin.')->group(function () {
+    $chatController = 'Client\ChatController@';
+    Route::post('submit-email', $chatController . 'submitEmail')->name('submitEmail');
+    Route::post('send', $chatController . 'send')->name('send');
+});
+

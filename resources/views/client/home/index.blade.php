@@ -173,10 +173,6 @@
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                            src="{{ asset('bower_components/client_layout/images/icon/h2.png') }}" alt=""> </a><span>{{ __('label.Free_breakfast') }}</span>
-                                </li>
-                                <li>
-                                    <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
                                             src="{{ asset('bower_components/client_layout/images/icon/dis3.png') }}" alt=""> </a><span>{{ __('label.Pool') }}</span>
                                 </li>
                                 <li>

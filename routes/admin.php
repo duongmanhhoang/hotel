@@ -220,6 +220,7 @@ Route::prefix('services')->name('services.')->group(function () {
     Route::get('/origin/{id}', $controller . 'origin')->name('origin');
     Route::get('edit/{id}', $controller . 'edit')->name('edit');
     Route::post('update/{id}', $controller . 'update')->name('update');
+    Route::post('delete/{id}', $controller . 'delete')->name('delete');
     Route::get('translation/{id}', $controller . 'translation')->name('translation');
     Route::post('store-translation/{id}', $controller . 'storeTranslation')->name('storeTranslation');
 
@@ -249,4 +250,12 @@ Route::prefix('contact')->name('contact.')->group(function () {
     Route::get('/datatable', $controller . 'dataTable')->name('dataTable');
     Route::get('/detail/{id}', $controller . 'detail')->name('detail');
     Route::post('delete/{id}', $controller . 'delete')->name('delete');
+});
+
+/** Chat */
+Route::prefix('chat')->name('chat.')->group(function () {
+    $controller = 'Admin\ChatController@';
+    Route::post('/send', $controller . 'send')->name('send');
+    Route::get('/{email}', $controller . 'index')->name('index');
+    Route::post('/update-status/{email}', $controller . 'updateStatus')->name('updateStatus');
 });
