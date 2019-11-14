@@ -255,18 +255,18 @@
                                 <p>ALorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
                             </div>
                             <div class="">
-                                <div class="h-gal">p
-                                    <ul>
-                                        <li>
+                                <div class="h-gal" id="wrap">
+                                    <ul id="slider">
+                                        <li class="slide-item">
                                             <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li>
+                                        <li class="slide-item">
                                             <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li>
+                                        <li class="slide-item">
                                             <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
-                                        <li>
+                                        <li class="slide-item">
                                             <a data-fancybox="gallery" href="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"><img src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"></a>
                                         </li>
                                     </ul>

@@ -14,7 +14,7 @@
 Route::get('/', 'Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
-    return view('client.user.regiser');
+    return view('client.rooms.room-detail');
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');

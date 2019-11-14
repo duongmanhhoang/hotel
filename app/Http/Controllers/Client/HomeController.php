@@ -62,9 +62,6 @@ class HomeController extends Controller
             'roomNameRepository',
             'searchLocations'
         );
-
-        return view('client.rooms.room-detail', $data);
-
-
+        return view('client.home.index', $data);
     }
 }
