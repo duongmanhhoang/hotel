@@ -351,7 +351,7 @@
                               <table align="center" cellpadding="0" cellspacing="0" border="0" class="full-width">
                                 <tr>
                                   <td class="cta-shadow" align="center" bgcolor="#FF00BF" style="border-radius: 40px; -webkit-border-radius: 40px; -moz-border-radius: 40px;">
-                                    <a href="{{ route('user.active') }}?token={{$activeToken}}" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.0; font-weight: bold; color: #ffffff; text-transform: uppercase; text-decoration: none; border-radius: 30px; -webkit-border-radius: 30px; -moz-border-radius: 30px; display: block; padding: 12px 25px 12px 25px;">
+                                    <a href="{{ \Illuminate\Support\Facades\Config::get('app.url') . route('user.active', null, false) }}?token={{$activeToken}}" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.0; font-weight: bold; color: #ffffff; text-transform: uppercase; text-decoration: none; border-radius: 30px; -webkit-border-radius: 30px; -moz-border-radius: 30px; display: block; padding: 12px 25px 12px 25px;">
                                                 VERIFY
                                     </a>
                                   </td>
