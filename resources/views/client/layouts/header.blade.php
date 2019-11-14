@@ -4,7 +4,7 @@
             <div class="top-bar">
                 <ul>
                     <li>
-                        <a class='dropdown-button' href='#' data-activates='dropdown1'> {{ __('label.My_account') }} <i
+                        <a class='dropdown-button' href='#' data-activates='dropdown1'> {{ __('label.My_account') }} {{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->full_name : '' }}<i
                                     class="fa fa-angle-down"></i></a>
                     </li>
                     <li><a class='dropdown-button' href='#' data-activates='dropdown2'>{{$current_language->name}} <i
@@ -105,4 +105,3 @@
         </div>
     </div>
 </div>
-		
