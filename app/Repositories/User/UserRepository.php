@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Repositories\EloquentRepository;
 use Hash;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
@@ -174,6 +175,7 @@ class UserRepository extends EloquentRepository
         $password = bcrypt($password);
         $user->password = $password;
         $user->save();
+        Artisan::call('cache:clear');
     }
 }
 
