@@ -168,5 +168,12 @@ class UserRepository extends EloquentRepository
 
         SendEmailRegisterJob::dispatch($input);
     }
+
+    public function resetPassword($user, $password)
+    {
+        $password = bcrypt($password);
+        $user->password = $password;
+        $user->save();
+    }
 }
 
