@@ -182,6 +182,7 @@
         $('.btn-submit').on('click', function (){
 
             $(this).attr('disabled', true);
+            $(".error-message[data-error]").html('');
 
             let email = $('#email').val();
             let password = $('#password').val();
@@ -217,7 +218,7 @@
                     for(let key in errors) {
                         let value = errors[key][0];
                         $(".error-message[data-error]").each(function() {
-                            $(this).html('');
+
                             if ($(this).data("error") === key) {
                                 $(this).html(value);
                             }
