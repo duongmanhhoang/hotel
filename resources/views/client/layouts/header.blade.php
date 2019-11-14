@@ -19,7 +19,7 @@
                 <ul id='dropdown1' class='dropdown-content drop-con-man'>
                     @if (\Illuminate\Support\Facades\Auth::check())
                         <li>
-                            <a href="db-profile.html"><img
+                            <a href="{{ route('user.profileInformation') }}"><img
                                         src="{{asset('/bower_components/client_layout/images/icon/2.png')}}"
                                         alt=""> {{ __('label.My_profile') }}</a>
                         </li>

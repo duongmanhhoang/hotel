@@ -63,5 +63,8 @@ return [
         'expire_token' => 'Expire email, please send another email to active',
         'not_found' => 'Account not found',
         'resend_active_email' => 'Resend success',
+        'password_change_success' => 'Change password success',
+        'password_equal' => 'New password is equal to old password',
+        'incorrect_password' => 'Password incorrect,',
     ],
 ];

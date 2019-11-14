@@ -32,7 +32,7 @@ return [
         'submit' => 'Send'
     ],
 
-    'register' => [
+    'user' => [
         'label' => 'Register',
         'desc' => 'Create account to get best travelling experience with Atlantic',
         'password' => 'Password',
@@ -40,7 +40,13 @@ return [
         'phone' => 'Phone number',
         'address' => 'Address',
         'full_name' => 'Full name',
-        'submit' => 'Register'
+        'submit' => 'Register',
+        'old_password' => 'Old Password',
+        'update_info' => 'Edit Information',
+        'update_password' => 'Update Password',
+        'join_date' => 'Join Date',
+        'update_password_submit' => 'Change password',
+        'update_info_submit' => 'Update Information',
     ],
 
     'Search' => 'Search',

@@ -112,6 +112,9 @@ Route::prefix('users')->name('users.')->middleware('checkSuperAdmin&Admin')->gro
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/deactive/{id}', $controller . 'deactive')->name('deactive');
     Route::get('/active/{id}', $controller . 'active')->name('active');
+    Route::get('/information', $controller . 'profile')->name('profile');
+    Route::post('/update-information', $controller . 'updateInformation')->name('updateInformation');
+    Route::post('/update-password', $controller . 'updatePassword')->name('updatePassword');
 
 });
 

@@ -31,7 +31,7 @@ return [
         'submit' => 'Gửi'
     ],
 
-    'register' => [
+    'user' => [
         'label' => 'Đăng kí tài khoản',
         'desc' => 'Khởi tạo tài khoản để cùng Atlantic trải nghiệm những chuyến du lịch nghỉ dưỡng tốt nhất',
         'password' => 'Mật khẩu',
@@ -39,7 +39,13 @@ return [
         'phone' => 'Số điện thoại',
         'address' => 'Địa chỉ',
         'full_name' => 'Họ và tên',
-        'submit' => 'Đăng kí'
+        'submit' => 'Đăng kí',
+        'old_password' => 'Mật khẩu cũ',
+        'update_info' => 'Chỉnh sửa thông tin',
+        'update_password' => 'Cập nhật mật khẩu',
+        'join_date' => 'Ngày tham gia',
+        'update_password_submit' => 'Đổi mật khẩu',
+        'update_info_submit' => 'Sửa thông tin',
     ],
 
     'Search' => 'Tìm kiếm',

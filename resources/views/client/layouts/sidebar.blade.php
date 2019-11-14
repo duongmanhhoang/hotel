@@ -66,11 +66,11 @@
                 <a href="#" class="pop-close" data-dismiss="modal"><img
                             src="{{ asset('bower_components/client_layout/images/cancel.png') }}" alt=""/>
                 </a>
-                <h4>{{ __('label.register.label') }}</h4>
+                <h4>{{ __('label.user.label') }}</h4>
                 {{--<p>Khởi tạo tài khoản để cùng Atlantic trải nghiệm những chuyến du lịch nghỉ dưỡng tốt nhất</p>--}}
-                <p>{{ __('label.register.desc') }}</p>
+                <p>{{ __('label.user.desc') }}</p>
                 <form class="s12"
-                      {{--action="{{ route('user.register') }}"--}}
+                      {{--action="{{ route('user.user') }}"--}}
                       {{--method="POST"--}}
                 >
                     @csrf
@@ -84,7 +84,7 @@
                     <div>
                         <div class="input-field s12">
                             <input type="password" class="validate" name="password" id="password">
-                            <label>{{ __('label.register.password') }}</label>
+                            <label>{{ __('label.user.password') }}</label>
                             <b class="text-danger error-message" data-error="password"></b>
 
                         </div>
@@ -92,14 +92,14 @@
                     <div>
                         <div class="input-field s12">
                             <input type="password" class="validate" name="password_confirmation" id="password_confirmation">
-                            <label>{{ __('label.register.password_confirmation') }}</label>
+                            <label>{{ __('label.user.password_confirmation') }}</label>
                         </div>
                     </div>
 
                     <div>
                         <div class="input-field s12">
                             <input type="text" name="full_name" value="{{ old('full_name' ?? '') }}" id="full_name">
-                            <label>{{ __('label.register.full_name') }}</label>
+                            <label>{{ __('label.user.full_name') }}</label>
                             <b class="text-danger error-message" data-error="full_name"></b>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     <div>
                         <div class="input-field s12">
                             <input type="text" name="phone" value="{{ old('phone' ?? '') }}" id="phone">
-                            <label>{{ __('label.register.phone') }}</label>
+                            <label>{{ __('label.user.phone') }}</label>
                             <b class="text-danger error-message" data-error="phone"></b>
                         </div>
                     </div>
@@ -115,12 +115,12 @@
                     <div>
                         <div class="input-field s12">
                             <input type="text" name="address" value="{{ old('address' ?? '') }}" id="address">
-                            <label>{{ __('label.register.address') }}</label>
+                            <label>{{ __('label.user.address') }}</label>
                         </div>
                     </div>
                     <div>
                         <div class="input-field s4">
-                            <input type="submit" value="{{ __('label.register.submit') }}" class="waves-effect waves-light log-in-btn btn-submit"></div>
+                            <input type="submit" value="{{ __('label.user.submit') }}" class="waves-effect waves-light log-in-btn btn-submit"></div>
                     </div>
                     <div>
                         <div class="input-field s12"><a href="#" data-dismiss="modal" data-toggle="modal"
@@ -184,6 +184,9 @@
             $(this).attr('disabled', true);
             $(".error-message[data-error]").html('');
 
+
+
+
             let email = $('#email').val();
             let password = $('#password').val();
             let password_confirmation = $('#password_confirmation').val();
@@ -205,6 +208,12 @@
                             $(this).html('');
                         }
                     });
+
+                    $("#modal2").removeClass("in");
+                    $(".modal-backdrop").remove();
+                    $('body').removeClass('modal-open');
+                    $('body').css('padding-right', '');
+                    $("#commend").hide();
 
                     if(res.status === 'success') {
                         toastr.success(res.message);

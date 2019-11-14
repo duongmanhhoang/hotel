@@ -62,5 +62,8 @@ return [
         'expire_token' => 'Hết hạn token. Gửi lại mail để kích hoạt',
         'not_found' => 'Tài khoản không tồn tại',
         'resend_active_email' => 'Gửi lại thành công',
+        'password_change_success' => 'Đổi mật khẩu thành công',
+        'password_equal' => 'Mật khẩu mới trùng với mật khẩu cũ',
+        'incorrect_password' => 'Sai mật khẩu',
     ],
 ];
