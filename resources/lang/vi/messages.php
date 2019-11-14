@@ -22,11 +22,16 @@ return [
     'Home_posts' => 'Đọc và đón chờ những tin tức mới nhất về khách sạn du lịch, và cùng săn những sự kiện cực hot cùng Atlantic',
     'Rooms_list' => 'Đến với Atlantic để trải nghiệm dịch vụ nghỉ dưỡng bậc nhất Việt Nam với hệ thống phòng phong phú',
     '24/7' => 'Dịch vụ phòng 24/7',
-
+    'reset-password-mail' => 'Click vào nút dưới để đặt lại mật khẩu',
+    'Send_reset_email_successfully' => 'Liên kết đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email',
+    'Reset-password-fail' => 'Đặt lại mật khẩu thất bại',
+    'user-not-found' => 'Không tìm thấy người dùng',
+    'reset-password-success' => 'Đặt lại mật khẩu thành công',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
         'email' => 'Vui lòng nhập đúng định dạng email',
+        'email_exists' => 'Email này không tồn tại',
         'max' => 'Vui lòng không nhập quá :number ký tự',
         'min' => 'Vui lòng không nhập ít hơn :number ký tự',
         'character' => 'ký tự',

@@ -40,7 +40,7 @@
                                     </label>
                                 </div>
                                 <div class="col m--align-right m-login__form-right">
-                                    <a href="" id="m_login_forget_password"
+                                    <a href="{{ route('forgetPassword.index') }}" id="m_login_forget_password"
                                        class="m-link">{{ __('messages.Forget_password') }}</a>
                                 </div>
                             </div>

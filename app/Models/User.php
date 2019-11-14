@@ -10,6 +10,8 @@ use App\Models\Role;
 class User extends Authenticatable
 {
     use Notifiable;
+    const DISABLE = 0;
+    const ACTIVE = 1;
 
     /**
      * The attributes that are mass assignable.

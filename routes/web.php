@@ -78,3 +78,10 @@ Route::prefix('chat-with-admin')->name('chatWithAdmin.')->group(function () {
     Route::post('send', $chatController . 'send')->name('send');
 });
 
+Route::prefix('forget-password')->name('forgetPassword.')->group(function () {
+    $controller = 'Auth\ForgotPasswordController@';
+    Route::get('', $controller . 'index')->name('index');
+    Route::post('sendMail', $controller . 'sendMail')->name('sendMail');
+    Route::get('reset', $controller . 'reset')->name('reset');
+    Route::post('resetPassword', $controller . 'resetPassword')->name('resetPassword');
+});
