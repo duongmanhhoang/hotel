@@ -184,7 +184,7 @@ class CategoryRepository extends EloquentRepository
         $sameLang = $category->name;
 
         if($language== config('common.languages.default')) {
-            $sameLang = $category->parentTranslate->name;
+            $sameLang = $category->parentTranslate->name ?? $category->name;
         }else {
             foreach ($category->childrenTranslate as $value) {
                 if($value->lang_id == $language) {

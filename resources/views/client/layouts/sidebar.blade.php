@@ -69,65 +69,58 @@
                 <h4>{{ __('label.register.label') }}</h4>
                 {{--<p>Khởi tạo tài khoản để cùng Atlantic trải nghiệm những chuyến du lịch nghỉ dưỡng tốt nhất</p>--}}
                 <p>{{ __('label.register.desc') }}</p>
-                <form class="s12" action="{{ route('user.register') }}" method="POST">
+                <form class="s12"
+                      {{--action="{{ route('user.register') }}"--}}
+                      {{--method="POST"--}}
+                >
                     @csrf
                     <div>
                         <div class="input-field s12">
-                            <input type="text" data-ng-model="name1" class="validate" name="email" value="{{ old('email' ?? '') }}">
+                            <input type="text" data-ng-model="name1" class="validate" name="email" value="{{ old('email' ?? '') }}" id="email">
                             <label>Email</label>
-                            @if ($errors->has('email'))
-                                <b class="text-danger">{{ $errors->first('email') }}</b>
-                            @endif
+                            <b class="text-danger error-message" data-error="email"></b>
                         </div>
                     </div>
                     <div>
                         <div class="input-field s12">
-                            <input type="password" class="validate" name="password">
+                            <input type="password" class="validate" name="password" id="password">
                             <label>{{ __('label.register.password') }}</label>
-                            @if ($errors->has('password'))
-                                <b class="text-danger">{{ $errors->first('password') }}</b>
-                            @endif
+                            <b class="text-danger error-message" data-error="password"></b>
+
                         </div>
                     </div>
                     <div>
                         <div class="input-field s12">
-                            <input type="password" class="validate" name="password_confirmation">
+                            <input type="password" class="validate" name="password_confirmation" id="password_confirmation">
                             <label>{{ __('label.register.password_confirmation') }}</label>
-                            @if ($errors->has('password_confirmation'))
-                                <b class="text-danger">{{ $errors->first('password_confirmation') }}</b>
-                            @endif
                         </div>
                     </div>
 
                     <div>
                         <div class="input-field s12">
-                            <input type="text" name="full_name" value="{{ old('full_name' ?? '') }}">
+                            <input type="text" name="full_name" value="{{ old('full_name' ?? '') }}" id="full_name">
                             <label>{{ __('label.register.full_name') }}</label>
-                            @if ($errors->has('full_name'))
-                                <b class="text-danger">{{ $errors->first('full_name') }}</b>
-                            @endif
+                            <b class="text-danger error-message" data-error="full_name"></b>
                         </div>
                     </div>
 
                     <div>
                         <div class="input-field s12">
-                            <input type="text" name="phone" value="{{ old('phone' ?? '') }}">
+                            <input type="text" name="phone" value="{{ old('phone' ?? '') }}" id="phone">
                             <label>{{ __('label.register.phone') }}</label>
-                            @if ($errors->has('phone'))
-                                <b class="text-danger">{{ $errors->first('phone') }}</b>
-                            @endif
+                            <b class="text-danger error-message" data-error="phone"></b>
                         </div>
                     </div>
 
                     <div>
                         <div class="input-field s12">
-                            <input type="text" name="address" value="{{ old('address' ?? '') }}">
+                            <input type="text" name="address" value="{{ old('address' ?? '') }}" id="address">
                             <label>{{ __('label.register.address') }}</label>
                         </div>
                     </div>
                     <div>
                         <div class="input-field s4">
-                            <input type="submit" value="{{ __('label.register.submit') }}" class="waves-effect waves-light log-in-btn"></div>
+                            <input type="submit" value="{{ __('label.register.submit') }}" class="waves-effect waves-light log-in-btn btn-submit"></div>
                     </div>
                     <div>
                         <div class="input-field s12"><a href="#" data-dismiss="modal" data-toggle="modal"
@@ -174,4 +167,67 @@
         </div>
     </div>
 </section>
-	
+
+<script src="{{ asset('bower_components/client_layout/js/jquery.min.js') }}"></script>
+<script src="{{ asset('bower_components/client_layout/js/jquery-ui.js') }}"></script>
+<script src="{{ asset('bower_components/metronic/vendors/base/vendors.bundle.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('bower_components/metronic/demo/default/base/scripts.bundle.js') }}"
+        type="text/javascript"></script>
+
+<script>
+    $(document).ready(function () {
+        const urlRegister = "{{ route('user.register') }}";
+
+        $('.btn-submit').on('click', function (){
+
+            $(this).attr('disabled', true);
+
+            let email = $('#email').val();
+            let password = $('#password').val();
+            let password_confirmation = $('#password_confirmation').val();
+            let full_name = $('#full_name').val();
+            let phone = $('#phone').val();
+            let address = $('#address').val();
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: urlRegister,
+                method: 'post',
+                data: {email, password, password_confirmation, full_name, phone, address},
+                success: function (res) {
+
+                    $(".error-message[data-error]").each(function() {
+                        if ($(this).data("error")) {
+                            $(this).html('');
+                        }
+                    });
+
+                    if(res.status === 'success') {
+                        toastr.success(res.message);
+                    }else {
+                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    let errors = XMLHttpRequest.responseJSON.errors;
+
+                    for(let key in errors) {
+                        let value = errors[key][0];
+                        $(".error-message[data-error]").each(function() {
+                            $(this).html('');
+                            if ($(this).data("error") === key) {
+                                $(this).html(value);
+                            }
+                        });
+                    }
+
+                    $(this).attr('disabled', false);
+
+                }
+            })
+        })
+    })
+</script>
