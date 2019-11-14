@@ -23,7 +23,10 @@ class UserController extends Controller
 
         $this->userRepo->clientRegister($input);
 
-        return redirect()->back()->with(['success' => __('messages.user.register_success')]);
+        return response()->json([
+            'status' => 'success',
+            'message' => __('messages.user.register_success'),
+        ]);
     }
 
     public function activeUser(Request $request)

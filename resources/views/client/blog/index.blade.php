@@ -25,70 +25,41 @@
                     @foreach($data as $value)
                         <div class="row inn-services in-blog">
                             <div class="col-md-4">
-                                <img src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}" alt="" />
+                                <img src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}" alt=""/>
                             </div>
                             <div class="col-md-8">
                                 <h3>{{ $value->title }}</h3>
                                 <span class="blog-date">{{ $value->updated_at }}</span>
                                 <span class="blog-author">Tác giả: {{ $value->postedBy->full_name }}</span>
                                 <p> {{ $value->description }} </p>
-                                <a href=" {{ route('post.detail', $value->id) }} " class="waves-effect waves-light inn-re-mo-btn">{{ __('label.post.read_more') }}</a> </div>
+                                <a href=" {{ route('post.detail', $value->id) }} "
+                                   class="waves-effect waves-light inn-re-mo-btn">{{ __('label.post.read_more') }}</a>
+                            </div>
                         </div>
                     @endforeach
 
-                        <div class="col-md-4">
-                            @include('client.pagination.index', ['paginator' => $data])
-                        </div>
+                    <div class="col-md-4">
+                        @include('client.pagination.index', ['paginator' => $data])
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="head-typo typo-com rec-post">
-                        <h3>Bài viết gần đây</h3>
+                        <h3>{{ __('label.post.random_post') }}</h3>
                         <ul>
-                            <li>
-                                <div class="rec-po-img"><img
-                                            src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}"
-                                            alt=""/></div>
-                                <div class="rec-po-title"><a href="blog_detail.html"><h4>Xu hướng du lịch mùa đông</h4>
-                                    </a>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                                    <span class="blog-date">Date: December 9, 2019</span></div>
-                            </li>
-                            <li>
-                                <div class="rec-po-img"><img
-                                            src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}"
-                                            alt=""/></div>
-                                <div class="rec-po-title"><a href="blog_detail.html"><h4>Xu hướng du lịch mùa đông</h4>
-                                    </a>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                                    <span class="blog-date">Date: December 9, 2019</span></div>
-                            </li>
-                            <li>
-                                <div class="rec-po-img"><img
-                                            src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}"
-                                            alt=""/></div>
-                                <div class="rec-po-title"><a href="blog_detail.html"><h4>Xu hướng du lịch mùa đông</h4>
-                                    </a>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                                    <span class="blog-date">Date: December 9, 2019</span></div>
-                            </li>
-                            <li>
-                                <div class="rec-po-img"><img
-                                            src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}"
-                                            alt=""/></div>
-                                <div class="rec-po-title"><a href="blog_detail.html"><h4>Xu hướng du lịch mùa đông</h4>
-                                    </a>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                                    <span class="blog-date">Date: December 9, 2019</span></div>
-                            </li>
-                            <li>
-                                <div class="rec-po-img"><img
-                                            src="{{ asset('bower_components/client_layout/images/ami/1.jpg') }}"
-                                            alt=""/></div>
-                                <div class="rec-po-title"><a href="blog_detail.html"><h4>Xu hướng du lịch mùa đông</h4>
-                                    </a>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                                    <span class="blog-date">Date: December 9, 2019</span></div>
-                            </li>
+                            @foreach($randomPost as $value)
+                                <li>
+                                    <div class="rec-po-img"><img
+                                                src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}"
+                                                alt=""/></div>
+                                    <div class="rec-po-title">
+                                        <a href="{{ route('post.detail', $value->id) }}">
+                                            <h4>{{ $value->title }}</h4>
+                                        </a>
+                                        <p>{{ $value->description }}</p>
+                                        <span class="blog-date">Date: {{ $value->updated_at }}</span></div>
+                                </li>
+                            @endforeach
+
                         </ul>
                     </div>
                     <div class="head-typo typo-com">

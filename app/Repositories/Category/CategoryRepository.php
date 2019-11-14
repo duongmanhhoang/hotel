@@ -176,28 +176,28 @@ class CategoryRepository extends EloquentRepository
 
     public function getCategoryByName($name)
     {
-        return $this->_model->where('name', $name)->with('childrenTranslate')->first();
+        return $this->_model->where('name', $name)->with('childrenTranslate', 'parentTranslate')->first();
     }
 
-    public function checkIsTranslateCurrentCategory($category)
+    public function checkIsTranslateCurrentCategory($category, $language)
     {
-        $language = Session::get('locale');
-
         $sameLang = $category->name;
 
-        // working here bug when change lang
-
-        if($category->lang_id != $language) {
-
-            $childrenTranslate = $this->getCategoryParentTranslate($category->id, $language);
-            $sameLang = $childrenTranslate->name;
+        if($language== config('common.languages.default')) {
+            $sameLang = $category->parentTranslate->name ?? $category->name;
+        }else {
+            foreach ($category->childrenTranslate as $value) {
+                if($value->lang_id == $language) {
+                    $sameLang = $value->name;
+                }
+            }
         }
 
         return $sameLang;
     }
 
     public function getCategoryParentTranslate($parentId, $lang) {
-        return $this->_model->where('lang_id', $lang)->where('lang_parent_id', $parentId)->first();
+        return $this->_model->where('lang_id', $lang)->where('lang_parent_id', $parentId)->with('parentTranslate')->first();
     }
 
 }

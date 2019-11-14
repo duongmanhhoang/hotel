@@ -75,7 +75,7 @@ class PostController extends Controller
                 return redirect()->route('admin.post.list')->with(['error' => 'Không được dịch từ bản con']);
         }
 
-        $categories  = $this->categoryRepo->categoriesAll(null);
+        $categories  = $this->categoryRepo->getCategory(null);
         $route = $postId != false ? route('admin.post.translateAction', $postId) : route('admin.post.addAction');
         $posts = $this->postRepo->searchPost(null);
         $dataTranslate = $postId != false ? true : null;
@@ -111,7 +111,7 @@ class PostController extends Controller
     public function editView($id)
     {
         $data = $this->postRepo->findEditedPost($id);
-        $categories  = $this->categoryRepo->categoriesAll(null);
+        $categories  = $this->categoryRepo->getCategory(null);
         $route = route('admin.post.editAction', ['id' => $id]);
 
         if($data == null) {
@@ -181,6 +181,7 @@ class PostController extends Controller
 
         if($currentPost->category != null) {
             $categoryTranslate = $this->categoryRepo->queryCheckTranslateCategory($currentPost->category->id, $input['lang_id']);
+            $input['category_id'] = $categoryTranslate[0]->id;
 
             if(empty($categoryTranslate) || count($categoryTranslate) <= 0) {
                 return redirect()->back()->with(['error' => 'Danh mục phải có bản dịch']);
