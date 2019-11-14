@@ -56,7 +56,7 @@ return [
     ],
 
     'user' => [
-        'register_success' => 'Đăng kí thành công, chúng tôi đã gửi cho bạn mail để kích hoạt tài khoảnh',
+        'register_success' => 'Đăng kí thành công, chúng tôi đã gửi cho bạn mail để kích hoạt tài khoản',
         'already_active' => 'Tài khoản này đã được kích hoạt',
         'active_success' => 'Kích hoạt thành công',
         'expire_token' => 'Hết hạn token. Gửi lại mail để kích hoạt',
