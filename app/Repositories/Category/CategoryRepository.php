@@ -43,6 +43,13 @@ class CategoryRepository extends EloquentRepository
         return $result;
     }
 
+    public function getCategoryById($id)
+    {
+        $language = Session::get('locale');
+
+        return $this->_model->where('id', $id)->where('lang_id', $language)->with('parentTranslate', 'childrenTranslate')->first();
+    }
+
     public function post($input)
     {
         $result = $this->_model->create($input);
@@ -56,7 +63,7 @@ class CategoryRepository extends EloquentRepository
 
         if($result->childrenTranslate != null) {
             $childrenDateUpdate = [
-                'type' => $input['type']
+                'type' => $input['type'] ?? $result->type
             ];
 
             $result->childrenTranslate()->update($childrenDateUpdate);

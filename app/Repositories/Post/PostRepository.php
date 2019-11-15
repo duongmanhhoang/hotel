@@ -91,7 +91,7 @@ class PostRepository extends EloquentRepository
             $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
-        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category')->first();
+        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate')->first();
     }
 
     public function deletePost($id)
