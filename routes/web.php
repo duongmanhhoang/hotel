@@ -14,7 +14,7 @@
 Route::get('/', 'Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
-    return view('client.rooms.room-detail');
+    return view('client.profile.profile');
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');
@@ -60,6 +60,10 @@ Route::prefix('user')->name('user.')->group(function () {
     $controller = 'Client\UserController@';
     Route::post('/register', $controller . 'register')->name('register');
     Route::get('/active', $controller . 'activeUser')->name('active');
+    Route::get('/profile', $controller . 'profile')->name('profile');
+    Route::get('/profile/information', $controller . 'profileInformation')->name('profileInformation');
+    Route::post('/profile/information', $controller . 'updateInfo')->name('updateInformation');
+    Route::post('/update-password', $controller . 'updatePassword')->name('updatePassword');
 });
 
 /** Profile */

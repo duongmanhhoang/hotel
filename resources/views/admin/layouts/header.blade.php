@@ -79,7 +79,7 @@
                                 <span class="m-menu__arrow m-menu__arrow--adjust custom-arrow"></span>
                                 <ul class="m-menu__subnav">
                                     <li class="m-menu__item" aria-haspopup="true">
-                                        <a href="" class="m-menu__link ">
+                                        <a href=" {{ route('admin.users.profile') }}" class="m-menu__link ">
                                             <i class="m-menu__link-icon flaticon-file"></i>
                                             <span class="m-menu__link-text">Thông tin cá nhân</span>
                                         </a>
