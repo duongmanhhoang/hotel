@@ -14,7 +14,7 @@
 Route::get('/', 'Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
-    return view('client.rooms.room-detail');
+    return view('mail.invoice');
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');
