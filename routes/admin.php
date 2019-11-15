@@ -262,3 +262,12 @@ Route::prefix('chat')->name('chat.')->group(function () {
     Route::get('/{email}', $controller . 'index')->name('index');
     Route::post('/update-status/{email}', $controller . 'updateStatus')->name('updateStatus');
 });
+
+/** Comments */
+Route::prefix('comments')->name('comments.')->group(function () {
+    $controller = 'Admin\CommentController@';
+    Route::get('index', $controller . 'index')->name('index');
+    Route::get('datatable', $controller . 'datatable')->name('datatable');
+    Route::get('show/{id}', $controller . 'show')->name('show');
+    Route::post('delete/{id}', $controller . 'delete')->name('delete');
+});
