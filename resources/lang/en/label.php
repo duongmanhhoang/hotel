@@ -18,7 +18,11 @@ return [
     'Arrival_date' => 'Arrival date',
     'Departure_date' => 'Departure date',
     'Chat_with_admin' => 'Chat with admin',
-
+    'Room_name' => 'Room class',
+    'Room_number' => 'Room number',
+    'Price' => 'Price',
+    'Total' => 'Total',
+    'Image' => 'Image',
 
     'post' => [
         'list' => 'Blog posts',

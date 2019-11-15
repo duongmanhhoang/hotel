@@ -12,6 +12,7 @@ class User extends Authenticatable
     use Notifiable;
     const DISABLE = 0;
     const ACTIVE = 1;
+    const SUPER_ADMIN = 1;
 
     /**
      * The attributes that are mass assignable.
