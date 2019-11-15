@@ -256,4 +256,33 @@ class ServiceController extends Controller
         return redirect(route('admin.services.edit', $id));
 
     }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            $check = $this->serviceRepository->deleteService($id);
+
+            if ($check) {
+                DB::commit();
+                $dataResponse = [
+                    'messages' => 'success',
+                ];
+            } else {
+                $dataResponse = [
+                    'messages' => 'used',
+                ];
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $dataResponse = [
+                'messages' => 'error',
+                'data' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($dataResponse, 200);
+
+    }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Repositories\User;
 
-use App\Mail\User\RegiseterMail;
+use App\Jobs\SendEmailRegisterJob;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\EloquentRepository;
 use Hash;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Mail;
 
 class UserRepository extends EloquentRepository
 {
@@ -165,7 +165,54 @@ class UserRepository extends EloquentRepository
     {
         $input['remember_token'] = $input['remember_token'] ?? Hash::make(time());
 
-        Mail::to($input['email'])->send(new RegiseterMail($input, $input['remember_token']));
+        SendEmailRegisterJob::dispatch($input);
+    }
+
+    public function findUserById($id)
+    {
+        $result = $this->_model->where('id', $id)->with('invoices.rooms.roomName', 'notifications')->first();
+
+//        dd($result);
+
+        return $result;
+    }
+
+    public function updateInfo($input)
+    {
+        $userId = Auth::user()->id;
+
+        $result = $this->find($userId);
+
+        $result->update($input);
+    }
+
+    public function updatePassword($input)
+    {
+        $user = Auth::user();
+        $oldPassword = $input['old_password'];
+        $password = $input['password'];
+
+        $checkingPassword = Hash::check($oldPassword, $user->password);
+
+        if ($checkingPassword == false) return __('messages.user.incorrect_password');
+
+        if ($password == $oldPassword) return __('messages.user.password_equal');
+
+        $password = Hash::make($password);
+
+        $user = $this->find($user->id);
+
+        $user->update(['password' => $password]);
+
+        return true;
+    }
+
+    public function resetPassword($user, $password)
+    {
+        $password = bcrypt($password);
+        $user->password = $password;
+        $user->save();
+        Artisan::call('cache:clear');
     }
 }
 

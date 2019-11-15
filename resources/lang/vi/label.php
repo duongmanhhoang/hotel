@@ -17,6 +17,7 @@ return [
     'Choose_time' => 'Chọn thời gian',
     'Arrival_date' => 'Ngày đến',
     'Departure_date' => 'Ngày đến',
+    'Chat_with_admin' => 'Trò chuyện cùng quản trị viên',
 
     'post' => [
         'list' => 'Danh sách bài viết',
@@ -30,7 +31,7 @@ return [
         'submit' => 'Gửi'
     ],
 
-    'register' => [
+    'user' => [
         'label' => 'Đăng kí tài khoản',
         'desc' => 'Khởi tạo tài khoản để cùng Atlantic trải nghiệm những chuyến du lịch nghỉ dưỡng tốt nhất',
         'password' => 'Mật khẩu',
@@ -38,7 +39,13 @@ return [
         'phone' => 'Số điện thoại',
         'address' => 'Địa chỉ',
         'full_name' => 'Họ và tên',
-        'submit' => 'Đăng kí'
+        'submit' => 'Đăng kí',
+        'old_password' => 'Mật khẩu cũ',
+        'update_info' => 'Chỉnh sửa thông tin',
+        'update_password' => 'Cập nhật mật khẩu',
+        'join_date' => 'Ngày tham gia',
+        'update_password_submit' => 'Đổi mật khẩu',
+        'update_info_submit' => 'Sửa thông tin',
     ],
 
     'Search' => 'Tìm kiếm',
@@ -86,5 +93,8 @@ return [
     'Tv' => 'Tivi Internet 4K',
     'Gym' => 'Phòng gym',
     'Welcome' => 'Hân hạnh chào đón bạn',
+    'Reset_password' => 'Đặt lại mật khẩu',
+    'New_password' => 'Mật khẩu mới',
+    'Re_new_password' => 'Nhập lại mật khẩu mới',
 
 ];

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
+use App\Http\Requests\Admin\Users\UpdateRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
@@ -23,7 +26,10 @@ class UserController extends Controller
 
         $this->userRepo->clientRegister($input);
 
-        return redirect()->back()->with(['success' => __('messages.user.register_success')]);
+        return response()->json([
+            'status' => 'success',
+            'message' => __('messages.user.register_success'),
+        ]);
     }
 
     public function activeUser(Request $request)
@@ -32,11 +38,11 @@ class UserController extends Controller
 
         $cookieActiveToken = json_decode(Cookie::get('active_token'));
 
-        if($tokenToActive != null && $tokenToActive == $cookieActiveToken->token) {
+        if ($tokenToActive != null && $tokenToActive == $cookieActiveToken->token) {
 
             $user = $this->userRepo->find($cookieActiveToken->userId);
 
-            if($user->is_active == $this->userRepo::ACTIVE) {
+            if ($user->is_active == $this->userRepo::ACTIVE) {
                 return redirect()->route('home')->with(['error' => __('messages.user.already_active')]);
             }
 
@@ -54,7 +60,7 @@ class UserController extends Controller
 
         $user = $this->userRepo->findUserViaEmail($input['email']);
 
-        if($user == null) {
+        if ($user == null) {
             return redirect()->back()->with(['error' => __('messages.user.not_found')]);
         }
 
@@ -63,6 +69,43 @@ class UserController extends Controller
         $this->userRepo->sendMailActive($input);
 
         return redirect()->back()->with(['success' => __('messages.user.resend_active_email')]);
+    }
 
+    public function profile()
+    {
+        $user = Auth::user();
+
+        $detailUser = $this->userRepo->findUserById($user->id);
+
+        return view('client.profile.index', compact('detailUser'));
+    }
+
+    public function profileInformation()
+    {
+        $user = Auth::user();
+
+        $detailUser = $this->userRepo->find($user->id);
+
+        return view('client.profile.profile', compact('detailUser'));
+    }
+
+    public function updateInfo(UpdateRequest $request)
+    {
+        $input = $request->all();
+
+        $this->userRepo->updateInfo($input);
+
+        return redirect()->back()->with(['success' => __('messages.user.update_success')]);
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $input = $request->all();
+
+        $updatePassword = $this->userRepo->updatePassword($input);
+
+        if(is_string($updatePassword)) return redirect()->back()->with(['error' => $updatePassword]);
+
+        return redirect()->back()->with(['success' => __('messages.user.password_change_success')]);
     }
 }

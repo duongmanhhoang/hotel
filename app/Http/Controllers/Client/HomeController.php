@@ -63,5 +63,8 @@ class HomeController extends Controller
             'searchLocations'
         );
         return view('client.home.index', $data);
+
+
+
     }
 }

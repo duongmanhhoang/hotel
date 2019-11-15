@@ -39,7 +39,7 @@
 								@foreach($sameCategory as $value)
 									<li>
 										<div class="rec-po-img"> <img src="{{ asset(config('common.uploads.posts')) . '/' . $value->image }}" alt="" /> </div>
-										<div class="rec-po-title"> <a href="#"><h4> {{ $value->title }}</h4></a>
+										<div class="rec-po-title"> <a href="{{ route('post.detail', $value->id) }}"><h4> {{ $value->title }}</h4></a>
 											<p> {{ $value->description }} </p> <span class="blog-date">Date: {{ $value->updated_at }}</span> </div>
 									</li>
 								@endforeach

@@ -14,7 +14,9 @@
 Route::get('/', 'Client\HomeController@index')->name('home');
 
 Route::get('/test-client', function () {
+
     return view('mail.invoice');
+
 });
 
 Route::get('/login', 'Auth\LoginController@login')->name('login');
@@ -60,6 +62,10 @@ Route::prefix('user')->name('user.')->group(function () {
     $controller = 'Client\UserController@';
     Route::post('/register', $controller . 'register')->name('register');
     Route::get('/active', $controller . 'activeUser')->name('active');
+    Route::get('/profile', $controller . 'profile')->name('profile');
+    Route::get('/profile/information', $controller . 'profileInformation')->name('profileInformation');
+    Route::post('/profile/information', $controller . 'updateInfo')->name('updateInformation');
+    Route::post('/update-password', $controller . 'updatePassword')->name('updatePassword');
 });
 
 /** Profile */
@@ -71,3 +77,17 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function (
     Route::post('cancel-booking/{id}', $controller . 'cancelBooking')->name('cancelBooking');
 });
 
+/** Chat */
+Route::prefix('chat-with-admin')->name('chatWithAdmin.')->group(function () {
+    $chatController = 'Client\ChatController@';
+    Route::post('submit-email', $chatController . 'submitEmail')->name('submitEmail');
+    Route::post('send', $chatController . 'send')->name('send');
+});
+
+Route::prefix('forget-password')->name('forgetPassword.')->group(function () {
+    $controller = 'Auth\ForgotPasswordController@';
+    Route::get('', $controller . 'index')->name('index');
+    Route::post('sendMail', $controller . 'sendMail')->name('sendMail');
+    Route::get('reset', $controller . 'reset')->name('reset');
+    Route::post('resetPassword', $controller . 'resetPassword')->name('resetPassword');
+});

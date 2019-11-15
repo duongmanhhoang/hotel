@@ -17,6 +17,8 @@ return [
     'Choose_time' => 'Choose your time',
     'Arrival_date' => 'Arrival date',
     'Departure_date' => 'Departure date',
+    'Chat_with_admin' => 'Chat with admin',
+
 
     'post' => [
         'list' => 'Blog posts',
@@ -30,7 +32,7 @@ return [
         'submit' => 'Send'
     ],
 
-    'register' => [
+    'user' => [
         'label' => 'Register',
         'desc' => 'Create account to get best travelling experience with Atlantic',
         'password' => 'Password',
@@ -38,7 +40,13 @@ return [
         'phone' => 'Phone number',
         'address' => 'Address',
         'full_name' => 'Full name',
-        'submit' => 'Register'
+        'submit' => 'Register',
+        'old_password' => 'Old Password',
+        'update_info' => 'Edit Information',
+        'update_password' => 'Update Password',
+        'join_date' => 'Join Date',
+        'update_password_submit' => 'Change password',
+        'update_info_submit' => 'Update Information',
     ],
 
     'Search' => 'Search',
@@ -86,4 +94,7 @@ return [
     'Tv' => 'Tivi Internet 4K',
     'Gym' => 'Gym',
     'Welcome' => 'Glad to see you',
+    'Reset_password' => 'Reset password',
+    'New_password' => 'New password',
+    'Re_new_password' => 'Re-enter new password',
 ];

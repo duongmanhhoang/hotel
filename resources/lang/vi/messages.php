@@ -22,11 +22,16 @@ return [
     'Home_posts' => 'Đọc và đón chờ những tin tức mới nhất về khách sạn du lịch, và cùng săn những sự kiện cực hot cùng Atlantic',
     'Rooms_list' => 'Đến với Atlantic để trải nghiệm dịch vụ nghỉ dưỡng bậc nhất Việt Nam với hệ thống phòng phong phú',
     '24/7' => 'Dịch vụ phòng 24/7',
-
+    'reset-password-mail' => 'Click vào nút dưới để đặt lại mật khẩu',
+    'Send_reset_email_successfully' => 'Liên kết đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email',
+    'Reset-password-fail' => 'Đặt lại mật khẩu thất bại',
+    'user-not-found' => 'Không tìm thấy người dùng',
+    'reset-password-success' => 'Đặt lại mật khẩu thành công',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',
         'email' => 'Vui lòng nhập đúng định dạng email',
+        'email_exists' => 'Email này không tồn tại',
         'max' => 'Vui lòng không nhập quá :number ký tự',
         'min' => 'Vui lòng không nhập ít hơn :number ký tự',
         'character' => 'ký tự',
@@ -43,24 +48,27 @@ return [
         'email_max' => 'Vui lòng không nhập quá 191 ký tự',
         'body_required' => 'Vui lòng nhập nội dung',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
-    ],
-
-    'not_found' => 'Không tìm thấy dữ liệu',
-
-    'contact' => [
-        'post_success' => 'Gủi thành công',
         'checkInAfter' => 'Ngày tới phải bắt đầu từ hôm nay',
         'checkOutAfter' => 'Ngày rời  đi phải sau ngày tới',
         'checkInRequired' => 'Vui lòng chọn ngày tới',
         'checkOutRequired' => 'Vui lòng chọn ngày rời đi',
     ],
 
+    'not_found' => 'Không tìm thấy dữ liệu',
+
+    'contact' => [
+        'post_success' => 'Gủi thành công',
+    ],
+
     'user' => [
-        'register_success' => 'Đăng kí thành công, chúng tôi đã gửi cho bạn mail để kích hoạt tài khoảnh',
+        'register_success' => 'Đăng kí thành công, chúng tôi đã gửi cho bạn mail để kích hoạt tài khoản',
         'already_active' => 'Tài khoản này đã được kích hoạt',
         'active_success' => 'Kích hoạt thành công',
         'expire_token' => 'Hết hạn token. Gửi lại mail để kích hoạt',
         'not_found' => 'Tài khoản không tồn tại',
         'resend_active_email' => 'Gửi lại thành công',
+        'password_change_success' => 'Đổi mật khẩu thành công',
+        'password_equal' => 'Mật khẩu mới trùng với mật khẩu cũ',
+        'incorrect_password' => 'Sai mật khẩu',
     ],
 ];

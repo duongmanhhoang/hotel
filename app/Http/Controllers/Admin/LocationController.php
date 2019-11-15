@@ -117,6 +117,8 @@ class LocationController extends Controller
         $data['phone'] = $origin->phone;
         $data['email'] = $origin->email;
         $data['province_id'] = $origin->province_id;
+        $data['longitude'] = $origin->longitude;
+        $data['latitude'] = $origin->latitude;
         $data['lang_parent_id'] = $id;
         $this->locationRepository->create($data);
         $request->session()->flash('success', 'Dịch thành công');

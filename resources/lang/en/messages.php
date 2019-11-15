@@ -22,12 +22,17 @@ return [
     'Home_posts' => 'Read the latest news about traveling, and get more information for big events with Atlantic',
     'Rooms_list' => 'Travel to the Atlantic to experience one of the best resort in Vietnam with various rooms',
     '24/7' => 'Room service 24/7',
-
+    'reset-password-mail' => 'Click this button to reset your password',
+    'Send_reset_email_successfully' => 'Link reset password has been sent. Please check your email',
+    'Reset-password-fail' => 'Fail to reset password',
+    'user-not-found' => 'User not found',
+    'reset-password-success' => 'Reset password successfully',
 
 
     'validation' => [
         'required' => 'Must fill this field',
         'email' => 'Must enter correct email type',
+        'email_exists' => 'Email is not exist',
         'max' => 'Please do not enter greater than :number characters',
         'min' => 'Please do not enter less than :number characters',
         'character' => 'character',
@@ -44,16 +49,16 @@ return [
         'email_max' => 'Please do not enter more than 191 characters',
         'body_required' => 'Please enter your review',
         'star_required' => 'Vui lòng đánh giá trước khi bình luận',
+        'checkInAfter' => 'Checkin date must start from today',
+        'checkOutAfter' => 'Checkout date must start after checkin date',
+        'checkInRequired' => 'Please select check in date',
+        'checkOutRequired' => 'Please select checkout date',
     ],
 
     'not_found' => 'Data not found',
 
     'contact' => [
         'post_success' => 'Send success',
-        'checkInAfter' => 'Checkin date must start from today',
-        'checkOutAfter' => 'Checkout date must start after checkin date',
-        'checkInRequired' => 'Please select check in date',
-        'checkOutRequired' => 'Please select checkout date',
     ],
 
     'user' => [
@@ -63,5 +68,8 @@ return [
         'expire_token' => 'Expire email, please send another email to active',
         'not_found' => 'Account not found',
         'resend_active_email' => 'Resend success',
+        'password_change_success' => 'Change password success',
+        'password_equal' => 'New password is equal to old password',
+        'incorrect_password' => 'Password incorrect,',
     ],
 ];

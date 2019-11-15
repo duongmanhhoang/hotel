@@ -4,7 +4,7 @@
             <div class="top-bar">
                 <ul>
                     <li>
-                        <a class='dropdown-button' href='#' data-activates='dropdown1'> {{ __('label.My_account') }} <i
+                        <a class='dropdown-button' href='#' data-activates='dropdown1'> {{ __('label.My_account') }} {{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->full_name : '' }}<i
                                     class="fa fa-angle-down"></i></a>
                     </li>
                     <li><a class='dropdown-button' href='#' data-activates='dropdown2'>{{$current_language->name}} <i
@@ -19,7 +19,7 @@
                 <ul id='dropdown1' class='dropdown-content drop-con-man'>
                     @if (\Illuminate\Support\Facades\Auth::check())
                         <li>
-                            <a href="db-profile.html"><img
+                            <a href="{{ route('user.profileInformation') }}"><img
                                         src="{{asset('/bower_components/client_layout/images/icon/2.png')}}"
                                         alt=""> {{ __('label.My_profile') }}</a>
                         </li>
@@ -105,4 +105,3 @@
         </div>
     </div>
 </div>
-		
