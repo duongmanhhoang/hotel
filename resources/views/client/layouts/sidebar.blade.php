@@ -122,59 +122,11 @@
                         <div class="input-field s4">
                             <input type="submit" value="{{ __('label.user.submit') }}" class="waves-effect waves-light log-in-btn btn-submit"></div>
                     </div>
-                    <div>
-                        <div class="input-field s12"><a href="#" data-dismiss="modal" data-toggle="modal"
-                                                        data-target="#modal1">Bạn đã có tài khoản ? Đăng nhập</a></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id="modal3" class="modal fade" role="dialog">
-        <div class="log-in-pop">
-            <div class="log-in-pop-left">
-                <h1>Hello... <span></span></h1>
-                <h4>Atlantic Hotel</h4>
-                <img style="width: 101%;
-                    border-radius: 5px;
-                    opacity: 0.6" src="{{ asset('bower_components/client_layout/images/about.jpg') }}">
-            </div>
-            <div class="log-in-pop-right">
-                <a href="#" class="pop-close" data-dismiss="modal"><img
-                            src="{{ asset('/bower_components/client_layout/images/cancel.png')}}" alt=""/>
-                </a>
-                <h4>Quên mật khẩu</h4>
-                <p>Nhận lại mật khẩu ngay thôi nào</p>
-                <form class="s12">
-                    <div>
-                        <div class="input-field s12">
-                            <input type="text" data-ng-model="name3" class="validate">
-                            <label>Tên đăng nhập hoặc địa chỉ email</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="input-field s4">
-                            <input type="submit" value="Submit" class="waves-effect waves-light log-in-btn"></div>
-                    </div>
-                    <div>
-                        <div class="input-field s12"><a href="#" data-dismiss="modal" data-toggle="modal"
-                                                        data-target="#modal1">Bạn đã có tài khoản ? Đăng nhập</a> | <a
-                                    href="#" data-dismiss="modal" data-toggle="modal" data-target="#modal2">Đăng kí tài
-                                khoản</a></div>
-                    </div>
                 </form>
             </div>
         </div>
     </div>
 </section>
-
-<script src="{{ asset('bower_components/client_layout/js/jquery.min.js') }}"></script>
-<script src="{{ asset('bower_components/client_layout/js/jquery-ui.js') }}"></script>
-<script src="{{ asset('bower_components/metronic/vendors/base/vendors.bundle.js') }}"
-        type="text/javascript"></script>
-<script src="{{ asset('bower_components/metronic/demo/default/base/scripts.bundle.js') }}"
-        type="text/javascript"></script>
-
 <script>
     $(document).ready(function () {
         const urlRegister = "{{ route('user.register') }}";

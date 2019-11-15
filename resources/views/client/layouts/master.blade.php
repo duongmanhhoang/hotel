@@ -9,8 +9,8 @@
     @include ('client.layouts.booking')
 </section>
 @include ('client.layouts.footer')
-@include ('client.layouts.sidebar')
 @include('client.layouts.chat')
 @include ('client.layouts.bottom')
+@include ('client.layouts.sidebar')
 </body>
 </html>

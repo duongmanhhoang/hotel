@@ -82,13 +82,12 @@
         <div class="row">
             <div class="logo">
                 <a href="{{ route('home') }}"><img
-                            src="{{ asset(config('common.uploads.logo')) . '/' . $inforWeb->logo }}" alt=""/>
+                        src="{{ asset(config('common.uploads.logo')) . '/' . $inforWeb->logo }}" alt=""/>
                 </a>
             </div>
             <div class="menu-bar">
                 <ul>
-                    <li><a href="{{ route('home') }}" class='dropdown-button'
-                           data-activates='drop-home'>{{ __('label.Home') }}</a>
+                    <li><a href="{{ route('home') }}">{{ __('label.Home') }}</a>
                     </li>
                     <li><a href="#" class='dropdown-button' data-activates='drop-room'>{{ __('label.Hotel') }}<i
                                     class="fa fa-angle-down"></i></a>
