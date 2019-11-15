@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ChatController extends Controller
 {
-    public function index($email)
+    public function index(Request $request, $email)
     {
         if ($email == 'room') {
             $redis_keys = Redis::keys('chat_log:*');
@@ -43,8 +43,6 @@ class ChatController extends Controller
                 'redis_keys',
                 'contacts'
             );
-
-            return view('admin.chat.index', $data);
         } else {
             $user_email = $email;
             if (!Redis::exists('chat_log:' . $email)) {
@@ -82,10 +80,10 @@ class ChatController extends Controller
                     'logs',
                     'user_email'
                 );
-
-                return view('admin.chat.index', $data);
             }
         }
+
+        return view('admin.chat.index', $data);
     }
 
     public function send(Request $request)

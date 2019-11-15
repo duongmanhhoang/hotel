@@ -71,4 +71,27 @@ class CommentRepository extends EloquentRepository
         return $this->_model->where('commentable_type', Room::class)->where('commentable_id', $id)->orderBy('id', 'desc')->get();
     }
 
+    public function getDataTable()
+    {
+        $comments = $this->_model->with('commentable.roomName')->orderBy('id', 'desc')->get();
+        foreach ($comments as $comment) {
+            $roomName = $comment->commentable->roomName;
+            $comment->roomName = $roomName->name;
+        }
+
+        return $comments;
+    }
+
+  public function getComment($id)
+  {
+        $comment = $this->_model->find($id);
+
+        if (!$comment) {
+            return false;
+        }
+
+        $comment->roomName = $comment->commentable->roomName->name;
+
+        return $comment;
+  }
 }
