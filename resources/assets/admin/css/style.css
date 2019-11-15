@@ -683,6 +683,6 @@
     outline: none;
 }
 
-.comment-email {
-    word-break: break-all !important;
+#email-comment, #room-name-comment, #body-comment {
+    word-break: break-all;
 }
