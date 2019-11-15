@@ -51,7 +51,7 @@
                                     @foreach($categoriesService as $key => $item)
                                         <li class="{{ $key == 0 ? 'active' : '' }}">
                                             <a data-toggle="tab" href="#{{ $item->id }}"><span
-                                                        class="tab-hide">{{ $item->name }}</span>
+                                                    class="tab-hide">{{ $item->name }}</span>
                                             </a>
                                         </li>
                                     @endforeach
@@ -72,7 +72,8 @@
                                              class="tab-pane fade in {{ $key == 0 ? 'active' : '' }} tab-space">
                                             @foreach($services as $service)
                                                 <div class="res-menu">
-                                                    <img src="{{ asset(config('common.uploads.services') . '/' . $service->image) }}">
+                                                    <img
+                                                        src="{{ asset(config('common.uploads.services') . '/' . $service->image) }}">
                                                     <h3>{{ $service->name }}<span>{{ number_format($service->price) }}
                                                             {{ session('locale') == config('common.languages.default') ? 'vnđ' : '$' }}</span>
                                                     </h3>
@@ -85,60 +86,18 @@
                         </div>
                         <div class="hp-section">
                             <div class="hp-sub-tit">
-                                <h4><span>Photo Gallery</span> Master Suite</h4>
-                                <p>ALorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                                <h4>{{ __('label.Gallery') }}</h4>
                             </div>
                             <div class="">
-                                <div class="h-gal">
-                                    <ul>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/2.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/3.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/4.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/5.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/6.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/1.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/2.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/3.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/4.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/5.jpg') }}"
-                                                 alt="">
-                                        </li>
-                                        <li><img class="materialboxed" data-caption="Hotel Captions"
-                                                 src="{{ asset('bower_components/client_layout/images/room/6.jpg') }}"
-                                                 alt="">
-                                        </li>
+                                <div class="h-gal" id="wrap">
+                                    <ul id="slider">
+                                        @foreach($images as $image)
+                                            <li class="slide-item">
+                                                <a data-fancybox="gallery"
+                                                   href="{{ asset(config('common.uploads.libraries') . '/' . $image->name) }}"><img
+                                                        src="{{ asset(config('common.uploads.libraries') . '/' . $image->name) }}"></a>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -172,8 +131,8 @@
                                     @foreach ($comments as $comment)
                                         <li>
                                             <div class="lr-user-wr-img"><img
-                                                        src="{{ asset('bower_components/client_layout/images/users/100.png') }}"
-                                                        alt=""></div>
+                                                    src="{{ asset('bower_components/client_layout/images/users/100.png') }}"
+                                                    alt=""></div>
                                             <div class="lr-user-wr-con">
                                                 <h6>@if ($showEmail)
                                                         {{ $comment->email }}
@@ -181,10 +140,10 @@
                                                         Anonymous
                                                     @endif
                                                     <span>{{ $comment->rating }} <i
-                                                                class="fa fa-star"
-                                                                aria-hidden="true"></i></span>
+                                                            class="fa fa-star"
+                                                            aria-hidden="true"></i></span>
                                                 </h6> <span
-                                                        class="lr-revi-date">{{ formatDate($comment->created_at) }}</span>
+                                                    class="lr-revi-date">{{ formatDate($comment->created_at) }}</span>
                                                 <p> {{ $comment->body }} </p>
                                             </div>
                                         </li>
@@ -197,7 +156,7 @@
                 <div class="col-md-4">
                     <div class="hp-call hp-right-com">
                         <div class="hp-call-in"><img
-                                    src="{{ asset('bower_components/client_layout/images/icon/dbc4.png') }}" alt="">
+                                src="{{ asset('bower_components/client_layout/images/icon/dbc4.png') }}" alt="">
                             <h3>{{ $location->phone }}</h3>
                             <small>{{ __('messages.24/7') }}</small>
                             <a href="javascript:;" data-toggle="modal"
@@ -214,14 +173,8 @@
                                 </li>
                                 <li><a href="#"><i class="fa fa-google-plus"></i> Share</a>
                                 </li>
-                                <!-- <li><a class="pinterest-share" href="#"><i class="fa fa-pinterest-p"></i> Pin</a></li> -->
                             </ul>
                         </div>
-                    </div>
-                    <div class="hp-card hp-right-com">
-                        <div class="hp-card-in">
-                            <h3>We Accept</h3> <span>Atlantic Hotel</span> <img
-                                    src="{{ asset('bower_components/client_layout/images/card.png') }}" alt=""></div>
                     </div>
                 </div>
             </div>
@@ -239,7 +192,7 @@
                 </div>
                 <div class="log-in-pop-right">
                     <a href="#" class="pop-close" data-dismiss="modal"><img
-                                src="{{ asset('bower_components/client_layout/images/cancel.png') }}" alt=""/>
+                            src="{{ asset('bower_components/client_layout/images/cancel.png') }}" alt=""/>
                     </a>
                     <p>{{ __('content.Comment') }}</p>
                     <form class="s12" id="ratingsForm">
@@ -308,7 +261,8 @@
                                 </div>
                                 <input type="hidden" name="roomId" value="{{ $room->id }}" class="roomIdBooking">
                                 <div class="input-field col s12 m4 l2">
-                                    <input type="submit" value="{{ __('label.Submit') }}" class="form-btn submit-booking">
+                                    <input type="submit" value="{{ __('label.Submit') }}"
+                                           class="form-btn submit-booking">
                                 </div>
                             </form>
                         </div>
