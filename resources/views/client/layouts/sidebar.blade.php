@@ -168,9 +168,9 @@
                     $("#commend").hide();
 
                     if(res.status === 'success') {
-                        toastr.success(res.message);
+                        swal(res.message, '', 'success');
                     }else {
-                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
+                        swal('Đã xảy ra lỗi', '', 'error');
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
