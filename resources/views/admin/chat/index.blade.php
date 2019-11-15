@@ -50,6 +50,7 @@
                                                             </ul>
                                                         </div>
                                                     </div>
+
                                                     <div class="content col-9">
                                                         <div class="row">
                                                             <div class="contact-profile">

@@ -169,6 +169,16 @@
                             <span class="m-menu__link-text">Tiện nghi</span>
                         </a>
                     </li>
+
+                    <!-- Đánh giá -->
+                    <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+                        <a href="{{ route('admin.comments.index') }}" class="m-menu__link m-menu__toggle">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Đánh giá</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -458,6 +468,17 @@
                     </li>
                 </ul>
             </div>
+        </li>
+        <!-- Chat -->
+        <li class="m-menu__item " aria-haspopup="true">
+            <a href="{{ route('admin.chat.index', 'room') }}" class="m-menu__link ">
+                <i class="m-menu__link-icon fa fa-comment"></i>
+                <span class="m-menu__link-title">
+										<span class="m-menu__link-wrap">
+											<span class="m-menu__link-text">Chat</span>
+										</span>
+									</span>
+            </a>
         </li>
     </ul>
 </div>
