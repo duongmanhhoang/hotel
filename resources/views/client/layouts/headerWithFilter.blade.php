@@ -46,14 +46,14 @@
                                 @endif
                             </div>
                             <div class="input-field col s12 m4 l2">
-                                <input type="text" id="from" name="checkIn">
+                                <input type="text" id="from" name="checkIn" autocomplete="off">
                                 <label for="checkin">{{ __('label.Check_in') }}</label>
                                 @if ($errors->has('checkIn'))
                                     <p class="text-danger">{{ $errors->first('checkIn') }}</p>
                                 @endif
                             </div>
                             <div class="input-field col s12 m4 l2">
-                                <input type="text" id="to" name="checkOut">
+                                <input type="text" id="to" name="checkOut" autocomplete="off">
                                 <label for="checkout">{{ __('label.Check_out') }}</label>
                                 @if ($errors->has('checkOut'))
                                     <p class="text-danger">{{ $errors->first('checkOut') }}</p>

@@ -18,6 +18,11 @@ return [
     'Arrival_date' => 'Ngày đến',
     'Departure_date' => 'Ngày đến',
     'Chat_with_admin' => 'Trò chuyện cùng quản trị viên',
+    'Room_name' => 'Hạng phòng',
+    'Room_number' => 'Số phòng',
+    'Price' => 'Giá',
+    'Total' => 'Tổng cộng',
+    'Image' => 'Ảnh',
 
     'post' => [
         'list' => 'Danh sách bài viết',

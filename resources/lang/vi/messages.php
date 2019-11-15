@@ -27,6 +27,9 @@ return [
     'Reset-password-fail' => 'Đặt lại mật khẩu thất bại',
     'user-not-found' => 'Không tìm thấy người dùng',
     'reset-password-success' => 'Đặt lại mật khẩu thành công',
+    'thanks_booking' => 'Cảm ơn bạn đã đặt phòng!',
+    'mail_booking_messages' => 'Atlantic xin chân thành cảm ơn vì có bạn đồng hành cùng chúng tôi và sử dụng dịch vụ của khách sạn!',
+    'Mail_booking' => 'Mail đặt phòng từ Atlantic Hotel',
 
     'validation' => [
         'required' => 'Vui lòng không bỏ trống',

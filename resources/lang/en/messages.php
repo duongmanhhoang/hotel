@@ -53,6 +53,10 @@ return [
         'checkOutAfter' => 'Checkout date must start after checkin date',
         'checkInRequired' => 'Please select check in date',
         'checkOutRequired' => 'Please select checkout date',
+        'thanks_booking' => "Thank you for booking",
+        'mail_booking_messages' => 'Atlantic would like to thank you for accompanying us and using our services!',
+        'Mail_booking' => 'Mail booking from Atlantic Hotel',
+
     ],
 
     'not_found' => 'Data not found',

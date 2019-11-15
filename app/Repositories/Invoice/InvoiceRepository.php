@@ -2,12 +2,14 @@
 
 namespace App\Repositories\Invoice;
 
+use App\Jobs\BookingJob;
 use App\Models\Invoice;
 use App\Models\Room;
 use App\Models\RoomDetail;
 use App\Models\RoomInvoice;
 use App\Models\RoomName;
 use App\Models\Service;
+use App\Models\User;
 use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use http\Env\Request;
@@ -301,11 +303,56 @@ class InvoiceRepository extends EloquentRepository
         if (Auth::check()) {
             $dataInvoice = array_merge($dataInvoice, ['user_id' => Auth::user()->id]);
         }
+        $dataMail = $this->makeDataMail($data);
         $dataPivot = $this->makePivotData($data);
         $invoice = $this->_model->create($dataInvoice);
         $invoice->rooms()->attach([$data['room_id'] => $dataPivot]);
 
+        BookingJob::dispatch($dataMail);
+
         return $invoice;
+    }
+
+    protected function makeDataMail($data)
+    {
+        $room = Room::find($data['room_id']);
+        $superAdmin = User::where('role_id', User::SUPER_ADMIN)->first();
+
+        if (session('locale') == config('common.languages.default')) {
+            $roomName = $room->roomName->name;
+        } else {
+            $child = $room->roomName->children->where('lang_id', session('locale'))->first();
+
+            if ($child) {
+               $roomName = $child->name;
+            } else {
+                $roomName = $room->roomName->name;
+            }
+        }
+
+        $data['roomName'] = $roomName;
+
+        if ($data['customer_email']) {
+            $email = [$superAdmin->email,$data['customer_email']];
+        } else {
+            $email = $superAdmin->email;
+        }
+
+        $dataReturn = [
+            'code' => $data['code'],
+            'customer_name' => $data['customer_name'],
+            'customer_phone' => $data['customer_phone'],
+            'checkIn' => $data['checkIn'],
+            'checkOut' => $data['checkOut'],
+            'total' => number_format($data['total']),
+            'price' => number_format($data['price']),
+            'roomName' => $data['roomName'],
+            'roomNumber' => $data['room_number'],
+            'currency' => $data['currency'] == config('common.currency.vi') ? 'vnđ': '$',
+            'mail_send' => $email,
+        ];
+
+        return $dataReturn;
     }
 
     public function makeDataMyBooking($invoices)
