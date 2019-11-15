@@ -75,6 +75,8 @@ class LocationRepository extends EloquentRepository
 
     public function contactGetLocation()
     {
-        return $this->_model->limit(3)->get();
+        $language = session('locale');
+
+        return $this->_model->where('lang_id', $language)->get();
     }
 }

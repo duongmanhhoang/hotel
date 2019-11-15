@@ -66,6 +66,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/profile/information', $controller . 'profileInformation')->name('profileInformation');
     Route::post('/profile/information', $controller . 'updateInfo')->name('updateInformation');
     Route::post('/update-password', $controller . 'updatePassword')->name('updatePassword');
+    Route::post('/resend-active', $controller . 'resendActive')->name('resendMailActive');
 });
 
 /** Profile */

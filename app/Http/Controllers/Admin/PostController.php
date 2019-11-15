@@ -72,7 +72,7 @@ class PostController extends Controller
             if($checkAvailableTranslate == null) return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
 
             if($checkAvailableTranslate->lang_parent_id != null)
-                return redirect()->route('admin.post.list')->with(['error' => 'Không được dịch từ bản con']);
+                return redirect()->back()->with(['error' => 'Chỉ được dịch từ bài viết gốc']);
         }
 
         $categories  = $this->categoryRepo->getCategory(null);
@@ -82,7 +82,7 @@ class PostController extends Controller
         $language = $postId != false ? $this->postRepo->getTranslateId($postId) : [];
 
         if($postId != false && count($language) <= 0)
-            return redirect()->route('admin.post.list')->with(['error' => 'Đã đủ bản dịch']);
+            return redirect()->back()->with(['error' => 'Đã đủ bản dịch']);
 
         $compact = compact('categories', 'route', 'posts', 'language', 'dataTranslate');
 
@@ -171,7 +171,7 @@ class PostController extends Controller
         $currentPost = $this->postRepo->findEditedPost($postId);
 
         if($currentPost->approve == config('common.posts.approve_key.rejected'))
-            return redirect()->route('admin.post.list', ['status' => config('common.posts.approve_value.-1')])->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);
+            return redirect()->back()->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);
 
         $checkUnique = $this->postRepo->checkUniqueTitle($input);
 
@@ -180,20 +180,21 @@ class PostController extends Controller
         }
 
         if($currentPost->category != null) {
-            $categoryTranslate = $this->categoryRepo->queryCheckTranslateCategory($currentPost->category->id, $input['lang_id']);
-            $input['category_id'] = $categoryTranslate[0]->id;
-
-            if(empty($categoryTranslate) || count($categoryTranslate) <= 0) {
-                return redirect()->back()->with(['error' => 'Danh mục phải có bản dịch']);
+            foreach ($currentPost->category->childrenTranslate as $value) {
+                if($value->lang_id == $input['lang_id']) {
+                    $input['category_id'] = $value->id;
+                }
             }
         }
+
+        if(empty($input['category_id'])) return redirect()->back()->with(['error' => 'Danh mục phải có bản dịch']);
 
         $this->postRepo->translate($postId, $input);
 
         $request->session()->flash('success', 'Dịch thành công');
         Session::put('locale', $input['lang_id']);
 
-        return redirect()->route('admin.post.list');
+        return redirect()->route('admin.post.list', 'pending');
     }
 
     public function getApproveList(Request $request, $status = 'pending')

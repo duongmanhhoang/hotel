@@ -94,15 +94,18 @@ class CategoryController extends Controller
 
     public function editView($id)
     {
-        $data = $this->categoryRepo->find($id);
+        $data = $this->categoryRepo->getCategoryById($id);
+
+        if($data == null) {
+            return redirect()->route('admin.category.list')->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
+        $dataTranslate = $data->parentTranslate != null ? true : false;
+
         $categories  = $this->categoryRepo->getCategoriesToAddParent($id);
         $route = route('admin.category.editAction', ['id' => $id]);
 
-        if($data == null) {
-            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
-        }
-
-        $compact = compact('data', 'categories', 'route');
+        $compact = compact('data', 'categories', 'dataTranslate', 'route');
 
         return view('admin.category.add', $compact);
     }
