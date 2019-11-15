@@ -171,8 +171,7 @@ class PostController extends Controller
         $currentPost = $this->postRepo->findEditedPost($postId);
 
         if($currentPost->approve == config('common.posts.approve_key.rejected'))
-            return redirect()->route('admin.post.list', ['status' => config('common.posts.approve_value.-1')])
-                ->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);
+            return redirect()->back()->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);
 
         $checkUnique = $this->postRepo->checkUniqueTitle($input);
 

@@ -68,7 +68,7 @@ class UserController extends Controller
 
         $this->userRepo->sendMailActive($input);
 
-        return redirect()->back()->with(['success' => __('messages.user.resend_active_email')]);
+        return response()->json(['status' => 'OK']);
     }
 
     public function profile()
@@ -107,5 +107,9 @@ class UserController extends Controller
         if(is_string($updatePassword)) return redirect()->back()->with(['error' => $updatePassword]);
 
         return redirect()->back()->with(['success' => __('messages.user.password_change_success')]);
+    }
+
+    public function resendMailActive($email) {
+
     }
 }

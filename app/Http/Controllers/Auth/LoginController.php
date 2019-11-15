@@ -45,8 +45,18 @@ class LoginController extends Controller
         if ($request->remember == 'on') {
             $remember = true;
         }
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'is_active' => 1], $remember)) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
             $user = Auth::user();
+
+            if($user->is_active == 0) {
+                $this->guard()->logout();
+
+                $request->session()->flash('user-not-active');
+                $request->session()->flash('email',  $request->email);
+
+                return redirect(route('login'));
+
+            }
             if ($user->role_id == config('common.roles.member')) {
                 return redirect(route('home'));
             } else {

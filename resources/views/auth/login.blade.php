@@ -1,7 +1,8 @@
 @extends('auth.layouts.master')
 
 @section('content')
-    <div class="m-grid m-grid--hor m-grid--root m-page" style="background-image: url({{ asset(config('common.login.background')) }});">
+    <div class="m-grid m-grid--hor m-grid--root m-page"
+         style="background-image: url({{ asset(config('common.login.background')) }});">
         <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-3"
              id="m_login">
             <div class="m-grid__item m-grid__item--fluid m-login__wrapper">
@@ -14,6 +15,15 @@
                     <div class="m-login__signin">
                         @if (session('login-error'))
                             <b class="text-danger">Tên đăng nhập hoặc mật khẩu không đúng</b>
+                        @endif
+
+                        @if (session('user-not-active'))
+                            <b class="text-danger">
+                                Tài khoản {{ session('email') }} chưa được kích hoạt. Ấn <a href="javascript:void(0)"
+                                                                                            class="btn-resend">vào
+                                    đây</a> để gửi lại mail kích hoạt
+                            </b>
+
                         @endif
                         <form class="m-login__form m-form" action="{{ route('submitLogin') }}" method="post">
                             @csrf
@@ -59,3 +69,31 @@
         </div>
     </div>
 @endsection
+
+<script src="{{ asset('bower_components/client_layout/js/jquery.min.js') }}"></script>
+<script src="{{ asset('bower_components/client_layout/js/jquery-ui.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        const email = "{{ session('email') }}";
+        const url = "{{ route('user.resendMailActive') }}";
+
+        $('.btn-resend').on('click', function () {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: url,
+                method: 'post',
+                data: {email},
+                success: function (res) {
+                    console.log(res)
+                    if (res.status === 'OK') {
+                        swal("{{ __('messages.user.resend_active_email') }}", '', 'success')
+                    } else {
+                        swal("Đã xảy ra lỗi", '', 'error')
+                    }
+                }
+            })
+        });
+    })
+</script>

@@ -177,6 +177,10 @@ class UserRepository extends EloquentRepository
         return $result;
     }
 
+    public function findUserViaEmail($email) {
+        return $this->_model->where('email', $email)->first();
+    }
+
     public function updateInfo($input)
     {
         $userId = Auth::user()->id;
