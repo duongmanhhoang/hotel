@@ -23,6 +23,8 @@ return [
     'Price' => 'Price',
     'Total' => 'Total',
     'Image' => 'Image',
+    'Gallery' => 'Photo Gallery',
+
 
     'post' => [
         'list' => 'Blog posts',
