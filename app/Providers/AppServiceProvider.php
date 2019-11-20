@@ -66,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
             'client.layouts.footer',
             'client.layouts.headerWithFilter',
             'client.layouts.chat',
+            'client.layouts.profileLayout',
         ], function ($view) {
             $cateRepo = new CategoryRepository();
 
@@ -99,6 +100,10 @@ class AppServiceProvider extends ServiceProvider
                 $client_logs = json_decode(Redis::get('chat_log:' . $email_client), true);
                 $view->with('client_logs', $client_logs);
             }
+
+            //profile noti
+            $profileNotifications = Auth::user()->notifications()->where('read_at', null)->orderBy('id', 'desc')->get();
+            $view->with('profileNotifications', $profileNotifications);
         });
     }
 }
