@@ -163,6 +163,18 @@ class PostController extends Controller
         return redirect()->back()->with(['success' => 'Xóa thành công']);
     }
 
+    public function detailPost($id)
+    {
+        $data = $this->postRepo->getPostById($id);
+        $user = Auth::user();
+
+        if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
+        return view('admin.posts.detail', compact('data', 'user'));
+    }
+
     public function translate(Request $request, $postId)
     {
         $input = $request->all();
@@ -220,6 +232,12 @@ class PostController extends Controller
     public function approvingPost(Request $request, $id, $approve)
     {
         $input = $request->all();
+
+        $user = Auth::user();
+
+        if($user->role_id > config('common.roles.admin')) {
+            return redirect()->back()->with(['error' => 'Bạn không có quyền duyệt']);
+        }
 
         if($approve == -1 && empty($input['message_reject'])) {
             return redirect()->back()->with(['error' => 'Không được bỏ trống lí do từ chối']);

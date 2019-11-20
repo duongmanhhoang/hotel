@@ -390,8 +390,10 @@
                             template: function (e) {
                                 let editRoute = "{{ route('admin.post.editView', ':id') }}";
                                 let translateRoute = "{{ route('admin.post.translateView', ':id') }}";
+                                let detailRoute = "{{ route('admin.post.detailPost', ':id') }}";
                                 let urlEdit = editRoute.replace(':id', e.id);
                                 let urlTranslate = translateRoute.replace(':id', e.id);
+                                let urlDetail = detailRoute.replace(':id', e.id);
 
                                 let edit = `<a href="${urlEdit}"
                                                        class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
@@ -399,6 +401,14 @@
                                                     >
                                                         <i class="la la-edit"></i>
                                                     </a>`;
+
+                                let detail = `<a href="${urlDetail}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Chi tiết"
+                                                    >
+                                                        <i class="la la-eye"></i>
+                                                    </a>`;
+
                                 let translate = `<a href="${urlTranslate}"
                                                        class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill"
                                                        title="Dịch">
@@ -410,7 +420,7 @@
 
                                 if(postStatus === 'rejected') {translate = ''}
 
-                                return `${edit} ${translate} ${del}`
+                                return `${detail} ${edit} ${translate} ${del}`
                             }
                         }
                     ]

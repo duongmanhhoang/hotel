@@ -82,6 +82,19 @@ class PostRepository extends EloquentRepository
         return $this->_model->create($input);
     }
 
+    public function getPostById($id)
+    {
+        $user = Auth::user();
+
+        $whereConditional = [
+            ['id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        return $this->_model->where($whereConditional)
+            ->with('language', 'childrenTranslate.language', 'parentTranslate.language', 'postedBy')->first();
+    }
+
     public function findEditedPost($id)
     {
         $user = Auth::user();
