@@ -92,7 +92,6 @@
                     <li><a href="#" class='dropdown-button' data-activates='drop-room'>{{ __('label.Hotel') }}<i
                                     class="fa fa-angle-down"></i></a>
                     </li>
-                    <li><a href="#">About Us</a>
                     <li><a href="{{ route('post.index') }}" class='dropdown-button'
                            data-activates='drop-categories'>{{ __('label.Blog') }}
                             <i class="fa fa-angle-down"></i></a>
