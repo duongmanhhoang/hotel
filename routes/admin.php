@@ -178,7 +178,10 @@ Route::prefix('bills')->name('bill.')->group(function () {
 Route::prefix('room-name')->name('roomNames.')->group(function () {
     $controller = 'Admin\RoomNameController@';
     Route::get('/', $controller . 'index')->name('index');
+    Route::get('/datatable', $controller . 'datatable')->name('datatable');
+    Route::get('/create', $controller . 'create')->name('create');
     Route::post('/store', $controller . 'store')->name('store');
+    Route::get('/edit/{id}', $controller . 'edit')->name('edit');
     Route::post('/update/{id}', $controller . 'update')->name('update');
     Route::post('/delete/{id}', $controller . 'delete')->name('delete');
     Route::get('/translation/{id}', $controller . 'translation')->name('translation');

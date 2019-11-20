@@ -20,7 +20,7 @@ class RoomNameRepository extends EloquentRepository
         $checkUsed = $this->checkUsed($id, $checkOrigin);
         if (!$checkUsed) {
             if ($checkOrigin) {
-                $roomName->roomNames()->delete();
+                $roomName->children()->delete();
                 $roomName->delete();
             } else {
                 $roomName->delete();
@@ -53,6 +53,13 @@ class RoomNameRepository extends EloquentRepository
     public function findRoomName($id)
     {
         return $this->_model->where('lang_parent_id', $id)->where('lang_id', session('locale'))->first();
+    }
+
+    public function makeDataTable()
+    {
+        $roomNames = $this->_model->where('lang_id', session('locale'))->orderBy('id', 'desc')->get();
+
+        return $roomNames;
     }
 
 }
