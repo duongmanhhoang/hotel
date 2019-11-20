@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
                 'max:191',
                 Rule::unique('services')->where('lang_id', session('locale'))->ignore($this->id),
             ],
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0|max:999999999',
         ];
     }
 
@@ -46,6 +46,8 @@ class UpdateRequest extends FormRequest
             'name.max' => 'Vui lòng không nhập quá 191 ký tự',
             'price.required' => 'Vui lòng không bỏ trống',
             'price.numeric' => 'Vui lòng chỉ nhập số',
+            'price.min' => 'Vui lòng không nhập nhỏ hơn ' . ' :min ',
+            'price.max' =>'Vui lòng không nhập lớn hơn ' . ' :max',
         ];
     }
 }

@@ -34,6 +34,7 @@ return [
         'email' => 'Must enter correct email type',
         'email_exists' => 'Email is not exist',
         'max' => 'Please do not enter greater than :number characters',
+        'between' => 'Please just enter between :min and :max number',
         'min' => 'Please do not enter less than :number characters',
         'character' => 'character',
         'unique' => 'This record already exists',
