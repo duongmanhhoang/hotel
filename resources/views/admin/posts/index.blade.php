@@ -188,10 +188,53 @@
                             </div>
                         </div>
 
+                        <input type="hidden" value="{{ $user }}" id="user">
+
                         <!--end: Search Form -->
 
                         <!--begin: Datatable -->
                         <div class="m_datatable" id="local_data"></div>
+
+                        <div class="modal fade show" id="modalAdvance" tabindex="-1"
+                             role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Lí do xóa bài</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="reject-post">
+                                            <div class="form-group m-form__group">
+                                                <label>Lí do bị xóa <b
+                                                            class="text-danger">*</b></label>
+                                                <textarea name="message_deleted"
+                                                          class="form-control"
+                                                          id="message_deleted"
+                                                          style="min-height: 140px"></textarea>
+                                                @if ($errors->has('message_deleted'))
+                                                    <b class="text-danger">{{ $errors->first('message_deleted') }}</b>
+                                                @endif
+                                            </div>
+
+                                            <input type="hidden" value="admin_delete" name="admin_delete" id="admin_delete">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Hủy
+                                        </button>
+                                        <button type="button"
+                                                class="btn btn-danger submit-reject-post">
+                                            Từ chối
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -211,6 +254,10 @@
         let urlGetDataTable = routePostDataTable.replace(':status', postStatus);
 
         let titlePage = 'Bài viết';
+
+        const userData = $('#user');
+
+        const user = JSON.parse(userData.val());
 
         switch (postStatus) {
             case 'approved':
@@ -240,8 +287,49 @@
                 }
             });
 
+            $('.submit-reject-post').on('click', function () {
+                const form = $('#reject-post');
+                const message_deleted = $('#message_deleted').val();
+                const admin_delete = $('#admin_delete').val();
+
+                let formData = new FormData();
+
+                formData.append('admin_delete', admin_delete);
+                formData.append('message_deleted', message_deleted);
+
+
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: form.attr('formAction'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+
+                        if (response.is_deleted === false) {
+                            toastr.error(response.message, 'Thất bại');
+                        }else {
+                            toastr.success('Xóa thành công', 'Thành công');
+                            $('.m_datatable').mDatatable("reload")
+                            $('#modalAdvance').modal('hide');
+                        }
+                    }, error: function () {
+                        toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
+                    },
+                });
+            });
+
             DataTable.init();
         });
+
+        function setFormActionUrl(id) {
+            let adminDeleteRoute = `{{ route('admin.post.delete', ':id') }}`;
+            let adminDeleteUrl = adminDeleteRoute.replace(':id', id);
+
+            let form = $('#reject-post');
+
+            form.attr('formAction', adminDeleteUrl);
+        }
 
         function remove(t) {
             let id = $(t).attr('postId');
@@ -264,7 +352,7 @@
                     type: 'POST',
                     success: function (response) {
                         if (response.is_deleted === false) {
-                            toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
+                            toastr.error(response.message, 'Thất bại');
                         }else {
                             toastr.success('Xóa thành công', 'Thành công');
                             $('.m_datatable').mDatatable("reload")
@@ -418,9 +506,24 @@
                                                             <i class="la la-trash"></i>
                                                     </button>`;
 
+                                let adminDel = `<a href="javascript:;"
+                                                   data-target="#modalAdvance"
+                                                   data-toggle="modal"
+                                                   onclick="setFormActionUrl(${e.id})"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                                   title="Từ chối">
+                                                   <i class="la la-close"></i>
+                                                </a>`;
+
                                 if(postStatus === 'rejected') {translate = ''}
 
-                                return `${detail} ${edit} ${translate} ${del}`
+                                let renderAction = `${detail} ${edit} ${translate }${del}`;
+
+                                if(user.role_id === 1 && user.id !== e.posted_by.id) {
+                                    renderAction = `${detail} ${edit} ${translate} ${adminDel}`;
+                                }
+
+                                return renderAction;
                             }
                         }
                     ]

@@ -3,10 +3,11 @@
 namespace App\Mail\Posts;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ApprovePost extends Mailable
+class DeletePost extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -15,9 +16,10 @@ class ApprovePost extends Mailable
      *
      * @return void
      */
-    public function __construct($input)
+    public function __construct($input, $messageDelete)
     {
         $this->input = $input;
+        $this->messageDelete = $messageDelete;
     }
 
     /**
@@ -27,14 +29,12 @@ class ApprovePost extends Mailable
      */
     public function build()
     {
-        $this->input->message = $this->input->approve == 1
-            ? "Bài viết <b>" . $this->input->title . '</b> của bạn đã được duyệt.'
-            : "Bài viết <b>" . $this->input->title . '</b> của bạn đã bị từ chối với lí do: ' . $this->input->message_reject;
+        $this->input->message = 'Bài viết <b>' . $this->input->title . '</b> đã bị xóa với lí do: ' . $this->messageDelete;
 
         return $this->with([
             'data' => $this->input
-        ])
-            ->subject('Duyệt bài viết')
+            ])
+            ->subject('Xóa bài viết')
             ->view('mail.approve_post');
     }
 }

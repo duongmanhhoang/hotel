@@ -25,31 +25,18 @@ class PostController extends Controller
         $this->pendingPost = config('common.posts.approve_key.pending');
     }
 
-    public function index(Request $request, $status = 'approved')
+    public function index()
     {
-        $input = $request->all();
-        $approveStatus = config("common.posts.approve_key.$status");
+        $user = Auth::user();
 
-        $input['title'] = $input['title'] ?? null;
-        $input['approve'] = $approveStatus;
-
-        if($status == 'request-edited'){
-            $input['approve'] = null;
-            $input['request_edited'] = true;
-        }
-
-        $request->session()->put('params.search.post_title', $input['title']);
-        $titleSearch = $input['title'];
-
-        $data = $this->postRepo->searchPost($input);
-
-        return view('admin.posts.index', compact('data', 'titleSearch'));
+        return view('admin.posts.index', compact('user'));
     }
 
     public function dataTable(Request $request, $status = 'approved')
     {
         $input = $request->all();
         $approveStatus = config("common.posts.approve_key.$status");
+        $user = Auth::user();
 
         $input['title'] = $input['title'] ?? null;
         $input['approve'] = $approveStatus;
@@ -60,8 +47,11 @@ class PostController extends Controller
         }
 
         $data = $this->postRepo->searchPost($input);
+        $data['user'] = $user;
 
-        return response()->json(['data' => $data]);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     public function addView($postId = false)
@@ -150,17 +140,35 @@ class PostController extends Controller
         return redirect()->route('admin.post.list');
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $input = $request->all();
+        $user = Auth::user();
+
         $data = $this->postRepo->findEditedPost($id);
 
         if($data == null) {
-            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+            return response()->json([
+                'is_deleted' => false,
+                'message' => 'Không tìm thấy dữ liệu'
+            ]);
         }
 
-        $this->postRepo->deletePost($id);
+        if($data->posted_by != $user->id) {
+            if($input['admin_delete'] == 'admin_delete') {
+                if(empty($input['message_deleted'])) {
+                    return response()->json([ 'is_deleted' => false,
+                        'message' => 'Không được bỏ trống lí do tại sao xóa'
+                    ]);
+                }
 
-        return redirect()->back()->with(['success' => 'Xóa thành công']);
+                $this->postRepo->sendMailDeletePost($data, $input['message_deleted']);
+            }
+        }
+
+        $this->postRepo->deletePost($data);
+
+        return response()->json([ 'is_deleted' => true ]);
     }
 
     public function detailPost($id)

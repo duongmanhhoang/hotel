@@ -3,6 +3,7 @@
 namespace App\Repositories\Post;
 
 use App\Jobs\SendMailApprovePost;
+use App\Jobs\SendMailDeletePost;
 use App\Mail\Posts\ApprovePost;
 use App\Models\Post;
 use App\Repositories\EloquentRepository;
@@ -32,7 +33,7 @@ class PostRepository extends EloquentRepository
             ['lang_id', $language],
             !is_string($approve) ? ['approve', $approve] : ['id', '>', 0],
             $isRequestEdited != null ? ['edited_from', '<>', null] : ['edited_from', null],
-            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+            $user->role_id <= config('common.roles.super_admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
         $result = $this->_model->where($whereConditional)
@@ -110,10 +111,8 @@ class PostRepository extends EloquentRepository
         return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate', 'childrenTranslate', 'parentTranslate', 'postedBy')->first();
     }
 
-    public function deletePost($id)
+    public function deletePost($result)
     {
-        $result = $this->find($id);
-
         $result->childrenTranslate()->delete();
 
         $result->editedFrom()->delete();
@@ -265,5 +264,10 @@ class PostRepository extends EloquentRepository
     public function sendMailApprovePost($data)
     {
         SendMailApprovePost::dispatch($data);
+    }
+
+    public function sendMailDeletePost($data, $messageDelete)
+    {
+        SendMailDeletePost::dispatch($data, $messageDelete);
     }
 }

@@ -191,8 +191,6 @@
 
             formData.append('data_filter', dataFilter);
 
-            console.log(dataFilter);
-
             $.ajax({
                 contentType: false,
                 processData: false,
