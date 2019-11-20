@@ -104,7 +104,7 @@ class PostRepository extends EloquentRepository
             $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
-        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate')->first();
+        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate', 'childrenTranslate', 'parentTranslate')->first();
     }
 
     public function deletePost($id)
@@ -148,15 +148,21 @@ class PostRepository extends EloquentRepository
         return $result;
     }
 
-    public function approvePost($id, $input)
+    public function approvePost($result, $input)
     {
-        $result = $this->find($id);
-
         $input['approve_by'] = Auth::user()->id;
 
         $input['approve'] == config('common.posts.approve_key.reject') && $input['message_reject'] != null
             ? $input['message_reject'] = $input['message_reject'] ?? 'Rejected'
             : null;
+
+        if ($input['approve'] == -1) {
+            $result->childrenTranslate()->update([
+                'approve' => $input['approve'],
+                'message_reject' => $input['message_reject'],
+                'approve_by' => $input['approve_by'],
+            ]);
+        }
 
         $result->update($input);
 
@@ -234,13 +240,13 @@ class PostRepository extends EloquentRepository
 
         $result = $this->_model->where($whereConditional)->with('category')
             ->whereHas('category', function ($query) use ($name, $language) {
-            $categoryWhereConditional = [
-                ['name', $name],
-                ['type', 0],
-            ];
+                $categoryWhereConditional = [
+                    ['name', $name],
+                    ['type', 0],
+                ];
 
-            $query->where($categoryWhereConditional);
-        })->orderBy('id', 'desc')->paginate($paginate);
+                $query->where($categoryWhereConditional);
+            })->orderBy('id', 'desc')->paginate($paginate);
 
         return $result;
     }

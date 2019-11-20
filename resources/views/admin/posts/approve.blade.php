@@ -407,7 +407,7 @@
                             field: "title",
                             title: "Tiêu đề",
                             template: function (e) {
-                                const routeEdit = `{{ route('admin.post.editView', '') }}/${e.id}`;
+                                const routeEdit = `{{ route('admin.post.detailPost', '') }}/${e.id}`;
                                 let statusPost = `<span class="text-info"> Chờ </span>`;
                                 let reason = '';
                                 let layoutReturn = `<p> ${e.title} </p>`;

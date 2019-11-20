@@ -134,7 +134,7 @@ class PostController extends Controller
             $dataToEdit = $dataToEdit->editedFrom;
         }
 
-        if($dataToEdit->approve == config('common.posts.approve_key.approved')) {
+        if($dataToEdit->approve != config('common.posts.approve_key.pending')) {
             $this->postRepo->editFromApprovedPost($id, $input);
 
             $request->session()->flash('success', 'Tạo mới từ bài viết đã được phê duyệt');
@@ -245,13 +245,17 @@ class PostController extends Controller
 
         $checkPost = $this->postRepo->findEditedPost($id);
 
+        if($checkPost->parentTranslate && $checkPost->parentTranslate->approve == -1) {
+            return redirect()->back()->with(['error' => 'Bản gốc đang bị từ chối']);
+        }
+
         if($checkPost->parentEdited) {
             $checkPost->approve = $approve;
             $dataApprove = $this->postRepo->approveFromPostApproved($checkPost);
         }else {
             $input['approve'] = $approve;
 
-            $dataApprove = $this->postRepo->approvePost($id, $input);
+            $dataApprove = $this->postRepo->approvePost($checkPost, $input);
         }
 
         $message = $approve == config('common.posts.approve_key.approved')

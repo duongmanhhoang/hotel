@@ -52,7 +52,7 @@
 
                         <div class="row" style="margin-top: 32px">
                             <div class="col-10">
-                                <a href="{{ route('admin.post.list') }}" class="btn btn-danger">Quay lại</a>
+                                <a href="{{ url()->previous() }}" class="btn btn-danger">Quay lại</a>
                             </div>
 
 
