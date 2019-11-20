@@ -30,7 +30,7 @@ class TranslationRequest extends FormRequest
                 'max:191',
                 Rule::unique('services')->where('lang_id', $this->lang_id),
             ],
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0|max:999999999',
         ];
     }
 
@@ -42,6 +42,8 @@ class TranslationRequest extends FormRequest
             'name.unique' => 'Tên này đã được sử dụng',
             'price.required' => 'Vui lòng không bỏ trống',
             'price.numeric' => 'Vui lòng chỉ nhập số',
+            'price.min' => 'Vui lòng không nhập nhỏ hơn ' . ' :min ',
+            'price.max' =>'Vui lòng không nhập lớn hơn ' . ' :max',
         ];
     }
 }

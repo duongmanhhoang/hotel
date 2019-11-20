@@ -101,9 +101,12 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('client_logs', $client_logs);
             }
 
-            //profile noti
-            $profileNotifications = Auth::user()->notifications()->where('read_at', null)->orderBy('id', 'desc')->get();
-            $view->with('profileNotifications', $profileNotifications);
+            if (Auth::check()) {
+                //profile noti
+                $profileNotifications = Auth::user()->notifications()->where('read_at', null)->orderBy('id', 'desc')->get();
+                $view->with('profileNotifications', $profileNotifications);
+            }
+
         });
     }
 }

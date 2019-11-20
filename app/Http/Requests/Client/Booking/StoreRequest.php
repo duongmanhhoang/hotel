@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'customer_name' => 'required|max:191',
-            'customer_phone' => 'required|numeric',
+            'customer_phone' => 'required|numeric|digits_between:1,15',
             'customer_email' => 'nullable|email|max:191',
             'customer_address' => 'nullable|max:191',
         ];
@@ -37,6 +37,7 @@ class StoreRequest extends FormRequest
             'customer_name.required' => __('messages.validation.required'),
             'customer_phone.required' => __('messages.validation.required'),
             'customer_phone.numeric' => __('messages.validation.numeric'),
+            'customer_phone.digits_between' => __('messages.validation.between', ['min' => ':min', 'max' => ':max']),
             'customer_name.max' => __('messages.validation.max', ['number' => ':max']),
             'customer_email.max' => __('messages.validation.max', ['number' => ':max']),
             'customer_email.email' => __('messages.validation.email'),

@@ -85,14 +85,18 @@
                                         <label>Loại tiền <b class="text-danger">*</b></label>
                                         <select class="form-control" name="currency" onchange="onChangeCurrency(value)">
                                             <option value="{{ config('common.currency.vi') }}">VNĐ</option>
-                                            <option {{ session('locale') != config('common.languages.default') ? 'selected' : ''}} value="{{ config('common.currency.en') }}">$</option>
+                                            <option {{ session('locale') != config('common.languages.default') ? 'selected' : ''}} value="{{ config('common.currency.en') }}">
+                                                $
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Dịch vụ</label>
-                                        <select class="form-control m-select2" multiple="multiple" id="services-select" name="services[]">
+                                        <select class="form-control m-select2" multiple="multiple" id="services-select"
+                                                name="services[]">
                                             @foreach($services as $service)
-                                                <option value="{{ $service->id }}" title={{ $service->price }}>{{ $service->name }}</option>
+                                                <option value="{{ $service->id }}"
+                                                        title={{ $service->price }}>{{ $service->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -110,6 +114,9 @@
                                         <label>Khoản tiền thu thêm (Nếu có)</label>
                                         <input type="number" name="extra" class="form-control" min="0"
                                                value="{{ old('extra') }}" id="extra">
+                                        @if ($errors->has('extra'))
+                                            <b class="text-danger">{{ $errors->first('extra') }}</b>
+                                        @endif
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú khoản thu thêm (Nếu có)</label>
@@ -273,7 +280,7 @@
             })
         });
 
-        $("select[name='services[]']").each((i,v)=> {
+        $("select[name='services[]']").each((i, v) => {
             $(v).on('select2:select', (r) => {
                 let extra = $('#extra').val();
                 let price = r.params.data.title;
@@ -297,7 +304,7 @@
                 dataType: 'json',
                 success: function (response) {
                     let select = $('#services-select');
-                    select. find('option').remove();
+                    select.find('option').remove();
                     response.forEach(item => {
                         select.append($('<option>', {
                             value: item.id,

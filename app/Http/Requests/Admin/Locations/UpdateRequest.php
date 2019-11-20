@@ -38,7 +38,8 @@ class UpdateRequest extends FormRequest
             'phone' => [
                 'required',
                 'numeric',
-                Rule::unique('locations')->where('lang_id', session('locale'))->ignore($this->id)
+                Rule::unique('locations')->where('lang_id', session('locale'))->ignore($this->id),
+                'digits_between:1,15',
             ],
             'province_id' => 'required',
             'email' => 'required|email|max:191'
@@ -61,6 +62,7 @@ class UpdateRequest extends FormRequest
             'name.unique' => 'Tên này đã được sử dụng',
             'phone.unique' => 'Số điện thoại này đã được sử dụng',
             'address.unique' => 'Địa chỉ này đã được sử dụng',
+            'phone.digits_between' => 'Vui lòng chỉ nhập trong khoảng từ :min tới :max số'
         ];
     }
 }

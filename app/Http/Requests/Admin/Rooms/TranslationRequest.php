@@ -25,7 +25,7 @@ class TranslationRequest extends FormRequest
     public function rules()
     {
         return [
-            'price' => 'required|numeric|min:1',
+            'price' => 'required|numeric|min:0|max:999999999',
             'sale_price' => 'nullable|lt:price|numeric',
             'short_description' => 'required',
             'description' => 'required',
@@ -38,6 +38,7 @@ class TranslationRequest extends FormRequest
             'price.required' => 'Vui lòng không bỏ trống',
             'price.numeric' => 'Vui lòng chỉ nhập số',
             'price.min' => 'Vui lòng không nhập nhỏ hơn ' . ' :min ',
+            'price.max' => 'Vui lòng không nhập lớn hơn ' . ' :max ',
             'short_description.required' => 'Vui lòng không bỏ trống',
             'sale_price.lt' => 'Giá khuyến mãi phải nhỏ hơn giá gốc',
             'description.required' => 'Vui lòng không bỏ trống',

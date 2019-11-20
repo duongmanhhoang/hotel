@@ -149,6 +149,9 @@ use App\Models\RoomInvoice;
                                         <label>Khoản tiền thu thêm (Nếu có)</label>
                                         <input type="number" name="extra" class="form-control" min="0"
                                                value="{{ old('extra', $invoiceRoom->extra) }}" id="extra">
+                                        @if ($errors->has('extra'))
+                                            <b class="text-danger">{{ $errors->first('extra') }}</b>
+                                        @endif
                                     </div>
                                     <div class="form-group m-form__group">
                                         <label>Ghi chú khoản thu thêm (Nếu có)</label>

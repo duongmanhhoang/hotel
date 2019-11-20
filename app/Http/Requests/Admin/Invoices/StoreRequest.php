@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
             'check_out_date' => 'required|after:check_in_date',
             'room_id' => 'required',
             'room_number' => 'required',
-            'extra' => 'nullable|numeric',
+            'extra' => 'nullable|numeric|min:0|max:999999999',
             'customer_name' => 'required|max:191',
             'customer_email' => 'nullable|email|max:191',
             'customer_phone' => 'required|numeric|digits_between:9,15',
@@ -54,6 +54,8 @@ class StoreRequest extends FormRequest
             'customer_phone.numeric' => 'Vui lòng chỉ nhập số',
             'customer_phone.digits_between' => 'Vui lòng chỉ nhập trong khoảng từ 9 đến 15 số',
             'customer_address.max' => 'Vui lòng không nhập quá ' . ' :max ' . ' ký tự',
+            'extra.min' => 'Vui lòng không nhập nhỏ hơn ' . ' :min ',
+            'extra.max' =>'Vui lòng không nhập lớn hơn ' . ' :max',
         ];
     }
 }
