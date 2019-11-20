@@ -2,10 +2,13 @@
 
 namespace App\Repositories\Post;
 
+use App\Jobs\SendMailApprovePost;
+use App\Mail\Posts\ApprovePost;
 use App\Models\Post;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Session;
 
 class PostRepository extends EloquentRepository
@@ -104,7 +107,7 @@ class PostRepository extends EloquentRepository
             $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
-        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate', 'childrenTranslate', 'parentTranslate')->first();
+        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate', 'childrenTranslate', 'parentTranslate', 'postedBy')->first();
     }
 
     public function deletePost($id)
@@ -257,5 +260,10 @@ class PostRepository extends EloquentRepository
         $approve = config('common.posts.approve_key.approved');
 
         return $this->_model->where('approve', $approve)->where('lang_id', $language)->orderBy(DB::raw('RAND()'))->limit(5)->get();
+    }
+
+    public function sendMailApprovePost($data)
+    {
+        SendMailApprovePost::dispatch($data);
     }
 }

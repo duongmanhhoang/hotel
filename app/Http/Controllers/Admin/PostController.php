@@ -258,6 +258,8 @@ class PostController extends Controller
             $dataApprove = $this->postRepo->approvePost($checkPost, $input);
         }
 
+        $this->postRepo->sendMailApprovePost($dataApprove);
+
         $message = $approve == config('common.posts.approve_key.approved')
             ? "Bài viết $dataApprove->title đã được phê duyệt"
             : "Bài viết $dataApprove->title đã bị từ chối";
