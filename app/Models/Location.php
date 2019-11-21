@@ -33,6 +33,11 @@ class Location extends Model
         return $this->belongsTo($this, 'lang_parent_id');
     }
 
+    public function langChildren()
+    {
+        return $this->hasMany($this, 'lang_parent_id');
+    }
+
     public function listRoomsNumber()
     {
         return $this->hasManyThrough(

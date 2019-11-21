@@ -404,4 +404,46 @@ class RoomRepository extends EloquentRepository
             'name' => $name,
         ];
     }
+
+    public function getRoomHomePage($locations)
+    {
+        $result = [];
+        foreach ($locations as $location) {
+            $rooms = $location->rooms;
+
+            foreach ($rooms as $key => $room) {
+
+                if ($key < 2) {
+                    $roomName = $room->roomName;
+
+                    if (session('locale') == config('common.languages.default')) {
+                        $room->name = $roomName->name;
+                        $room->location_name = $location->name;
+                        $detail = $room->roomDetails->where('lang_id', session('locale'))->first();
+                        $room->detail = $detail;
+                        array_push($result, $room);
+                    } else {
+                        $locationChild = $location->langChildren->where('lang_id', session('locale'))->first();
+
+                        if ($locationChild) {
+                            $room->location_name = $locationChild->name;
+                            $child = $roomName->children->where('lang_id', session('locale'))->first();
+
+                            if ($child) {
+                                $room->name = $child->name;
+                                $detail = $room->roomDetails->where('lang_id', session('locale'))->first();
+
+                                if ($detail) {
+                                    $room->detail = $detail;
+                                    array_push($result, $room);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
 }
