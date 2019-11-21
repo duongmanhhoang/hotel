@@ -17,64 +17,57 @@
                 </div>
                 <div class="row">
                     <div class="to-ho-hotel">
-                        @foreach ($locations as $location)
-                            @foreach ($location->rooms as $room)
-                                @if ($room->roomDetails->toArray())
-                                    @php
-                                        $stars = round((int)$room->rating);
-                                        $whiteStars = 5 - (int)$room->rating;
-                                    @endphp
-                                    <div class="col-md-4">
-                                        <div class="to-ho-hotel-con">
-                                            <div class="to-ho-hotel-con-1">
-                                                <img
-                                                    src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
-                                                    style="height: 250px; object-fit: cover"></div>
-                                            <div class="to-ho-hotel-con-23">
-                                                <div class="to-ho-hotel-con-2">
-                                                    <a href="{{ route('rooms.detail', [$room->location_id, $room->id]) }}">
-                                                        <h4>{{ $baseLang == session('locale') ? $room->roomName->name : $roomNameRepository->findRoomName($room->room_name_id)->name }}</h4>
-                                                    </a></div>
-                                                <div class="to-ho-hotel-con-3">
-                                                    <ul>
-                                                        <li>{{ __('label.Destination') }}:
-                                                            @if ($baseLang == session('locale'))
-                                                                {{ $location->name }}
-                                                            @else
-                                                                {{ $location->where('lang_id', session('locale'))->first() ? $location->where('lang_id', session('locale'))->first()->name : $location->name }}
-                                                            @endif
-                                                            <div
-                                                                class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
-                                                                :
-                                                                @for($i = 0; $i < $stars; $i++)
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                @endfor
-                                                                @for($i = 0; $i < $whiteStars; $i++)
-                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                                @endfor
-                                                            </div>
-                                                        </li>
-                                                        @if ($room->sale_status == config('common.active.is_active'))
-                                                            <li>
+                        @foreach ($rooms as $room)
+                            @php
+                                $stars = round((int)$room->rating);
+                                $whiteStars = 5 - (int)$room->rating;
+                            @endphp
+                            <div class="col-md-4">
+                                <div class="to-ho-hotel-con">
+                                    <div class="to-ho-hotel-con-1">
+                                        <img
+                                            src="{{ asset(config('common.uploads.rooms') . '/' . $room->image) }}"
+                                            style="height: 250px; object-fit: cover"></div>
+                                    <div class="to-ho-hotel-con-23">
+                                        <div class="to-ho-hotel-con-2">
+                                            <a href="{{ route('rooms.detail', [$room->location_id, $room->id]) }}">
+                                                <h4>{{ $room->name }}</h4>
+                                            </a></div>
+                                        <div class="to-ho-hotel-con-3">
+                                            <ul>
+                                                <li>{{ __('label.Destination') }}:
+                                                   {{ $room->location_name }}
+                                                    <div
+                                                        class="dir-rat-star ho-hot-rat-star"> {{ __('label.Rating') }}
+                                                        :
+                                                        @for($i = 0; $i < $stars; $i++)
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        @endfor
+                                                        @for($i = 0; $i < $whiteStars; $i++)
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                        @endfor
+                                                    </div>
+                                                </li>
+                                                @if ($room->sale_status == config('common.active.is_active'))
+                                                    <li>
                                                                 <span
-                                                                    class="ho-hot-pri-dis">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
-                                                                <span style="font-size: 30px"
-                                                                      class="ho-hot-pri">{{ number_format($room->roomDetails[0]->sale_price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
-                                                            </li>
-                                                        @else
-                                                            <li>
+                                                                    class="ho-hot-pri-dis">{{ number_format($room->detail->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                        <span style="font-size: 30px"
+                                                              class="ho-hot-pri">{{ number_format($room->detail->sale_price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                    </li>
+                                                @else
+                                                    <li>
                                                                     <span style="font-size: 30px"
-                                                                          class="ho-hot-pri">{{ number_format($room->roomDetails[0]->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
-                                                            </li>
-                                                        @endif
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                                                          class="ho-hot-pri">{{ number_format($room->detail->price) }} {{ $baseLang == session('locale') ? 'đ' : '$' }}</span>
+                                                    </li>
+                                                @endif
+                                            </ul>
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
+                                </div>
+                            </div>
                         @endforeach
+
                     </div>
                 </div>
             </div>
@@ -92,20 +85,24 @@
                             <ul>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                            src="{{ asset('bower_components/client_layout/images/icon/dis1.png') }}" alt="">
+                                            src="{{ asset('bower_components/client_layout/images/icon/dis1.png') }}"
+                                            alt="">
                                     </a><span>{{ __('label.Free_wifi') }}</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                            src="{{ asset('bower_components/client_layout/images/icon/dis3.png') }}" alt=""> </a><span>{{ __('label.Pool') }}</span>
+                                            src="{{ asset('bower_components/client_layout/images/icon/dis3.png') }}"
+                                            alt=""> </a><span>{{ __('label.Pool') }}</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                            src="{{ asset('bower_components/client_layout/images/icon/dis4.png') }}" alt=""> </a><span>{{ __('label.Tv') }}</span>
+                                            src="{{ asset('bower_components/client_layout/images/icon/dis4.png') }}"
+                                            alt=""> </a><span>{{ __('label.Tv') }}</span>
                                 </li>
                                 <li>
                                     <a href="#!" class="waves-effect waves-light btn-large offer-btn"><img
-                                            src="{{ asset('bower_components/client_layout/images/icon/dis5.png') }}" alt=""> </a><span>{{ __('label.Gym') }}</span>
+                                            src="{{ asset('bower_components/client_layout/images/icon/dis5.png') }}"
+                                            alt=""> </a><span>{{ __('label.Gym') }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -120,258 +117,258 @@
             </div>
         </div>
         {{--<div class="blog hom-com pad-bot-0">--}}
-            {{--<div class="container">--}}
-                {{--<div class="row">--}}
-                    {{--<div class="hom1-title">--}}
-                        {{--<h2>Photo Gallery</h2>--}}
-                        {{--<div class="head-title">--}}
-                            {{--<div class="hl-1"></div>--}}
-                            {{--<div class="hl-2"></div>--}}
-                            {{--<div class="hl-3"></div>--}}
-                        {{--</div>--}}
-                        {{--<p>Cùng Atlantic chia sẻ những bức hình tuyệt nhất bạn nhé</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="row">--}}
-                    {{--<div class="col-md-12">--}}
-                        {{--<div class="inn-services head-typo typo-com mar-bot-0">--}}
-                            {{--<ul id="filters" class="clearfix">--}}
-                                {{--<li><span class="filter active"--}}
-                                          {{--data-filter=".app, .card, .icon, .logo, .web">Tất cả</span>--}}
-                                {{--</li>--}}
-                                {{--<li><span class="filter" data-filter=".app">Khách sạn</span>--}}
-                                {{--</li>--}}
-                                {{--<li><span class="filter" data-filter=".card">Tiện nghi</span>--}}
-                                {{--</li>--}}
-                                {{--<li><span class="filter" data-filter=".icon">Phòng</span>--}}
-                                {{--</li>--}}
-                                {{--<li><span class="filter" data-filter=".logo">Ẩm thực</span>--}}
-                                {{--</li>--}}
-                                {{--<li><span class="filter" data-filter=".web">Sự kiện</span>--}}
-                                {{--</li>--}}
-                            {{--</ul>--}}
-                            {{--<div id="portfoliolist">--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/5.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio app" data-cat="app">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/app/1.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">APP</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio web" data-cat="web">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/4.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Web design</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio card" data-cat="card">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/1.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Business card</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio app" data-cat="app">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/app/3.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">APP</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio card" data-cat="card">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/4.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Business card</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio card" data-cat="card">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/5.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Business card</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/1.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio app" data-cat="app">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/app/2.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">APP</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio card" data-cat="card">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/2.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Business card</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/6.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/7.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio icon" data-cat="icon">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/4.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Icon</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio web" data-cat="web">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/3.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Web design</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio icon" data-cat="icon">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/1.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Icon</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio web" data-cat="web">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/2.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Web design</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio icon" data-cat="icon">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/2.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
-                                                    {{--class="text-category">Icon</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio icon" data-cat="icon">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/5.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">3D Map</a> <span--}}
-                                                    {{--class="text-category">Icon</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio web" data-cat="web">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/1.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Note</a> <span--}}
-                                                    {{--class="text-category">Web design</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/3.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Native Designers</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/4.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Bookworm</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio icon" data-cat="icon">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/3.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Sandwich</a> <span--}}
-                                                    {{--class="text-category">Icon</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio card" data-cat="card">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/3.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Reality</a> <span--}}
-                                                    {{--class="text-category">Business card</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="portfolio logo" data-cat="logo">--}}
-                                    {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/2.jpg" alt=""/>--}}
-                                        {{--<div class="label">--}}
-                                            {{--<div class="label-text"><a class="text-title">Speciallisterne</a> <span--}}
-                                                    {{--class="text-category">Logo</span></div>--}}
-                                            {{--<div class="label-bg"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
+        {{--<div class="container">--}}
+        {{--<div class="row">--}}
+        {{--<div class="hom1-title">--}}
+        {{--<h2>Photo Gallery</h2>--}}
+        {{--<div class="head-title">--}}
+        {{--<div class="hl-1"></div>--}}
+        {{--<div class="hl-2"></div>--}}
+        {{--<div class="hl-3"></div>--}}
+        {{--</div>--}}
+        {{--<p>Cùng Atlantic chia sẻ những bức hình tuyệt nhất bạn nhé</p>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="row">--}}
+        {{--<div class="col-md-12">--}}
+        {{--<div class="inn-services head-typo typo-com mar-bot-0">--}}
+        {{--<ul id="filters" class="clearfix">--}}
+        {{--<li><span class="filter active"--}}
+        {{--data-filter=".app, .card, .icon, .logo, .web">Tất cả</span>--}}
+        {{--</li>--}}
+        {{--<li><span class="filter" data-filter=".app">Khách sạn</span>--}}
+        {{--</li>--}}
+        {{--<li><span class="filter" data-filter=".card">Tiện nghi</span>--}}
+        {{--</li>--}}
+        {{--<li><span class="filter" data-filter=".icon">Phòng</span>--}}
+        {{--</li>--}}
+        {{--<li><span class="filter" data-filter=".logo">Ẩm thực</span>--}}
+        {{--</li>--}}
+        {{--<li><span class="filter" data-filter=".web">Sự kiện</span>--}}
+        {{--</li>--}}
+        {{--</ul>--}}
+        {{--<div id="portfoliolist">--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/5.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio app" data-cat="app">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/app/1.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">APP</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio web" data-cat="web">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/4.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Web design</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio card" data-cat="card">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/1.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Business card</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio app" data-cat="app">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/app/3.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">APP</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio card" data-cat="card">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/4.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Business card</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio card" data-cat="card">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/5.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Business card</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/1.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio app" data-cat="app">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/app/2.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">APP</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio card" data-cat="card">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/2.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Business card</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/6.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/7.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio icon" data-cat="icon">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/4.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Icon</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio web" data-cat="web">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/3.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Web design</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio icon" data-cat="icon">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/1.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Icon</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio web" data-cat="web">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/2.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Web design</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio icon" data-cat="icon">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/2.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Photo Caption</a> <span--}}
+        {{--class="text-category">Icon</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio icon" data-cat="icon">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/5.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">3D Map</a> <span--}}
+        {{--class="text-category">Icon</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio web" data-cat="web">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/web/1.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Note</a> <span--}}
+        {{--class="text-category">Web design</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/3.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Native Designers</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/4.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Bookworm</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio icon" data-cat="icon">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/icon/3.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Sandwich</a> <span--}}
+        {{--class="text-category">Icon</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio card" data-cat="card">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/card/3.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Reality</a> <span--}}
+        {{--class="text-category">Business card</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="portfolio logo" data-cat="logo">--}}
+        {{--<div class="portfolio-wrapper"><img src="img/portfolios/logo/2.jpg" alt=""/>--}}
+        {{--<div class="label">--}}
+        {{--<div class="label-text"><a class="text-title">Speciallisterne</a> <span--}}
+        {{--class="text-category">Logo</span></div>--}}
+        {{--<div class="label-bg"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
         {{--</div>--}}
         <div class="blog hom-com pad-bot-0">
             <div class="container">
