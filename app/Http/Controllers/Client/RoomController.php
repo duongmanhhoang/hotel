@@ -192,6 +192,8 @@ class RoomController extends Controller
         $rooms = $this->roomRepository->searchRooms($request);
 
         if ($rooms) {
+            $location = $this->locationRepository->find($request->location_id);
+
             if (session('locale') != $this->baseLang) {
                 foreach ($rooms as $room) {
                     $roomNameId = $room->roomName->id;
@@ -210,6 +212,7 @@ class RoomController extends Controller
         }
 
         $data = compact(
+            'request',
             'rooms',
             'location',
             'propertyRepository'

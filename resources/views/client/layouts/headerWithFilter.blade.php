@@ -16,7 +16,13 @@
                                 <select name="location_id">
                                     <option value="" disabled selected>{{ __('label.Select_location') }}</option>
                                     @foreach($locations as $location)
-                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                        <option
+                                            @if (isset($request->location_id) && !$errors->has('location_id'))
+                                            {{ $request->location_id == $location->id ? 'selected' : '' }}
+                                            @else
+                                            {{ old('location_id') == $location->id ? 'selected' : '' }}
+                                            @endif
+                                            value="{{ $location->id }}">{{ $location->name }}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('location_id'))
@@ -27,7 +33,13 @@
                                 <select name="adults">
                                     <option value="" disabled selected>{{ __('label.No_adults') }}</option>
                                     @for ($i = 1; $i <= 10; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option
+                                            @if (isset($request->location_id) && !$errors->has('location_id'))
+                                            {{ $request->adults == $i ? 'selected' : '' }}
+                                            @else
+                                            {{ old('adults') == $i ? 'selected' : '' }}
+                                            @endif
+                                            value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
                                 @if ($errors->has('adults'))
@@ -38,7 +50,13 @@
                                 <select name="children">
                                     <option value="" disabled selected>{{ __('label.No_children') }}</option>
                                     @for ($i = 1; $i <= 10; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option
+                                            @if (isset($request->location_id) && !$errors->has('location_id'))
+                                            {{ $request->children == $i ? 'selected' : '' }}
+                                            @else
+                                            {{ old('children') == $i ? 'selected' : '' }}
+                                            @endif
+                                            value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
                                 @if ($errors->has('children'))
@@ -46,14 +64,16 @@
                                 @endif
                             </div>
                             <div class="input-field col s12 m4 l2">
-                                <input type="text" id="from" name="checkIn" autocomplete="off">
+                                <input type="text" id="from" name="checkIn" value="{{ isset($request) && !$errors->has('checkIn') ? old('checkIn', $request->checkIn) : old('checkIn') }}"
+                                       autocomplete="off">
                                 <label for="checkin">{{ __('label.Check_in') }}</label>
                                 @if ($errors->has('checkIn'))
                                     <p class="text-danger">{{ $errors->first('checkIn') }}</p>
                                 @endif
                             </div>
                             <div class="input-field col s12 m4 l2">
-                                <input type="text" id="to" name="checkOut" autocomplete="off">
+                                <input type="text" id="to" name="checkOut" value="{{ isset($request) && !$errors->has('checkOut') ? old('checkOut', $request->checkOut) : old('checkOut') }}"
+                                       autocomplete="off">
                                 <label for="checkout">{{ __('label.Check_out') }}</label>
                                 @if ($errors->has('checkOut'))
                                     <p class="text-danger">{{ $errors->first('checkOut') }}</p>
