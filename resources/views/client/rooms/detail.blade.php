@@ -166,14 +166,7 @@
                         <div class="hp-book-in">
                             <button class="like-button"><i class="fa fa-heart-o"></i> Share room</button>
                             <span>Atlantic Hotel</span>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i> Share</a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-twitter"></i> Tweet</a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-google-plus"></i> Share</a>
-                                </li>
-                            </ul>
+                            <div class="sharethis-inline-share-buttons"></div>
                         </div>
                     </div>
                 </div>
