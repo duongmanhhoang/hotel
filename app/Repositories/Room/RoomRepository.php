@@ -446,4 +446,13 @@ class RoomRepository extends EloquentRepository
 
         return $result;
     }
+
+    public function changeSaleStatus()
+    {
+        $now = Carbon::now()->toDateString();
+        $roomsSetSaleId = Room::where('sale_start_at', '>=', $now)->pluck('id')->toArray();
+        $roomsCancelSaleId = Room::where('sale_end_at', '<', $now)->pluck('id')->toArray();
+        $this->_model->whereIn('id', $roomsSetSaleId)->update(['sale_status' => true]);
+        $this->_model->whereIn('id', $roomsCancelSaleId)->update(['sale_status' => false]);
+    }
 }
