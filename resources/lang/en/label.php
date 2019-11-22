@@ -33,7 +33,8 @@ return [
         'name' => 'Full name',
         'subject' => 'Subject',
         'text' => 'Message',
-        'submit' => 'Send'
+        'submit' => 'Send',
+        'location' => 'Location',
     ],
 
     'user' => [

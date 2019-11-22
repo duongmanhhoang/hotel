@@ -33,7 +33,8 @@ return [
         'name' => 'Họ và tên',
         'subject' => 'Tiêu đề',
         'text' => 'Nội dung',
-        'submit' => 'Gửi'
+        'submit' => 'Gửi',
+        'location' => 'Địa điểm',
     ],
 
     'user' => [

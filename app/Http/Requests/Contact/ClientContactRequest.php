@@ -23,9 +23,9 @@ class ClientContactRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => __('message.required_field'),
-            'text.required' => __('message.required_field'),
-            'email.required' => __('message.required_field'),
+            'name.required' => __('messages.required_field'),
+            'text.required' => __('messages.required_field'),
+            'email.required' => __('messages.required_field'),
         ];
     }
 }
