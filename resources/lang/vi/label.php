@@ -23,6 +23,7 @@ return [
     'Price' => 'Giá',
     'Total' => 'Tổng cộng',
     'Image' => 'Ảnh',
+    'Gallery' => 'Thư viện ảnh',
 
     'post' => [
         'list' => 'Danh sách bài viết',

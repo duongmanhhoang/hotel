@@ -36,6 +36,7 @@ return [
         'email' => 'Vui lòng nhập đúng định dạng email',
         'email_exists' => 'Email này không tồn tại',
         'max' => 'Vui lòng không nhập quá :number ký tự',
+        'between' => 'Chỉ nhập trong khoảng từ :min tới :max số',
         'min' => 'Vui lòng không nhập ít hơn :number ký tự',
         'character' => 'ký tự',
         'unique' => 'Giá trị đã tồn tại',

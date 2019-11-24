@@ -5,14 +5,12 @@
         <div class="container">
             <div class="row">
                 <div class="page-head">
-                    <h2>{{ __('label.List_rooms') }}</h2>
+                    <h2>{{ __('label.List_rooms') . ' ' . $location->name }}</h2>
                     <div class="head-title">
                         <div class="hl-1"></div>
                         <div class="hl-2"></div>
                         <div class="hl-3"></div>
                     </div>
-                    <p>Đến với Atlantic để trải nghiệm dịch vụ nghỉ dưỡng bậc nhất Việt Nam với hệ thống phòng phong
-                        phú</p>
                 </div>
                 @foreach ($rooms as $room)
                     @php

@@ -41,27 +41,29 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $posts = $this->postRepository->limitByLang(Session::get('locale'), config('common.limit.home_posts'));
+        $posts = $this->postRepository->where('approve', '=', config('common.posts.approve_key.approved'))
+            ->where('lang_id', Session::get('locale'))
+            ->orderBy('id', 'desc')
+            ->limit(config('common.limit.home_posts'))
+            ->get();
         $locationsCount = $this->locationRepository->where('lang_parent_id', '=', 0)->count();
-        $locations = $this->locationRepository->where('lang_parent_id', '=', 0)->with(['rooms' => function ($q) use ($locationsCount) {
-            $q->limit($locationsCount * 2)->orderBy('id', 'desc');
-        }, 'rooms.roomDetails' => function ($q) {
-            $q->where('lang_id', session('locale'));
-        }, 'rooms.roomName' => function ($q) {
-            $q->where('lang_id', session('locale'));
-        }])->get();
+        $locations = $this->locationRepository->where('lang_parent_id', '=', 0)->get();
+        $locations->load(['rooms.roomName.children', 'rooms.roomDetails', 'langChildren']);
+        $rooms = $this->roomRepository->getRoomHomePage($locations);
         $searchLocations = $this->locationRepository->where('lang_id', '=', \session('locale'))->get();
         $libraries = $this->libraryRepository->limit(config('common.limit.gallery'));
         $baseLang = $this->baseLang;
         $roomNameRepository = $this->roomNameRepository;
         $data = compact(
             'locations',
+            'rooms',
             'posts',
             'libraries',
             'baseLang',
             'roomNameRepository',
             'searchLocations'
         );
+
         return view('client.home.index', $data);
 
 

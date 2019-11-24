@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ChangeSaleStatus;
 use App\Console\Commands\DailyInsertStatisticals;
 use App\Models\Statistical;
 use Illuminate\Console\Scheduling\Schedule;
@@ -29,7 +30,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->command(DailyInsertStatisticals::class)->everyMinute()->appendOutputTo(storage_path('logs/scheduler.log'));
+        $schedule->command(DailyInsertStatisticals::class)->dailyAt('00:05')->appendOutputTo(storage_path('logs/scheduler.log'));
+        $schedule->command(ChangeSaleStatus::class)->everyMinute()->appendOutputTo(storage_path('logs/changeStatus.log'));
     }
 
     /**

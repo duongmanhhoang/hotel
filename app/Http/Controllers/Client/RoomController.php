@@ -7,6 +7,7 @@ use App\Http\Requests\Client\Rooms\SearchRequest;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Comment\CommentRepository;
+use App\Repositories\Library\LibraryRepository;
 use App\Repositories\Location\LocationRepository;
 use App\Repositories\Property\PropertyRepository;
 use App\Repositories\Room\RoomRepository;
@@ -28,6 +29,7 @@ class RoomController extends Controller
     private $serviceRepository;
     private $categoryRepository;
     private $commentRepository;
+    private $libraryRepository;
 
     public function __construct(
         RoomRepository $roomRepository,
@@ -36,7 +38,8 @@ class RoomController extends Controller
         RoomNameRepository $roomNameRepository,
         ServiceRepository $serviceRepository,
         CategoryRepository $categoryRepository,
-        CommentRepository $commentRepository
+        CommentRepository $commentRepository,
+        LibraryRepository $libraryRepository
     )
     {
         $this->roomRepository = $roomRepository;
@@ -46,6 +49,7 @@ class RoomController extends Controller
         $this->serviceRepository = $serviceRepository;
         $this->categoryRepository = $categoryRepository;
         $this->commentRepository = $commentRepository;
+        $this->libraryRepository = $libraryRepository;
         $this->baseLang = config('common.languages.default');
     }
 
@@ -126,6 +130,9 @@ class RoomController extends Controller
                 $showEmail = true;
             }
         }
+
+        $images = $this->libraryRepository->getImagesByRoom($id);
+
         $data = compact(
             'location_id',
             'room',
@@ -137,7 +144,8 @@ class RoomController extends Controller
             'categoriesService',
             'comments',
             'showEmail',
-            'location'
+            'location',
+            'images'
         );
 
         return view('client.rooms.detail', $data);
@@ -184,6 +192,8 @@ class RoomController extends Controller
         $rooms = $this->roomRepository->searchRooms($request);
 
         if ($rooms) {
+            $location = $this->locationRepository->find($request->location_id);
+
             if (session('locale') != $this->baseLang) {
                 foreach ($rooms as $room) {
                     $roomNameId = $room->roomName->id;
@@ -202,6 +212,7 @@ class RoomController extends Controller
         }
 
         $data = compact(
+            'request',
             'rooms',
             'location',
             'propertyRepository'

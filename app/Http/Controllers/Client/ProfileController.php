@@ -27,12 +27,10 @@ class ProfileController extends Controller
         $user = Auth::user();
         $user->load(['invoices.rooms.roomName.children']);
         $invoices = $this->invoiceRepository->makeDataMyBooking($user->invoices()->orderBy('id', 'desc')->paginate(config('common.pagination.default')));
-        $notifications = $user->notifications()->where('read_at', null)->orderBy('id', 'desc')->get();
 
         $data = compact(
             'user',
-            'invoices',
-            'notifications'
+            'invoices'
         );
 
         return view('client.profile.mybooking', $data);
