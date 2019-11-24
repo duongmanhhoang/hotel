@@ -24,7 +24,11 @@ return [
     'Total' => 'Total',
     'Image' => 'Image',
     'Gallery' => 'Photo Gallery',
-
+    'Time' => 'Time',
+    'to' => 'to',
+    'Room' => 'Room',
+    'Status' => 'Status',
+    'Action' => 'Action',
 
     'post' => [
         'list' => 'Blog posts',
