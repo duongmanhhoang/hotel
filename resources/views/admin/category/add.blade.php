@@ -55,20 +55,6 @@
                                         </div>
                                     @endif
 
-                                    @if(!isset($dataTranslate))
-                                        <div class="form-group m-form__group">
-                                            <label>Danh mục cha</label>
-                                            <div class="bs-select">
-                                                <select class="bs-select form-control" tabindex="-98" name="parent_id">
-                                                    <option value="{{ 0 }}"></option>
-                                                    @foreach($categories as $category)
-                                                        <option value="{{ $category->id }}" {{ isset($data) && $data->parent_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    @endif
-
                                     @if(isset($dataTranslate))
                                         @if(isset($language))
                                             <div class="form-group m-form__group">

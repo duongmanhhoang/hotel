@@ -31,4 +31,15 @@ class PostRequest extends FormRequest
             'body' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'image.required' => __('messages.required_field'),
+            'category_id.required' => __('messages.required_field'),
+            'title.required' => __('messages.required_field'),
+            'description.required' => __('messages.required_field'),
+            'body.required' => __('messages.required_field'),
+        ];
+    }
 }

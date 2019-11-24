@@ -3,8 +3,8 @@
     <div class="inn-banner">
         <div class="container">
             <div class="row">
-                <h4>Liên hệ với Atlantic</h4>
-                <p>Atlantic là khách sạn hàng đầu trong ngành nghỉ dưỡng tại khu vực Asia</p>
+                <h4>{{ __('label.contact.contact_with') }} Atlantic</h4>
+                <p>{{ __('label.contact.contact_title_desc') }}</p>
                 <p></p>
             </div>
         </div>
@@ -16,27 +16,23 @@
                     <div class="container">
                         <div class="row">
                             <div class="page-head">
-                                <h2 id="text-head2">Liên hệ</h2>
+                                <h2 id="text-head2">{{ __('label.contact.title') }}</h2>
                                 <div class="head-title">
                                     <div class="hl-1"></div>
                                     <div class="hl-2"></div>
                                     <div class="hl-3"></div>
                                 </div>
-                                <p>Atlantic là khách sạn hàng đầu trong ngành nghỉ dưỡng tại khu vực Asia với hệ thống
-                                    thông minh hiện đại</p>
+                                <p>{{ __('label.contact.title_intro') }}</p>
                             </div>
                         </div>
                         <div id="page-store">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="about-left">
-                                        <h2>Chúng tôi là <span>Atlantic</span></h2>
+                                        <h2>{{ __('label.contact.we_are') }} <span>Atlantic</span></h2>
                                         <div class="head-typo typo-com collap-expand book-form inn-com-form">
-                                            <h4>Hệ thống chi nhánh</h4>
-                                            <p>Atlantic là khách sạn chuyên cung cấp các sản phẩm, dịch vụ tốt nhất. Với
-                                                hệ thống khách sạn được thiết kế hàng đầu, hệ thống showroom có mặt ở
-                                                nhiều nơi, đội ngũ nhân viên tận tình, Atlantic mang đến cho khách hàng
-                                                những sản phẩm và dịch vụ chuyên nghiệp nhất</p>
+                                            <h4>{{ __('label.contact.system') }}</h4>
+                                            <p>{{ __('label.contact.contact_desc') }}</p>
                                             <form class="col s12">
                                                 <div class="row">
                                                     <div class="input-field col s12">
@@ -46,8 +42,8 @@
                                                                     <div class="home-map-list">
                                                                         <div class="home-map-header">
                                                                             <p class="map-title"><i
-                                                                                        class="fas fa-map-marker-alt"></i>HỆ
-                                                                                THỐNG CỬA HÀNG</p>
+                                                                                        class="fas fa-map-marker-alt"></i>
+                                                                                {{ __('label.contact.hotel_system') }}</p>
                                                                             <div class="home-map-search">
                                                                                 <div class="ul-maps">
                                                                                     <ul id="country" class="no-bullets">
@@ -114,9 +110,9 @@
                     </div>
                     <div class="col-md-12">
                         <div class="about-left center">
-                            <h2>Liên hệ với <span>Atlantic</span></h2>
+                            <h2>{{ __('label.contact.contact_with') }} <span>Atlantic</span></h2>
                             <div class="head-typo typo-com collap-expand book-form inn-com-form" style="height: unset">
-                                <h4>Đăng kí email để nhận tin tức mới nhất từ Atlantic</h4>
+                                <h4>{{ __('label.contact.register_email_text') }} </h4>
                                 <form class="col s12" action="{{ route('contact.postContact') }}" method="post">
                                     @csrf
 

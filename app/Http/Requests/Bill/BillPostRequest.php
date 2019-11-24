@@ -29,4 +29,14 @@ class BillPostRequest extends FormRequest
             'body' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => __('messages.required_field'),
+            'money.required' => __('messages.required_field'),
+            'body.required' => __('messages.required_field'),
+            'money.numeric' => 'Phải là số',
+        ];
+    }
 }

@@ -28,5 +28,13 @@ class PostCategoryRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'name.required' => __('messages.required_field'),
+            'name.unique' => 'Danh mục đã tồn tại',
+        ];
+    }
+
 
 }

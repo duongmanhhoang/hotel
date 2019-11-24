@@ -209,7 +209,17 @@ class PostRepository extends EloquentRepository
     {
         $language = Session::get('locale');
 
-        return $this->_model->where('id', $id)->where('lang_id', $language)->with('postedBy')->first();
+        $whereConditional = [
+            ['id', $id],
+            ['lang_id', $language]
+        ];
+
+        $orWhereConditional = [
+            ['lang_parent_id', $id],
+            ['lang_id', $language]
+        ];
+
+        return $this->_model->where($whereConditional)->orWhere($orWhereConditional)->with('postedBy')->first();
     }
 
     public function postsSameCategory($data)
