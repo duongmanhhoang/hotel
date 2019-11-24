@@ -16,7 +16,6 @@
                                             <div class="form-group m-form__group row align-items-center">
                                                 <div class="m-input-icon m-input-icon--left">
                                                     <form method="get"
-                                                          action="{{ route('admin.category.list') }}"
                                                           id="chart-statistical">
                                                         <div class="row">
 
@@ -81,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a href="{{ route('admin.category.postView') }}"
+                                    <a href="{{ route('admin.bill.postView') }}"
                                        class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
 												<span>
 													<i class="la la-plus"></i>
@@ -191,8 +190,6 @@
             let formData = new FormData();
 
             formData.append('data_filter', dataFilter);
-
-            console.log(dataFilter);
 
             $.ajax({
                 contentType: false,

@@ -2,10 +2,14 @@
 
 namespace App\Repositories\Post;
 
+use App\Jobs\SendMailApprovePost;
+use App\Jobs\SendMailDeletePost;
+use App\Mail\Posts\ApprovePost;
 use App\Models\Post;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Session;
 
 class PostRepository extends EloquentRepository
@@ -29,7 +33,7 @@ class PostRepository extends EloquentRepository
             ['lang_id', $language],
             !is_string($approve) ? ['approve', $approve] : ['id', '>', 0],
             $isRequestEdited != null ? ['edited_from', '<>', null] : ['edited_from', null],
-            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+            $user->role_id <= config('common.roles.super_admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
         $result = $this->_model->where($whereConditional)
@@ -82,6 +86,19 @@ class PostRepository extends EloquentRepository
         return $this->_model->create($input);
     }
 
+    public function getPostById($id)
+    {
+        $user = Auth::user();
+
+        $whereConditional = [
+            ['id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        return $this->_model->where($whereConditional)
+            ->with('language', 'childrenTranslate.language', 'parentTranslate.language', 'postedBy')->first();
+    }
+
     public function findEditedPost($id)
     {
         $user = Auth::user();
@@ -91,13 +108,11 @@ class PostRepository extends EloquentRepository
             $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
-        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate')->first();
+        return $this->_model->where($whereConditional)->with('editedFrom', 'parentEdited', 'category.childrenTranslate', 'childrenTranslate', 'parentTranslate', 'postedBy')->first();
     }
 
-    public function deletePost($id)
+    public function deletePost($result)
     {
-        $result = $this->find($id);
-
         $result->childrenTranslate()->delete();
 
         $result->editedFrom()->delete();
@@ -135,15 +150,21 @@ class PostRepository extends EloquentRepository
         return $result;
     }
 
-    public function approvePost($id, $input)
+    public function approvePost($result, $input)
     {
-        $result = $this->find($id);
-
         $input['approve_by'] = Auth::user()->id;
 
         $input['approve'] == config('common.posts.approve_key.reject') && $input['message_reject'] != null
             ? $input['message_reject'] = $input['message_reject'] ?? 'Rejected'
             : null;
+
+        if ($input['approve'] == -1) {
+            $result->childrenTranslate()->update([
+                'approve' => $input['approve'],
+                'message_reject' => $input['message_reject'],
+                'approve_by' => $input['approve_by'],
+            ]);
+        }
 
         $result->update($input);
 
@@ -188,7 +209,17 @@ class PostRepository extends EloquentRepository
     {
         $language = Session::get('locale');
 
-        return $this->_model->where('id', $id)->where('lang_id', $language)->with('postedBy')->first();
+        $whereConditional = [
+            ['id', $id],
+            ['lang_id', $language]
+        ];
+
+        $orWhereConditional = [
+            ['lang_parent_id', $id],
+            ['lang_id', $language]
+        ];
+
+        return $this->_model->where($whereConditional)->orWhere($orWhereConditional)->with('postedBy')->first();
     }
 
     public function postsSameCategory($data)
@@ -221,13 +252,13 @@ class PostRepository extends EloquentRepository
 
         $result = $this->_model->where($whereConditional)->with('category')
             ->whereHas('category', function ($query) use ($name, $language) {
-            $categoryWhereConditional = [
-                ['name', $name],
-                ['type', 0],
-            ];
+                $categoryWhereConditional = [
+                    ['name', $name],
+                    ['type', 0],
+                ];
 
-            $query->where($categoryWhereConditional);
-        })->orderBy('id', 'desc')->paginate($paginate);
+                $query->where($categoryWhereConditional);
+            })->orderBy('id', 'desc')->paginate($paginate);
 
         return $result;
     }
@@ -238,5 +269,15 @@ class PostRepository extends EloquentRepository
         $approve = config('common.posts.approve_key.approved');
 
         return $this->_model->where('approve', $approve)->where('lang_id', $language)->orderBy(DB::raw('RAND()'))->limit(5)->get();
+    }
+
+    public function sendMailApprovePost($data)
+    {
+        SendMailApprovePost::dispatch($data);
+    }
+
+    public function sendMailDeletePost($data, $messageDelete)
+    {
+        SendMailDeletePost::dispatch($data, $messageDelete);
     }
 }

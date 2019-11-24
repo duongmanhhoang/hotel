@@ -14,11 +14,11 @@ class ContactRepository extends EloquentRepository {
 
     public function getContact()
     {
-        return $this->_model->with('location')->orderBy('id', 'desc')->get();
+        return $this->_model->with('location', 'userReader')->orderBy('id', 'desc')->get();
     }
 
     public function getContactById($id)
     {
-        return $this->_model->where('id', $id)->with('location')->first();
+        return $this->_model->where('id', $id)->with('location', 'userReader')->first();
     }
 }

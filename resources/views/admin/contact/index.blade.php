@@ -142,10 +142,28 @@
                             title: "Người gửi"
                         },
                         {
-                            field: "Địa điểm",
-                            title: "location_id",
+                            field: "location_id",
+                            title: "Địa điểm",
                             template: function (e) {
                                 return e.location.name
+                            }
+                        },
+                        {
+                            field: "userReader",
+                            title: "Đã xem bởi",
+                            template: function (e) {
+                                console.log(e)
+                                const readers = [];
+
+                                for (let i = 0; i < e.user_reader.length; i++) {
+                                    let dataUser = `<div> ${e.user_reader[i].full_name} </div>`;
+
+                                    readers.push(dataUser);
+                                }
+
+                                console.log(readers);
+
+                                return `<div style='max-height: 100px; overflow-y: scroll'> ${readers} </div>`
                             }
                         },
                         {

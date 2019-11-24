@@ -12,4 +12,14 @@ class Contact extends Model
     {
         return $this->belongsTo(Location::class, 'location_id');
     }
+
+    public function userReader()
+    {
+        return $this->belongsToMany(
+            'App\Models\User',
+            'contact_readers',
+            'contact_id',
+            'user_id'
+        );
+    }
 }

@@ -28,14 +28,30 @@ return [
 
     'post' => [
         'list' => 'Blog posts',
-        'read_more' => 'Read more'
+        'read_more' => 'Read more',
+        'random_post' => 'Random post',
+        'intro' => 'Our Atlantic Hotel is located on Cai Khe river islet, Ninh Kieu district. The hotel is just about 10 km
+                     away from Can Tho International Airport and 169 km from Ho Chi Minh city; therefore, as a regional hub, it is
+                     easy to get to Atlantic Hotel from cities in the Mekong Delta as well as from countries in the Indochina region.',
+        'intro_page' => 'Join Atlantic to discover the latest news on travel and vacation trends',
+
     ],
 
     'contact' => [
         'name' => 'Full name',
         'subject' => 'Subject',
         'text' => 'Message',
-        'submit' => 'Send'
+        'submit' => 'Send',
+        'location' => 'Location',
+        'we_are' => 'We are',
+        'system' => 'Brands system',
+        'contact_desc' => 'Atlantic is a hotel specializing in providing the best products and services. With top-rated hotel systems, showroom systems in many places, dedicated staff, Atlantic brings customers the most professional products and services.',
+        'hotel_system' => 'HOTEL SYSTEM',
+        'contact_with' => 'Contact with',
+        'register_email_text' => 'Sign up for email to get the latest news from Atlantic',
+        'contact_title_desc' => 'Atlantic is the leading resort hotel in Asia',
+        'title' => 'Contact',
+        'title_intro' => 'Atlantic is the leading hotel in the resort industry in Asia with modern smart system',
     ],
 
     'user' => [

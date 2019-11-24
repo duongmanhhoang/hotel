@@ -11,7 +11,7 @@ class Category extends Model
 
     protected $table = 'categories';
 
-    protected $fillable = ['id', 'name', 'parent_id', 'lang_id', 'lang_parent_id', 'created_at', 'updated_at', 'type'];
+    protected $fillable = ['id', 'name', 'parent_id', 'lang_id', 'created_at', 'updated_at', 'type'];
 
     public function language()
     {

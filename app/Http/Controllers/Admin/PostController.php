@@ -25,31 +25,18 @@ class PostController extends Controller
         $this->pendingPost = config('common.posts.approve_key.pending');
     }
 
-    public function index(Request $request, $status = 'approved')
+    public function index()
     {
-        $input = $request->all();
-        $approveStatus = config("common.posts.approve_key.$status");
+        $user = Auth::user();
 
-        $input['title'] = $input['title'] ?? null;
-        $input['approve'] = $approveStatus;
-
-        if($status == 'request-edited'){
-            $input['approve'] = null;
-            $input['request_edited'] = true;
-        }
-
-        $request->session()->put('params.search.post_title', $input['title']);
-        $titleSearch = $input['title'];
-
-        $data = $this->postRepo->searchPost($input);
-
-        return view('admin.posts.index', compact('data', 'titleSearch'));
+        return view('admin.posts.index', compact('user'));
     }
 
     public function dataTable(Request $request, $status = 'approved')
     {
         $input = $request->all();
         $approveStatus = config("common.posts.approve_key.$status");
+        $user = Auth::user();
 
         $input['title'] = $input['title'] ?? null;
         $input['approve'] = $approveStatus;
@@ -60,8 +47,11 @@ class PostController extends Controller
         }
 
         $data = $this->postRepo->searchPost($input);
+        $data['user'] = $user;
 
-        return response()->json(['data' => $data]);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     public function addView($postId = false)
@@ -134,7 +124,7 @@ class PostController extends Controller
             $dataToEdit = $dataToEdit->editedFrom;
         }
 
-        if($dataToEdit->approve == config('common.posts.approve_key.approved')) {
+        if($dataToEdit->approve != config('common.posts.approve_key.pending')) {
             $this->postRepo->editFromApprovedPost($id, $input);
 
             $request->session()->flash('success', 'Tạo mới từ bài viết đã được phê duyệt');
@@ -150,17 +140,47 @@ class PostController extends Controller
         return redirect()->route('admin.post.list');
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $input = $request->all();
+        $user = Auth::user();
+
         $data = $this->postRepo->findEditedPost($id);
+
+        if($data == null) {
+            return response()->json([
+                'is_deleted' => false,
+                'message' => 'Không tìm thấy dữ liệu'
+            ]);
+        }
+
+        if($data->posted_by != $user->id) {
+            if($input['admin_delete'] == 'admin_delete') {
+                if(empty($input['message_deleted'])) {
+                    return response()->json([ 'is_deleted' => false,
+                        'message' => 'Không được bỏ trống lí do tại sao xóa'
+                    ]);
+                }
+
+                $this->postRepo->sendMailDeletePost($data, $input['message_deleted']);
+            }
+        }
+
+        $this->postRepo->deletePost($data);
+
+        return response()->json([ 'is_deleted' => true ]);
+    }
+
+    public function detailPost($id)
+    {
+        $data = $this->postRepo->getPostById($id);
+        $user = Auth::user();
 
         if($data == null) {
             return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
         }
 
-        $this->postRepo->deletePost($id);
-
-        return redirect()->back()->with(['success' => 'Xóa thành công']);
+        return view('admin.posts.detail', compact('data', 'user'));
     }
 
     public function translate(Request $request, $postId)
@@ -221,11 +241,21 @@ class PostController extends Controller
     {
         $input = $request->all();
 
+        $user = Auth::user();
+
+        if($user->role_id > config('common.roles.admin')) {
+            return redirect()->back()->with(['error' => 'Bạn không có quyền duyệt']);
+        }
+
         if($approve == -1 && empty($input['message_reject'])) {
             return redirect()->back()->with(['error' => 'Không được bỏ trống lí do từ chối']);
         }
 
         $checkPost = $this->postRepo->findEditedPost($id);
+
+        if($checkPost->parentTranslate && $checkPost->parentTranslate->approve == -1) {
+            return redirect()->back()->with(['error' => 'Bản gốc đang bị từ chối']);
+        }
 
         if($checkPost->parentEdited) {
             $checkPost->approve = $approve;
@@ -233,8 +263,10 @@ class PostController extends Controller
         }else {
             $input['approve'] = $approve;
 
-            $dataApprove = $this->postRepo->approvePost($id, $input);
+            $dataApprove = $this->postRepo->approvePost($checkPost, $input);
         }
+
+        $this->postRepo->sendMailApprovePost($dataApprove);
 
         $message = $approve == config('common.posts.approve_key.approved')
             ? "Bài viết $dataApprove->title đã được phê duyệt"

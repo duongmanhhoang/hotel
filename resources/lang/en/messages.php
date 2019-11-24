@@ -76,5 +76,10 @@ return [
         'password_change_success' => 'Change password success',
         'password_equal' => 'New password is equal to old password',
         'incorrect_password' => 'Password incorrect,',
+        'unique' => 'Account already exist',
+        'confirmed' => 'Wrong password confirmation',
+        'email_format' => 'Invalid email',
     ],
+
+    'required_field' => 'This field is Required!!',
 ];

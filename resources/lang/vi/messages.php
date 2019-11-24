@@ -74,5 +74,11 @@ return [
         'password_change_success' => 'Đổi mật khẩu thành công',
         'password_equal' => 'Mật khẩu mới trùng với mật khẩu cũ',
         'incorrect_password' => 'Sai mật khẩu',
+        'unique' => 'Tài khoản đã tồn tại',
+        'confirmed' => 'Xác nhận mật khẩu không đúng',
+        'email_format' => 'Vui lòng nhập đúng định dạng email',
     ],
+
+    'required_field' => 'Trường này là bắt buộc',
+
 ];

@@ -4,8 +4,7 @@
         <div class="container">
             <div class="row">
                 <h4>{{ __('label.post.list') }}</h4>
-                <p>Cùng Atlantic khám phá những tin tức mới nhất về xu hướng du lịch và nghỉ dưỡng
-                <p>
+                <p>{{ __('label.post.intro_page') }}<p>
             </div>
         </div>
     </div>
@@ -19,7 +18,7 @@
                         <div class="hl-2"></div>
                         <div class="hl-3"></div>
                     </div>
-                    <p>Cùng Atlantic khám phá những tin tức mới nhất về xu hướng du lịch và nghỉ dưỡng.</p>
+                    <p>{{ __('label.post.intro_page') }}</p>
                 </div>
                 <div class="col-md-8">
                     @foreach($data as $value)
@@ -64,11 +63,7 @@
                     </div>
                     <div class="head-typo typo-com">
                         <h3>Atlantic Hotel</h3>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form, by injected humour, or randomised words which don't look
-                            even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be
-                            sure there isn't anything embarrassing hidden in the middle of text. Lorem ipsum dolor sit
-                            amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.</p>
+                        <p> {{ __('label.post.intro') }}</p>
                     </div>
                 </div>
             </div>

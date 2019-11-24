@@ -407,7 +407,7 @@
                             field: "title",
                             title: "Tiêu đề",
                             template: function (e) {
-                                const routeEdit = `{{ route('admin.post.editView', '') }}/${e.id}`;
+                                const routeEdit = `{{ route('admin.post.detailPost', '') }}/${e.id}`;
                                 let statusPost = `<span class="text-info"> Chờ </span>`;
                                 let reason = '';
                                 let layoutReturn = `<p> ${e.title} </p>`;
@@ -479,6 +479,8 @@
                             template: function (e) {
                                 let approveRoute = `{{ route('admin.post.approvingPost', ['', '']) }}/${e.id}/{{ config('common.posts.approve_key.approved') }}`;
                                 let actionRender = '';
+                                let detailRoute = "{{ route('admin.post.detailPost', ':id') }}";
+                                let urlDetail = detailRoute.replace(':id', e.id);
 
                                 let del = `<button class="btn-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Xóa" onclick="remove(this)" postId="${e.id}">
                                                             <i class="la la-trash"></i>
@@ -499,22 +501,29 @@
                                                    <i class="la la-close"></i>
                                                 </a>`;
 
+                                let detail = `<a href="${urlDetail}"
+                                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                                       title="Chi tiết"
+                                                    >
+                                                        <i class="la la-eye"></i>
+                                                    </a>`;
+
                                 switch (postStatus) {
                                     case 'approved':
-                                        actionRender = `${reject}`;
+                                        actionRender = `${detail} ${reject}`;
                                         break;
 
                                     case 'pending':
                                     case 'request-edited':
-                                        actionRender = `${approve} ${reject}`;
+                                        actionRender = `${detail} ${approve} ${reject}`;
                                         break;
 
                                     case 'rejected':
-                                        actionRender = `${approve} ${del}`;
+                                        actionRender = `${detail} ${approve} ${del}`;
                                         break;
 
                                     default:
-                                        actionRender = `${approve} ${reject}`;
+                                        actionRender = `${detail} ${approve} ${reject}`;
                                         break;
                                 }
 
