@@ -14,12 +14,11 @@
                     <th>{{ __('label.Invoice_code') }}</th>
                     <th>{{ __('label.Check_in') }}</th>
                     <th>{{ __('label.Check_out') }}</th>
-                    <th>Phòng</th>
-                    <th>Số phòng</th>
-                    <th>Giá phòng/ngày(theo hóa đơn)</th>
-                    <th>Tổng cộng</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
+                    <th>{{ __('label.Room') }}</th>
+                    <th>{{ __('label.Price') }}</th>
+                    <th>{{ __('label.Total') }}</th>
+                    <th>{{ __('label.Status') }}</th>
+                    <th>{{ __('label.Action') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -28,10 +27,8 @@
                         <td>{{ $invoice->code }}</td>
                         <td>{{ formatDate($invoice->room['pivot']->check_in_date) }}</td>
                         <td>{{ formatDate($invoice->room['pivot']->check_out_date) }}</td>
-                        <td>{{ $invoice->roomName }}</td>
-                        <td>{{ $invoice->room['pivot']->room_number }}</td>
-                        <td>
-                            {{ number_format($invoice->room['pivot']->price) }}
+                        <td>{{ $invoice->roomName }} ({{ $invoice->room['pivot']->room_number }})</td>
+                        <td> {{ number_format($invoice->room['pivot']->price) }}
                             {{ $invoice->room['pivot']->currency == config('common.currency.vi') ? 'đ' : '$' }}
                         </td>
                         <td>
