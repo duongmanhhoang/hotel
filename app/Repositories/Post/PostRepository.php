@@ -19,6 +19,23 @@ class PostRepository extends EloquentRepository
         return Post::class;
     }
 
+    public function countStatusPosts() {
+        $language = Session::get('locale');
+        $reject = $this->_model->where('approve', -1)->where('lang_id', $language)->count();
+        $pending = $this->_model->where('approve', 0)->where('edited_from', null)->where('lang_id', $language)->count();
+        $approve = $this->_model->where('approve', 1)->where('lang_id', $language)->count();
+        $requestEdit = $this->_model->where('edited_from', '<>', null)->where('lang_id', $language)->count();
+
+        $count = [
+            'reject' => $reject,
+            'pending' => $pending,
+            'approve' => $approve,
+            'requestEdit' => $requestEdit,
+        ];
+
+        return $count;
+    }
+
     public function searchPost($input)
     {
         $paginate = config('common.pagination.default');
@@ -99,6 +116,24 @@ class PostRepository extends EloquentRepository
             ->with('language', 'childrenTranslate.language', 'parentTranslate.language', 'postedBy')->first();
     }
 
+    public function getAllTranslatePosts($id)
+    {
+        $user = Auth::user();
+
+        $whereConditional = [
+            ['id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        $orWhereConditional = [
+            ['lang_parent_id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        return $this->_model->where($whereConditional)->orWhere($orWhereConditional)
+            ->with('language')->get();
+    }
+
     public function findEditedPost($id)
     {
         $user = Auth::user();
@@ -176,12 +211,11 @@ class PostRepository extends EloquentRepository
         $dataPost = $post->toArray();
 
         $id = $dataPost['parent_edited']['id'];
-        $input = $dataPost;
-        $input['approve_by'] = Auth::user()->id;
+        $dataPost['approve_by'] = Auth::user()->id;
+        $dataPost['posted_by'] =$dataPost['posted_by']['id'];
 
         if ($dataPost['approve'] == config('common.posts.approve_key.approved')) {
-
-            $result = $this->update($id, $input);
+            $result = $this->update($id, $dataPost);
 
             $this->delete($dataPost['id']);
         } else {
