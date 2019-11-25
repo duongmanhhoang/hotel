@@ -29,7 +29,9 @@ class PostController extends Controller
     {
         $user = Auth::user();
 
-        return view('admin.posts.index', compact('user'));
+        $countStatusPosts = $this->postRepo->countStatusPosts();
+
+        return view('admin.posts.index', compact('user', 'countStatusPosts'));
     }
 
     public function dataTable(Request $request, $status = 'approved')
@@ -237,8 +239,9 @@ class PostController extends Controller
         $titleSearch = $input['title'];
 
         $data = $this->postRepo->searchPost($input);
+        $countStatusPosts = $this->postRepo->countStatusPosts();
 
-        return view('admin.posts.approve', compact('data', 'titleSearch'));
+        return view('admin.posts.approve', compact('data', 'titleSearch', 'countStatusPosts'));
     }
 
     public function approvingPost(Request $request, $id, $approve)

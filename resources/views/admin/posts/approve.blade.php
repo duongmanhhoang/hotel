@@ -11,21 +11,33 @@
                                    class="btn btn-success mr-1"
                                 >
                                     Đã được duyệt
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                        {{ $countStatusPosts['approve'] }}
+                                    </i>
                                 </a>
                                 <a href="{{ route('admin.post.approveList', ['status' => config('common.posts.approve_value.0')]) }}"
                                    class="btn btn-info mr-1"
                                 >
                                     Chờ phê duyệt
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                        {{ $countStatusPosts['pending'] }}
+                                    </i>
                                 </a>
                                 <a href="{{ route('admin.post.approveList', ['status' => config('common.posts.approve_value.-1')]) }}"
                                    class="btn btn-danger mr-1"
                                 >
                                     Không được duyệt
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                        {{ $countStatusPosts['reject'] }}
+                                    </i>
                                 </a>
                                 <a href="{{ route('admin.post.approveList', ['status' => 'request-edited']) }}"
                                    class="btn btn-accent mr-1"
                                 >
                                     Yêu cầu chỉnh sửa
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                        {{ $countStatusPosts['requestEdit'] }}
+                                    </i>
                                 </a>
                             </div>
                         </div>
