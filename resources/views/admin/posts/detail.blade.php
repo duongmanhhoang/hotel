@@ -7,24 +7,13 @@
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
-                                @if($data->parentTranslate != null)
-                                    <a href="{{ route('admin.post.detailPost', $data->parentTranslate->id) }}">
+                                @foreach($translatePosts as $value)
+                                    <a href="{{ route('admin.post.detailPost', $value->id) }}" style="margin-right: 12px">
                                         <img
-                                                src="{{ asset(config('common.uploads.languages') . '/' . $data->parentTranslate->language->short) }}"
-                                                alt="{{ $data->parentTranslate->language->short }}">
+                                                src="{{ asset(config('common.uploads.languages') . '/' . $value->language->short) }}"
+                                                alt="{{ $value->language->short }}">
                                     </a>
-
-                                @else
-
-                                    @foreach($data->childrenTranslate as $value)
-                                        <a href="{{ route('admin.post.detailPost', $value->id) }}">
-                                            <img
-                                                    src="{{ asset(config('common.uploads.languages') . '/' . $value->language->short) }}"
-                                                    alt="{{ $value->language->short }}">
-                                        </a>
-                                    @endforeach
-
-                                @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -77,9 +66,11 @@
 
                                 @else
                                     @if($data->approve == config('common.posts.approve_key.approved'))
-                                        <p class="text-success" style="float: right; font-size: 20px">Bài viết đã được chấp thuận</p>
+                                        <p class="text-success" style="float: right; font-size: 20px">Bài viết đã được
+                                            chấp thuận</p>
                                     @else
-                                        <p class="text-danger" style="float: right; font-size: 20px">Bài viết đã bị từ chối</p>
+                                        <p class="text-danger" style="float: right; font-size: 20px">Bài viết đã bị từ
+                                            chối</p>
                                     @endif
 
                                 @endif

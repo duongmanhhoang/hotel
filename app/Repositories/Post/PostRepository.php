@@ -99,6 +99,24 @@ class PostRepository extends EloquentRepository
             ->with('language', 'childrenTranslate.language', 'parentTranslate.language', 'postedBy')->first();
     }
 
+    public function getAllTranslatePosts($id)
+    {
+        $user = Auth::user();
+
+        $whereConditional = [
+            ['id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        $orWhereConditional = [
+            ['lang_parent_id', $id],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        return $this->_model->where($whereConditional)->orWhere($orWhereConditional)
+            ->with('language')->get();
+    }
+
     public function findEditedPost($id)
     {
         $user = Auth::user();

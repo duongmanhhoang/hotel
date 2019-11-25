@@ -180,7 +180,11 @@ class PostController extends Controller
             return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
         }
 
-        return view('admin.posts.detail', compact('data', 'user'));
+        $idToGetTranslate = $data->parentTranslate == null ? $id : $data->parentTranslate->id;
+
+        $translatePosts = $this->postRepo->getAllTranslatePosts($idToGetTranslate);
+
+        return view('admin.posts.detail', compact('data', 'user', 'translatePosts'));
     }
 
     public function translate(Request $request, $postId)
