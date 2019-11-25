@@ -24,6 +24,11 @@ return [
     'Total' => 'Tổng cộng',
     'Image' => 'Ảnh',
     'Gallery' => 'Thư viện ảnh',
+    'Time' => 'Thời gian',
+    'to' => 'tới',
+    'Room' => 'Phòng',
+    'Status' => 'Trạng thái',
+    'Action' => 'Hành động',
 
     'post' => [
         'list' => 'Danh sách bài viết',
