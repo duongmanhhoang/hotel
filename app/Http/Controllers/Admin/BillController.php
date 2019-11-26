@@ -44,7 +44,7 @@ class BillController extends Controller
 
     public function test()
     {
-        $test = $this->statisticalReppo->statisticalByMonth();
+        $test = $this->billRepo->recordsDailyInsert();
 
         return $test;
     }
