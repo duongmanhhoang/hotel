@@ -3,6 +3,7 @@
 namespace App\Repositories\Statistical;
 
 use App\Repositories\EloquentRepository;
+use App\Repositories\Location\LocationRepository;
 use Carbon\Carbon;
 
 class StatisticalRepository extends EloquentRepository
@@ -14,19 +15,27 @@ class StatisticalRepository extends EloquentRepository
 
     public function searchStatistical($input)
     {
+        $locationRepo = new LocationRepository();
+        $defaultLocation = $locationRepo->getHaNoiLocation();
         $currentTime = Carbon::now();
 
         $splitInputDate = explode('-', $input['data_filter']);
+        $locationId = $input['location_id'] ?? $defaultLocation->id;
+        $month = $currentTime->month;
+        $year = $currentTime->year;
 
-        $month = $splitInputDate[1] ?? $currentTime->month;
-        $year = $splitInputDate[0] ?? $currentTime->year;
+        if($splitInputDate[0] != '') {
+            $month = $splitInputDate[1];
+            $year = $splitInputDate[0];
+        }
 
         $whereConditional = [
             $month != null ? ['month', $month] : ['id', '<>', '-1'],
             $year != null ? ['year', $year] : ['id', '<>', '-1'],
+            ['location_id', $locationId]
         ];
 
-        $result = $this->_model->where($whereConditional)->orderBy('day', 'asc')->limit(31)->get();
+        $result = $this->_model->where($whereConditional)->with('location')->orderBy('day', 'asc')->limit(31)->get();
 
         $resultData = $this->dataToShowToTable($result);
 
@@ -35,15 +44,18 @@ class StatisticalRepository extends EloquentRepository
 
     public function statisticalByMonth()
     {
+        $locationRepo = new LocationRepository();
+        $defaultLocation = $locationRepo->getHaNoiLocation()->id;
         $currentDay = Carbon::today()->format('Y-m-d');
         $previousMonth = Carbon::today()->subDay(30)->format('Y-m-d');
 
         $whereConditional = [
             ['time', '>=', $previousMonth],
             ['time', '<=', $currentDay],
+            ['location_id', $defaultLocation]
         ];
 
-        $result = $this->_model->where($whereConditional)->orderBy('time', 'asc')->get()->toArray();
+        $result = $this->_model->where($whereConditional)->with('location')->orderBy('time', 'asc')->get()->toArray();
 
         $dataResult = $this->dataToShowToTable($result);
 
@@ -60,7 +72,7 @@ class StatisticalRepository extends EloquentRepository
             $arr['day'][] = $value['time'];
             $arr['incoming'][] = $value['incoming'];
             $arr['outgoing'][] = $value['outgoing'];
-            $arr['table_message'] = 'Bảng thống kê thu chi tháng ' . $value['month'] . ' - ' . $value['year'];
+            $arr['table_message'] = 'Bảng thống kê thu chi tháng ' . $value['month'] . ' - ' . $value['year'] . ' cơ sở ' . $value['location']['name'];
         }
 
         return $arr;

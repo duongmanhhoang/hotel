@@ -79,4 +79,9 @@ class LocationRepository extends EloquentRepository
 
         return $this->_model->where('lang_id', $language)->get();
     }
+
+    public function getHaNoiLocation()
+    {
+        return $this->_model->where('name', 'like', '%Ha Noi%')->first();
+    }
 }

@@ -29,8 +29,9 @@ class BillController extends Controller
         $data = $this->billRepo->searchBill($input);
 
         $statistical = $this->statisticalReppo->statisticalByMonth();
+        $locations = $this->locationRepo->contactGetLocation();
 
-        $compact = compact('data', 'statistical');
+        $compact = compact('data', 'statistical', 'locations');
 
         return view('admin.bill.index', $compact);
     }
