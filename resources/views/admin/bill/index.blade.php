@@ -32,6 +32,22 @@
                                                                 </div>
                                                             </div>
 
+                                                            <div class="form-group col-md-4">
+                                                                <label>Cơ Sở</label>
+                                                                <div class="bs-select">
+                                                                    <select type="text"
+                                                                            class="form-control m-input"
+                                                                            id="filter-location"
+                                                                            name="location_id"
+                                                                    >
+                                                                        <option></option>
+                                                                        @foreach($locations as $location)
+                                                                            <option value="{{ $location->id }}"> {{ $location->name }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
 
                                                         </div>
 
@@ -181,15 +197,17 @@
         $('#chart-statistical').on('change', function () {
 
             let dataFilter = $('#filter-chart').val();
+            let location = $('#filter-location').val();
 
 
-            updateLineChart(dataFilter);
+            updateLineChart(dataFilter, location);
         });
 
-        function updateLineChart (dataFilter) {
+        function updateLineChart(dataFilter, location) {
             let formData = new FormData();
 
             formData.append('data_filter', dataFilter);
+            formData.append('location_id', location);
 
             $.ajax({
                 contentType: false,
@@ -199,6 +217,8 @@
                 dataType: 'json',
                 data: formData,
                 success: function (response) {
+
+                    console.log(response);
 
                     if (typeof response.data !== 'string') {
                         configChart.options.title.text = response.data.table_message;
@@ -240,7 +260,7 @@
                         console.log(response);
                         if (response.status === false) {
                             toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
-                        }else {
+                        } else {
                             toastr.success('Xóa thành công', 'Thành công');
                             $('.m_datatable').mDatatable("reload");
 
@@ -314,28 +334,31 @@
                         {
                             field: "type",
                             title: "Kiểu",
-                            template : function (e) {
+                            template: function (e) {
                                 return e.type === 1 ? 'Thu' : 'Chi';
                             }
                         },
                         {
                             field: "money",
                             title: "Tiền",
-                            template : function (e) {
-                                return new Intl.NumberFormat('en-Us', {style: 'currency', currency: 'VND'}).format(e.money)
+                            template: function (e) {
+                                return new Intl.NumberFormat('en-Us', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(e.money)
                             }
                         },
                         {
                             field: "location_id",
                             title: "Địa điểm",
-                            template : function (e) {
+                            template: function (e) {
                                 return e.location.name
                             }
                         },
                         {
                             field: "room_id",
                             title: "Phòng",
-                            template : function (e) {
+                            template: function (e) {
                                 return "None"
                             }
                         },
