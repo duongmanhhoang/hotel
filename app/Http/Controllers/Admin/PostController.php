@@ -273,7 +273,7 @@ class PostController extends Controller
             $dataApprove = $this->postRepo->approvePost($checkPost, $input);
         }
 
-        $this->postRepo->sendMailApprovePost($dataApprove);
+//        $this->postRepo->sendMailApprovePost($dataApprove);
 
         $message = $approve == config('common.posts.approve_key.approved')
             ? "Bài viết $dataApprove->title đã được phê duyệt"
@@ -281,6 +281,6 @@ class PostController extends Controller
 
         $request->session()->flash('success', $message);
 
-        return redirect()->route('admin.post.approveList', ['status' => config("common.posts.approve_value.$approve") ]);
+        return redirect()->back();
     }
 }
