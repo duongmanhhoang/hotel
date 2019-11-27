@@ -67,8 +67,14 @@ class InvoiceController extends Controller
     {
         $today = Carbon::yesterday();
         $invoice = $this->invoiceRepository->findOrFail($id);
-        $invoice->load('services');
         $invoiceRoom = $invoice->rooms->first()->pivot;
+        $checkEditable = $this->invoiceRepository->checkEditable($invoiceRoom);
+
+        if (!$checkEditable) {
+            abort(404);
+        }
+
+        $invoice->load('services');
         $room = $invoice->rooms->first();
         $checkIn = formatDate($invoiceRoom->check_in_date);
         $diff = Carbon::parse($checkIn)->diff($today);
