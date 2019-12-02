@@ -184,7 +184,7 @@
                         </div>
 
                         <!--begin: Search Form -->
-                        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                        <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-20">
                             <div class="row align-items-center">
                                 <div class="col-xl-8 order-2 order-xl-1">
                                     <div class="form-group m-form__group row align-items-center">
@@ -204,9 +204,11 @@
                             </div>
                         </div>
 
-                        <!--end: Search Form -->
+                        <div id="wrapper-select__action" class="m--margin-bottom-20">
+                            {{--<p class="btn btn-success" onclick="ApprovePostSelected(1)">Duyệt bài viết được chọn</p>--}}
+                            {{--<p class="btn btn-danger" onclick="ApprovePostSelected(-1)">Từ chối viết được chọn</p>--}}
+                        </div>
 
-                        <!--begin: Datatable -->
                         <div class="m_datatable" id="local_data"></div>
 
                         <div class="modal fade show" id="modalAdvance" tabindex="-1"
@@ -250,6 +252,52 @@
                             </div>
                         </div>
 
+
+
+                        <div class="modal fade show" id="modelRejectSelectedPost" tabindex="-1"
+                             role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Từ chối
+                                            bài viết</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="reject-post">
+                                            @csrf
+
+                                            <div class="form-group m-form__group">
+                                                <label>Lí do từ chối <b
+                                                            class="text-danger">*</b></label>
+                                                <textarea name="message_reject"
+                                                          class="form-control"
+                                                          id="message-reject_selected"
+                                                          style="min-height: 140px"></textarea>
+                                                @if ($errors->has('message_reject'))
+                                                    <b class="text-danger">{{ $errors->first('message_reject') }}</b>
+                                                @endif
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Hủy
+                                        </button>
+                                        <button type="button"
+                                                class="btn btn-danger"
+                                                onclick="ApprovePostSelected(-1)"
+                                        >
+                                            Từ chối
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -260,7 +308,6 @@
 
 @section('script')
     <script>
-
         let currentUrl = "{{ url()->current() }}";
         let postStatus = currentUrl.substr(currentUrl.lastIndexOf('/') + 1);
 
@@ -268,29 +315,37 @@
 
         let routePostDataTable = "{{ route('admin.post.datatable', ':status') }}";
         let urlGetDataTable = routePostDataTable.replace(':status', postStatus);
-
         let titlePage = 'Bài viết';
+        let renderAction = '';
+        let approveAction = `<a href='#' class="btn btn-success" onclick="ApprovePostSelected(1)">Duyệt bài viết được chọn</a>`;
+        let rejectAction = `<a class="btn btn-danger" href="javascript:;"
+                                                   data-target="#modelRejectSelectedPost"
+                                                   data-toggle="modal">Từ chối bài viết được chọn</a>`;
 
         switch (postStatus) {
             case 'approved':
+                renderAction = `${rejectAction}`;
                 titlePage = 'Đã chấp thuận';
                 break;
 
             case 'pending':
+                renderAction = `${approveAction} ${rejectAction}`;
                 titlePage = 'Chờ phê duyệt';
                 break;
 
             case 'request-edited':
+                renderAction = `${approveAction} ${rejectAction}`;
                 titlePage = 'Yêu cầu chỉnh sửa';
                 break;
 
             case 'rejected':
+                renderAction = `${approveAction}`;
                 titlePage = 'Đã từ chối';
                 break;
         }
 
         $('#title-page').html(titlePage);
-
+        $('#wrapper-select__action').html(renderAction);
 
         $(document).ready(function () {
             $.ajaxSetup({
@@ -304,6 +359,10 @@
             });
 
             DataTable.init();
+
+            $("#checkAll").on('click', function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
 
             $('.btn-delete').on('click', function (e) {
                 e.preventDefault();
@@ -373,6 +432,46 @@
             })
         }
 
+        function ApprovePostSelected(approve) {
+            let checkboxes = document.getElementsByName('select_action[]');
+            let vals = [];
+            let messageReject = $('#message-reject_selected').val();
+
+            for (let i = 0, n = checkboxes.length; i < n; i++) {
+                if (checkboxes[i].checked) {
+                    vals.push(checkboxes[i].value);
+                }
+            }
+
+            $.ajax({
+                url: '{{ route('admin.post.approveSelected') }}',
+                method: 'post',
+                data: {
+                    arrayId: vals,
+                    approve: approve,
+                    approveFrom: postStatus,
+                    message_reject: messageReject
+                },
+                success: function (res) {
+
+                    console.log(res);
+
+                    if(res === 'empty') {
+                        toastr.error('Không có bài viết được chọn', 'Thất bại');
+                    }else if(res === 'NotSupportedReject'){
+                        toastr.error('Không hỗ trợ từ chối', 'Thất bại');
+                    }else {
+                        toastr.success('Thao tác thành công', 'Thành công');
+                        window.location.reload();
+                    }
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
         function setFormActionUrl(id) {
             let rejectRoute = `{{ route('admin.post.approvingPost', ['', '']) }}/${id}/{{ config('common.posts.approve_key.rejected') }}`;
 
@@ -407,14 +506,16 @@
                     pagination: !0,
                     search: {input: $("#generalSearch")},
                     columns: [
-                        // {
-                        //     field: "id",
-                        //     title: "#",
-                        //     width: 50,
-                        //     sortable: !1,
-                        //     textAlign: "center",
-                        //     selector: {class: "m-checkbox--solid m-checkbox--brand"}
-                        // },
+                        {
+                            field: "id",
+                            title: `<input type='checkbox' id='checkAll'/>`,
+                            width: 50,
+                            sortable: !1,
+                            textAlign: "center",
+                            template: function (e) {
+                                return `<input type='checkbox' name='select_action[]' class='select_action' value="${e.id}"/>`;
+                            }
+                        },
                         {
                             field: "title",
                             title: "Tiêu đề",
@@ -425,7 +526,7 @@
                                 let layoutReturn = `<p> ${e.title} </p>`;
 
                                 if(e.message_reject != null && e.approve == "{{ config('common.posts.approve_key.rejected') }}") {
-                                    layoutReturn += `<p> Lí do: <span class='text-danger'>${e.message_reject}</span> </p>`
+                                    layoutReturn += `<p> Lí do từ chối: <span class='text-danger'>${e.message_reject}</span> </p>`
                                 }
 
                                 if (e.parent_edited != null) {
@@ -443,6 +544,27 @@
                                     }
 
                                     layoutReturn += `<section class='ml-1'><a href='${routeEdit}'> ${e.parent_edited.title} ( ${statusPost} ) </a> ${reason}</section>`;
+                                }
+
+                                if (e.parent_translate != null) {
+                                    const routeParentDetail = `{{ route('admin.post.detailPost', '') }}/${e.parent_translate.id}`;
+                                    switch (e.parent_translate.approve) {
+                                        case 1:
+                                            statusPost = `<span class="text-success"> Duyệt </span>`;
+                                            break;
+                                        case 0:
+                                            statusPost = `<span class="text-info"> Chờ duyệt </span>`;
+                                            break;
+                                        case -1:
+                                            statusPost = `<span class="text-danger"> Từ chối </span>`;
+                                            break;
+                                    }
+
+                                    if (e.parent_translate.approve === -1) {
+                                        reason = `<p>Lí do: <span class='text-danger'> ${e.parent_translate.message_reject} </span></p>`;
+                                    }
+
+                                    layoutReturn += `<section class='ml-1'><a href='${routeParentDetail}'> ${e.parent_translate.title} ( ${statusPost} ) </a> ${reason}</section>`;
                                 }
 
                                 return layoutReturn;
@@ -537,6 +659,10 @@
                                     default:
                                         actionRender = `${detail} ${approve} ${reject}`;
                                         break;
+                                }
+
+                                if(e.parent_translate != null && e.parent_translate.approve === -1) {
+                                    actionRender = `${detail} ${reject}`;
                                 }
 
                                 return actionRender

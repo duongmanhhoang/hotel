@@ -62,6 +62,7 @@ Route::prefix('posts')->name('post.')->group(function () {
     Route::get('/get/approve-posts/{status?}', $controller . 'getApproveList')->name('approveList');
     Route::get('/approving-post/{id}/{approve}', $controller . 'approvingPost')->name('approvingPost');
     Route::get('/detail/{id}', $controller . 'detailPost')->name('detailPost');
+    Route::post('/approve-selected-post', $controller . 'approveSelected')->name('approveSelected');
 });
 
 /** Phòng */
