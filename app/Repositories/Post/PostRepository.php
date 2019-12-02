@@ -4,12 +4,10 @@ namespace App\Repositories\Post;
 
 use App\Jobs\SendMailApprovePost;
 use App\Jobs\SendMailDeletePost;
-use App\Mail\Posts\ApprovePost;
 use App\Models\Post;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Session;
 
 class PostRepository extends EloquentRepository
@@ -19,11 +17,12 @@ class PostRepository extends EloquentRepository
         return Post::class;
     }
 
-    public function countStatusPosts() {
+    public function countStatusPosts()
+    {
         $language = Session::get('locale');
-        $reject = $this->_model->where('approve', -1)->where('lang_id', $language)->count();
+        $reject = $this->_model->where('approve', -1)->where('lang_id', $language)->where('edited_from', null)->count();
         $pending = $this->_model->where('approve', 0)->where('edited_from', null)->where('lang_id', $language)->count();
-        $approve = $this->_model->where('approve', 1)->where('lang_id', $language)->count();
+        $approve = $this->_model->where('approve', 1)->where('lang_id', $language)->where('edited_from', null)->count();
         $requestEdit = $this->_model->where('edited_from', '<>', null)->where('lang_id', $language)->count();
 
         $count = [
@@ -210,13 +209,15 @@ class PostRepository extends EloquentRepository
 
         $id = $dataPost['parent_edited']['id'];
         $dataPost['approve_by'] = Auth::user()->id;
-        $dataPost['posted_by'] =$dataPost['posted_by']['id'];
+        $dataPost['posted_by'] = $dataPost['posted_by']['id'];
 
         if ($dataPost['approve'] == config('common.posts.approve_key.approved')) {
+            $dataPost['edited_from'] = null;
             $result = $this->update($id, $dataPost);
 
             $this->delete($dataPost['id']);
         } else {
+            $dataPost['edited_from'] = $id;
             $result = $this->update($dataPost['id'], $dataPost);
         }
 
@@ -311,5 +312,51 @@ class PostRepository extends EloquentRepository
     public function sendMailDeletePost($data, $messageDelete)
     {
         SendMailDeletePost::dispatch($data, $messageDelete);
+    }
+
+    public function approveSelectedPosts($input)
+    {
+        $arrayId = $input['arrayId'];
+        $approve = $input['approve'];
+
+        $result = $this->_model->whereIn('id', $arrayId)->with('childrenTranslate');
+
+        $arrayUpdate = [
+            'approve' => $approve,
+            'message_reject' => $input['message_reject'] ?? null,
+        ];
+
+        $result->update($arrayUpdate);
+
+        $postsApproved = $result->get();
+
+        if ($postsApproved != null) {
+            foreach ($postsApproved as $post) {
+                $arrayMail[$post->postedBy->email]['dataPost'] = $post;
+                $arrayMail[$post->postedBy->email]['title'][] = $post->title;
+
+                if ($approve == -1 && $post->childrenTranslate != null) {
+                    $post->childrenTranslate()->update($arrayUpdate);
+                }
+
+                if ($post->parentEdited) {
+                    $post->approve = $approve;
+                    $this->approveFromPostApproved($post);
+                }
+
+            }
+
+            foreach ($arrayMail as $key => $value) {
+                $dataToSend = new \stdClass();
+
+                $dataToSend->title = implode($value['title'], ', ');
+                $dataToSend->approve = $value['dataPost']->approve;
+                $dataToSend->postedBy = $value['dataPost']->postedBy;
+
+                $this->sendMailApprovePost($dataToSend);
+            }
+        }
+
+        return $result;
     }
 }
