@@ -60,8 +60,13 @@ class RoleController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $this->roleRepository->deleteRole($id);
-        $request->session()->flash('success', 'Xóa thành công');
+        $delete = $this->roleRepository->deleteRole($id);
+
+        if ($delete) {
+            $request->session()->flash('success', 'Xóa thành công');
+        } else {
+            $request->session()->flash('error', 'Quyền này đang được sử dụng');
+        }
 
         return redirect()->back();
     }

@@ -14,6 +14,7 @@ use App\Repositories\EloquentRepository;
 use Carbon\Carbon;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceRepository extends EloquentRepository
 {
@@ -26,11 +27,11 @@ class InvoiceRepository extends EloquentRepository
     {
         $invoices = $this
             ->_model
-            ->where('code', 'like', '%'. $keyword . '%')
-            ->orWhere('customer_name', 'like', '%'. $keyword . '%')
-            ->orWhere('customer_phone', 'like', '%'. $keyword . '%')
-            ->orWhere('customer_email', 'like', '%'. $keyword . '%')
-            ->orWhere('customer_address', 'like', '%'. $keyword . '%')
+            ->where('code', 'like', '%' . $keyword . '%')
+            ->orWhere('customer_name', 'like', '%' . $keyword . '%')
+            ->orWhere('customer_phone', 'like', '%' . $keyword . '%')
+            ->orWhere('customer_email', 'like', '%' . $keyword . '%')
+            ->orWhere('customer_address', 'like', '%' . $keyword . '%')
             ->with('rooms')
             ->paginate(config('common.pagination.default'));
 
@@ -215,7 +216,7 @@ class InvoiceRepository extends EloquentRepository
             if (session('locale') == config('common.languages.default')) {
                 $name = $invoice->rooms[0]->roomName->name;
             } else {
-                $roomName =  $invoice->rooms[0]->roomName;
+                $roomName = $invoice->rooms[0]->roomName;
                 $child = RoomName::where('lang_parent_id', $roomName->id)->first();
                 if ($child) {
                     $name = $child->name;
@@ -324,7 +325,7 @@ class InvoiceRepository extends EloquentRepository
             $child = $room->roomName->children->where('lang_id', session('locale'))->first();
 
             if ($child) {
-               $roomName = $child->name;
+                $roomName = $child->name;
             } else {
                 $roomName = $room->roomName->name;
             }
@@ -333,7 +334,7 @@ class InvoiceRepository extends EloquentRepository
         $data['roomName'] = $roomName;
 
         if ($data['customer_email']) {
-            $email = [$superAdmin->email,$data['customer_email']];
+            $email = [$superAdmin->email, $data['customer_email']];
         } else {
             $email = $superAdmin->email;
         }
@@ -348,7 +349,7 @@ class InvoiceRepository extends EloquentRepository
             'price' => number_format($data['price']),
             'roomName' => $data['roomName'],
             'roomNumber' => $data['room_number'],
-            'currency' => $data['currency'] == config('common.currency.vi') ? 'vnđ': '$',
+            'currency' => $data['currency'] == config('common.currency.vi') ? 'vnđ' : '$',
             'mail_send' => $email,
         ];
 
@@ -357,16 +358,23 @@ class InvoiceRepository extends EloquentRepository
 
     public function makeDataMyBooking($invoices)
     {
-        foreach ($invoices as $invoice)
-        {
+        $now = date('Y-m-d');
+
+        foreach ($invoices as $invoice) {
             $room = $invoice->rooms[0];
             $invoice->room = $room;
             $roomName = $room->roomName;
             $invoice->roomName = null;
             $invoice->show_delete = false;
+
             if ($room['pivot']->status == RoomInvoice::NOT_PAY || $room['pivot']->status == RoomInvoice::PAID) {
                 $invoice->show_delete = true;
             }
+
+            if($room['pivot']->check_in_date <= $now) {
+                $invoice->show_delete = false;
+            };
+
             if (session('locale') == config('common.languages.default')) {
                 $invoice->roomName = $roomName->name;
             } else {
@@ -379,5 +387,23 @@ class InvoiceRepository extends EloquentRepository
         }
 
         return $invoices;
+    }
+
+    public function getChangeStatusInvoice()
+    {
+        $now = Carbon::today()->toDateString();
+        $invoiceCodes = RoomInvoice::where('check_out_date', '<', $now)->whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])->pluck('invoice_code')->toArray();
+
+        dd($invoiceCodes);
+        return $invoiceCodes;
+    }
+
+    public function checkEditable($invoiceRoom)
+    {
+        if ($invoiceRoom->status == RoomInvoice::NOT_PAY || $invoiceRoom->status == RoomInvoice::PAID) {
+            return true;
+        }
+
+        return false;
     }
 }

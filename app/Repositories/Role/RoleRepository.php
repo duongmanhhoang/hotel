@@ -3,6 +3,7 @@
 namespace App\Repositories\Role;
 
 use App\Models\Role;
+use App\Models\User;
 use App\Repositories\EloquentRepository;
 
 class RoleRepository extends EloquentRepository
@@ -19,7 +20,26 @@ class RoleRepository extends EloquentRepository
 
     public function deleteRole($id)
     {
+        $check = $this->checkUsers($id);
+
+        if ($check) {
+            return false;
+        }
+
         $this->delete($id);
+
+        return true;
+    }
+
+    protected function checkUsers($id)
+    {
+        $count = User::where('role_id', $id)->count();
+
+        if ($count) {
+            return true;
+        }
+
+        return false;
     }
 
 }

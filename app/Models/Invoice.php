@@ -15,7 +15,6 @@ class Invoice extends Model
         'customer_address',
         'messages',
         'total',
-        'status',
     ];
 
     public function rooms()
