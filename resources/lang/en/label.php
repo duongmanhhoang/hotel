@@ -38,7 +38,7 @@ return [
                      away from Can Tho International Airport and 169 km from Ho Chi Minh city; therefore, as a regional hub, it is
                      easy to get to Atlantic Hotel from cities in the Mekong Delta as well as from countries in the Indochina region.',
         'intro_page' => 'Join Atlantic to discover the latest news on travel and vacation trends',
-
+        'detail_title' => 'News & events',
     ],
 
     'contact' => [

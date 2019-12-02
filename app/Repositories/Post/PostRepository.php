@@ -69,23 +69,21 @@ class PostRepository extends EloquentRepository
         return $result;
     }
 
-    public function editPost($id, $input)
+    public function editPost($data, $input)
     {
-        $result = $this->find($id);
-
         if (isset($input['image']) && !is_string($input['image'])) $input['image'] = uploadImage('posts', $input['image']);
 
-        $result->update($input);
+        $data->update($input);
 
         if (isset($input['image']) || isset($input['category_id'])) {
             $dataUpdate = [
-                'category_id' => $result->category_id,
-                'image' => $result->image
+                'category_id' => $data->category_id,
+                'image' => $data->image
             ];
-            $result->childrenTranslate()->update($dataUpdate);
+            $data->childrenTranslate()->update($dataUpdate);
         }
 
-        return $result;
+        return $data;
     }
 
     public function editFromApprovedPost($id, $input)

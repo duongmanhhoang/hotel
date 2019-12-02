@@ -148,7 +148,7 @@ class PostController extends Controller
             return redirect()->route('admin.post.list');
         }
 
-        $this->postRepo->editPost($id, $input);
+        $this->postRepo->editPost($dataToEdit, $input);
 
         $message = 'Cập nhật thành công';
 

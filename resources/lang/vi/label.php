@@ -39,7 +39,8 @@ return [
                      Nằm tại vị trí đắc địa trước vòng xoay Cồn Cái Khế và là tòa nhà cao nhất, từ 
                      cửa sổ khách sạn, du khách có thể ngắm ánh nắng mặt trời trong buổi sớm mai trên sông Hậu hay phóng tầm mắt 
                      ngắm nhìn thiên nhiên tuyệt đẹp.',
-        'intro_page' => 'Cùng Atlantic khám phá những tin tức mới nhất về xu hướng du lịch và nghỉ dưỡng'
+        'intro_page' => 'Cùng Atlantic khám phá những tin tức mới nhất về xu hướng du lịch và nghỉ dưỡng',
+        'detail_title' => 'Tin tức & sự kiện',
     ],
 
     'contact' => [
