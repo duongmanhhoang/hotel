@@ -495,6 +495,8 @@
                                 let urlTranslate = translateRoute.replace(':id', e.id);
                                 let urlDetail = detailRoute.replace(':id', e.id);
 
+                                console.log({e, user});
+
                                 let edit = `<a href="${urlEdit}"
                                                        class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
                                                        title="Chỉnh sửa"
@@ -523,16 +525,18 @@
                                                    data-toggle="modal"
                                                    onclick="setFormActionUrl(${e.id})"
                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
-                                                   title="Từ chối">
+                                                   title="Xóa">
                                                    <i class="la la-close"></i>
                                                 </a>`;
 
                                 if(postStatus === 'rejected') {translate = ''}
 
-                                let renderAction = `${detail} ${edit} ${translate }${del}`;
+                                let renderAction = `${detail} ${edit} ${translate} ${del}`;
 
                                 if(user.role_id === 1 && user.id !== e.posted_by.id) {
-                                    renderAction = `${detail} ${edit} ${translate} ${adminDel}`;
+                                    renderAction = `${detail} ${adminDel}`;
+                                }else if( user.role_id !== 1 && user.id !== e.posted_by.id) {
+                                    renderAction = `${detail}`;
                                 }
 
                                 return renderAction;

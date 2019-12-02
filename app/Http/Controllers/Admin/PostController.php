@@ -58,6 +58,8 @@ class PostController extends Controller
 
     public function addView($postId = false)
     {
+        $user = Auth::user();
+
         if($postId != false) {
             $checkAvailableTranslate = $this->postRepo->find($postId);
 
@@ -65,6 +67,9 @@ class PostController extends Controller
 
             if($checkAvailableTranslate->lang_parent_id != null)
                 return redirect()->back()->with(['error' => 'Chỉ được dịch từ bài viết gốc']);
+
+            if($checkAvailableTranslate->postedBy->id != $user->id)
+                return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
         }
 
         $categories  = $this->categoryRepo->getCategory(null);
@@ -105,8 +110,13 @@ class PostController extends Controller
         $data = $this->postRepo->findEditedPost($id);
         $categories  = $this->categoryRepo->getCategory(null);
         $route = route('admin.post.editAction', ['id' => $id]);
+        $user = Auth::user();
 
         if($data == null) {
+            return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
+        }
+
+        if($data->postedBy->id != $user->id) {
             return redirect()->back()->with(['error' => 'Không tìm thấy dữ liệu']);
         }
 
@@ -118,8 +128,13 @@ class PostController extends Controller
     public function postEdit(Request $request, $id)
     {
         $input = $request->all();
+        $user = Auth::user();
 
         $dataToEdit = $this->postRepo->findEditedPost($id);
+
+        if($dataToEdit->postedBy->id != $user->id) {
+            return redirect()->back()->with(['error' => 'Không được sửa bài viết của người khác']);
+        }
 
         if($dataToEdit->editedFrom) {
             $id = $dataToEdit->editedFrom->id;
@@ -192,9 +207,14 @@ class PostController extends Controller
     public function translate(Request $request, $postId)
     {
         $input = $request->all();
-        $input['posted_by'] = Auth::user()->id;
+        $user = Auth::user();
+        $input['posted_by'] = $user->id;
 
         $currentPost = $this->postRepo->findEditedPost($postId);
+
+        if($currentPost->postedBy->id != $user->id) {
+            return redirect()->back()->with(['error' => 'Không được dịch bài viết của người khác']);
+        }
 
         if($currentPost->approve == config('common.posts.approve_key.rejected'))
             return redirect()->back()->with(['error' => 'Không được dịch từ bài viết đã bị từ chối']);
