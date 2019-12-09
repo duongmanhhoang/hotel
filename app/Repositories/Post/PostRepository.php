@@ -20,10 +20,18 @@ class PostRepository extends EloquentRepository
     public function countStatusPosts()
     {
         $language = Session::get('locale');
-        $reject = $this->_model->where('approve', -1)->where('lang_id', $language)->where('edited_from', null)->count();
-        $pending = $this->_model->where('approve', 0)->where('edited_from', null)->where('lang_id', $language)->count();
-        $approve = $this->_model->where('approve', 1)->where('lang_id', $language)->where('edited_from', null)->count();
-        $requestEdit = $this->_model->where('edited_from', '<>', null)->where('lang_id', $language)->count();
+
+        $user = Auth::user();
+
+        $whereConditional = [
+            ['lang_id', $language],
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+        ];
+
+        $reject = $this->_model->where('approve', -1)->where($whereConditional)->where('edited_from', null)->count();
+        $pending = $this->_model->where('approve', 0)->where('edited_from', null)->where($whereConditional)->count();
+        $approve = $this->_model->where('approve', 1)->where($whereConditional)->where('edited_from', null)->count();
+        $requestEdit = $this->_model->where('edited_from', '<>', null)->where($whereConditional)->count();
 
         $count = [
             'reject' => $reject,
@@ -49,7 +57,7 @@ class PostRepository extends EloquentRepository
             ['lang_id', $language],
             !is_string($approve) ? ['approve', $approve] : ['id', '>', 0],
             $isRequestEdited != null ? ['edited_from', '<>', null] : ['edited_from', null],
-            $user->role_id <= config('common.roles.super_admin') ? ['id', '>', 0] : ['posted_by', $user->id]
+            $user->role_id <= config('common.roles.admin') ? ['id', '>', 0] : ['posted_by', $user->id]
         ];
 
         $result = $this->_model->where($whereConditional)

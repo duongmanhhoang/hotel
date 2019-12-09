@@ -578,10 +578,10 @@
                                                      src="{{ asset(config('common.uploads.posts')) . '/' }}${e.image}">`;
                             }
                         },
-                        {
-                            field: "description",
-                            title: "Mô tả"
-                        },
+                        // {
+                        //     field: "description",
+                        //     title: "Mô tả"
+                        // },
                         {
                             field: "category",
                             title: "Danh mục",

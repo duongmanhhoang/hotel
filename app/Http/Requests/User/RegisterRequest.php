@@ -24,9 +24,10 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'email|required|unique:users,email, ' . $this->id,
+            'email' => 'required|email|unique:users,email, ' . $this->id,
             'password' => 'required|confirmed|min:6',
             'full_name' => 'required',
+            'phone' => 'required|numeric',
         ];
     }
 
@@ -37,8 +38,10 @@ class RegisterRequest extends FormRequest
             'full_name.required' => __('messages.required_field'),
             'email.required' => __('messages.required_field'),
             'email.email' => __('messages.user.email_format'),
-            'email.unique' => __('messages.user.unique_email'),
+            'email.unique' => __('messages.user.unique'),
             'password.confirmed' => __('messages.user.confirmed'),
+            'phone.required' => __('messages.required_field'),
+            'phone.numeric' => __('messages.numeric_required'),
         ];
     }
 }
