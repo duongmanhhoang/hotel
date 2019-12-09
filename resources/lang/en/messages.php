@@ -81,5 +81,6 @@ return [
         'email_format' => 'Invalid email',
     ],
 
-    'required_field' => 'This field is Required!!',
+    'required_field' => 'This field is Required',
+    'numeric_required' => 'Numeric required',
 ];

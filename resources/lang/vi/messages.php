@@ -80,5 +80,5 @@ return [
     ],
 
     'required_field' => 'Trường này là bắt buộc',
-
+    'numeric_required' => 'Chỉ được nhập số',
 ];
