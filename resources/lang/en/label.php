@@ -29,6 +29,12 @@ return [
     'Room' => 'Room',
     'Status' => 'Status',
     'Action' => 'Action',
+    '404' => 'It seems like we couldn\'t find the page you were looking for',
+    '403' => 'You dont have permission on this page',
+    'Go_home' => 'Back to homepage',
+    'video_home' => 'Experience Atlantic Hotel with Aggie Lal!',
+    'Contact_info' => 'Contact information',
+    'Follow_us' => 'Follow us',
 
     'post' => [
         'list' => 'Blog posts',
