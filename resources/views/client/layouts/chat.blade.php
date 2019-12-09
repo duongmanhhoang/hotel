@@ -5,7 +5,7 @@
         <i class="fa fa-envelope"></i>
         <div id="chat-unread">0</div>
     </div>
-    <div class="chat-box">
+    <div class="chat-box" style="z-index: 9999">
         <div class="chat-box-header">
             {{ __('label.Chat_with_admin') }}
             <span class="chat-box-toggle"><i class="material-icons">&times</i></span>

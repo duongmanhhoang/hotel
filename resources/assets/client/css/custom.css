@@ -119,3 +119,8 @@
 .my-booking-list-noti::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.logo img, .foot-logo img{
+    max-width: 200px !important;
+    object-fit: cover !important;
+}

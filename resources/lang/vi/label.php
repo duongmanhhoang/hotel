@@ -29,6 +29,12 @@ return [
     'Room' => 'Phòng',
     'Status' => 'Trạng thái',
     'Action' => 'Hành động',
+    '404' => 'Không thể tìm thấy trang bạn muốn truy cập',
+    '403' => 'Bạn không có quyền truy cập trang này',
+    'Go_home' => 'Trở về trang chủ',
+    'video_home' => 'Cùng Aggie Lal khám phá Atlantic!',
+    'Contact_info' => 'Thông tin liên lạc',
+    'Follow_us' => 'Theo dõi chúng tôi',
 
     'post' => [
         'list' => 'Danh sách bài viết',
