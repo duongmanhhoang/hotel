@@ -180,7 +180,7 @@ class PostController extends Controller
                     ]);
                 }
 
-                $newData = $data;
+                $newData = clone $data;
                 $this->postRepo->sendMailDeletePost($newData, $input['message_deleted']);
             }
         }
