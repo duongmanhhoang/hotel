@@ -153,9 +153,9 @@ class PostRepository extends EloquentRepository
 
     public function deletePost($result)
     {
-        $result->childrenTranslate()->delete();
-
-        $result->editedFrom()->delete();
+//        $result->childrenTranslate()->delete();
+//
+//        $result->editedFrom()->delete();
 
         $result->delete();
 
