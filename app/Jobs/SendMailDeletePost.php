@@ -31,7 +31,7 @@ class SendMailDeletePost implements ShouldQueue
     public function handle()
     {
         $data = $this->input;
-        dd($data->postedBy->email);
+
         Mail::to('manhhoang3151996@gmail.com')->send(new DeletePost($data, $this->message));
     }
 }
