@@ -164,7 +164,6 @@ class PostController extends Controller
         $user = Auth::user();
 
         $data = $this->postRepo->findEditedPost($id);
-        dd($data);
 
         if ($data == null) {
             return response()->json([
