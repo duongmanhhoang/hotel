@@ -184,7 +184,7 @@ class PostController extends Controller
             }
         }
 
-        $this->postRepo->deletePost($data);
+//        $this->postRepo->deletePost($data);
 
         return response()->json(['is_deleted' => true]);
     }
