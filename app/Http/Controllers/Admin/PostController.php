@@ -180,7 +180,7 @@ class PostController extends Controller
                     ]);
                 }
 
-                $this->postRepo->sendMailApprovePost($data);
+                $this->postRepo->sendMailDeletePost($data, $input['message_deleted']);
             }
         }
 
