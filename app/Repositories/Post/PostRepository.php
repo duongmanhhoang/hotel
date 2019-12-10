@@ -319,6 +319,7 @@ class PostRepository extends EloquentRepository
 
     public function sendMailDeletePost($data, $messageDelete)
     {
+        dd($data, $messageDelete);
         SendMailDeletePost::dispatch($data, $messageDelete);
     }
 
