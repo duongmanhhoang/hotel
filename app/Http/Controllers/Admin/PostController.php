@@ -180,11 +180,7 @@ class PostController extends Controller
                     ]);
                 }
 
-                $newData = [
-                    'email' => $data->postedBy->email,
-                    'title' => $data->title,
-                ];
-                $this->postRepo->sendMailDeletePost(collect($newData), $input['message_deleted']);
+                $this->postRepo->sendMailDeletePost($data, $input['message_deleted']);
             }
         }
 
