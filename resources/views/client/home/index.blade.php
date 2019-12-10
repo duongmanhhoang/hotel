@@ -400,18 +400,6 @@
                                         <h4>{{ $post->title }}</h4>
                                     </a>
                                     <p>{{ $post->description }}</p>
-                                    <div class="event-share">
-                                        <ul>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                                            </li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -439,15 +427,11 @@
                     <div class="col-md-6">
                         <div class="bot-gal h-vid">
                             <h4>Video</h4>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/9nOYbcCuktU"
+                            <iframe width="560" src="https://www.youtube.com/embed/yQ9Cj7HWV9I"
                                     frameborder="0"
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen></iframe>
-                            <h5>Cùng Sam Newton Media khám phá thế giới!</h5>
-                            <p>Sam Newton Media cùng Atlantic Hotel đã hợp tác cho chuyến du lịch của anh chàng 27
-                                tuổi Sam vòng quanh Châu Á kéo dài 29 ngày</p>
-                            <p>Hãy khám phá ngay cùng Sam và Atlantic Hotel để xem Châu Á có gì đặc biệt, về văn hóa
-                                sự kiện và con người Châu Á nhé! </p>
+                            <h5>{{ __('label.video_home') }}</h5>
                         </div>
                     </div>
                     {{--<div class="col-md-6">--}}

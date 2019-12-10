@@ -52,6 +52,7 @@
 
 .chat-box {
     display:none;
+    z-index: 9999999 !important;
     background: #efefef;
     position:fixed;
     right:30px;

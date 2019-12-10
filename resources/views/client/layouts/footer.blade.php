@@ -11,7 +11,7 @@
                                             alt="logo">
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <h4>Các cơ sở</h4>
+                                    <h4>{{ __('label.Destination') }}</h4>
                                     <ul class="one-columns">
                                         @foreach ( $locations as $location )
                                             <li>
@@ -21,7 +21,7 @@
                                     </ul>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
-                                    <h4>Thông tin liên lạc</h4>
+                                    <h4>{{ __('label.Contact_info') }}</h4>
                                     <ul class="one-columns">
                                         @foreach ( $locations as $location )
                                             <li>
@@ -30,27 +30,8 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                                <div class="col-sm-12 col-md-3">
-                                    <h4>Địa chỉ</h4>
-                                    <p>Số 7 Đại Cồ Việt, Hà Nội, Việt Nam</p>
-                                    <p><span class="foot-phone">Phone: </span> <span
-                                                class="foot-phone">+84 376 594 637</span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="foot-sec2">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-3">
-                                    <h4>Phương thức thanh toán</h4>
-                                    <p class="hasimg"><img
-                                                src="{{ asset('/bower_components/client_layout/images/payment.png') }}"
-                                                alt="payment"></p>
-                                </div>
-                                <div class="col-sm-12 col-md-4 foot-social">
-                                    <h4>Theo dõi chúng tôi</h4>
-                                    <p>Theo dỗi Atlantic để đón chờ những thông tin cũng những ưu đãi tốt nhất</p>
+                                <div class="col-sm-12 col-md-3 foot-social">
+                                    <h4>{{ __('label.Follow_us') }}</h4>
                                     <ul>
                                         <li><a href="{{ $inforWeb->facebook }}"><i class="fa fa-facebook"
                                                                                    aria-hidden="true"></i></a></li>
@@ -63,8 +44,6 @@
                                         <li><a href="{{ $inforWeb->youtube }}"><i class="fa fa-youtube"
                                                                                   aria-hidden="true"></i></a></li>
                                     </ul>
-                                </div>
-                                <div class="col-sm-12 col-md-5 ">
                                 </div>
                             </div>
                         </div>
@@ -79,4 +58,3 @@
         <p>copyrights © 2019 Atlantic. &nbsp;&nbsp;All rights reserved. </p>
     </div>
 </section>
-	
