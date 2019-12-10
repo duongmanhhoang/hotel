@@ -10,6 +10,8 @@ use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -36,7 +38,7 @@ class UserController extends Controller
     {
         $tokenToActive = $request->input('token') ?? null;
 
-        $cookieActiveToken = json_decode(Cookie::get('active_token'));
+        $cookieActiveToken = json_decode(Redis::get('active_token'));
 
         if ($tokenToActive != null && $tokenToActive == $cookieActiveToken->token) {
 

@@ -10,6 +10,8 @@ use Hash;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Session;
 
 class UserRepository extends EloquentRepository
 {
@@ -151,7 +153,16 @@ class UserRepository extends EloquentRepository
             'token' => $input['remember_token']
         ];
 
-        Cookie::queue('active_token', json_encode($cookie), 7200);
+        $currentTime = date('H:i:s');
+
+        $registered = [
+            'registeredTime' => $currentTime,
+            'userId' => $user->id,
+            'expireTime' => date('H:i:s', strtotime($currentTime) + 60*60*2)
+        ];
+
+        Redis::set('active_token', json_encode($cookie), 'EX', 120);
+        Redis::set('registered_time', json_encode($registered));
 
         $this->sendMailActive($input);
     }
@@ -217,6 +228,15 @@ class UserRepository extends EloquentRepository
         $user->password = $password;
         $user->save();
         Artisan::call('cache:clear');
+    }
+
+    public function removeExpireTokenActiveUser($userId)
+    {
+        $user = $this->find($userId);
+
+        if($user->is_active === 0) {
+            $user->delete();
+        }
     }
 }
 
