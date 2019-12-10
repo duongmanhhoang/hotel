@@ -183,7 +183,7 @@ class PostController extends Controller
                 $this->postRepo->sendMailDeletePost($data, $input['message_deleted']);
             }
         }
-
+        dd($data);
         $this->postRepo->deletePost($data);
 
         return response()->json(['is_deleted' => true]);
