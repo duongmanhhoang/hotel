@@ -240,7 +240,7 @@
                                         </button>
                                         <button type="button"
                                                 class="btn btn-danger submit-reject-post">
-                                            Từ chối
+                                            Xóa
                                         </button>
                                     </div>
                                 </div>
@@ -527,7 +527,7 @@
                                                    onclick="setFormActionUrl(${e.id})"
                                                    class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
                                                    title="Xóa">
-                                                   <i class="la la-close"></i>
+                                                   <i class="la la-trash"></i>
                                                 </a>`;
 
                                 if (postStatus === 'rejected') {

@@ -172,6 +172,8 @@ class PostController extends Controller
             ]);
         }
 
+        $dataToSendMail = $data;
+
         if ($data->posted_by != $user->id) {
             if ($input['admin_delete'] == 'admin_delete') {
                 if (empty($input['message_deleted'])) {
@@ -180,7 +182,7 @@ class PostController extends Controller
                     ]);
                 }
 
-                $this->postRepo->sendMailDeletePost($data, $input['message_deleted']);
+                $this->postRepo->sendMailDeletePost($dataToSendMail, $input['message_deleted']);
             }
         }
 
@@ -248,6 +250,7 @@ class PostController extends Controller
     {
         $input = $request->all();
         $input['approve'] = config("common.posts.approve_key.$status");
+        $user = Auth::user();
 
         if ($status == 'request-edited') {
             $input['approve'] = null;
@@ -262,7 +265,7 @@ class PostController extends Controller
         $data = $this->postRepo->searchPost($input);
         $countStatusPosts = $this->postRepo->countStatusPosts();
 
-        return view('admin.posts.approve', compact('data', 'titleSearch', 'countStatusPosts'));
+        return view('admin.posts.approve', compact('data', 'titleSearch', 'countStatusPosts', 'user'));
     }
 
     public function approvingPost(Request $request, $id, $approve)
