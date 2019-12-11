@@ -172,7 +172,21 @@ class PostController extends Controller
             ]);
         }
 
-        $dataToSendMail = $data;
+//        $dataToSendMail = new \stdClass();
+
+//        $dataToSendMail->postedBy = $data->postedBy->email;
+//        $dataToSendMail->postedBy->full_name = $data->postedBy->full_name;
+//        $dataToSendMail->title = $data->title;
+
+        $storeData = [
+            'postedBy' => [
+                'email' => $data->postedBy->email,
+                'full_name' => $data->postedBy->full_name
+            ],
+            'title' => $data->title
+        ];
+
+        $dataToSendMail = json_decode(json_encode($storeData));
 
         if ($data->posted_by != $user->id) {
             if ($input['admin_delete'] == 'admin_delete') {

@@ -29,7 +29,7 @@ class DeletePost extends Mailable
      */
     public function build()
     {
-        $this->input->message = 'Bài viết <b>' . $this->input['title'] . '</b> đã bị xóa với lí do: ' . $this->messageDelete;
+        $this->input->message = 'Bài viết <b>' . $this->input->title . '</b> đã bị xóa với lí do: ' . $this->messageDelete;
 
         return $this->with([
             'data' => $this->input
