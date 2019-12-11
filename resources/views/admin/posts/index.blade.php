@@ -262,7 +262,7 @@
         if (postStatus === 'posts') postStatus = 'approved';
 
         let routePostDataTable = "{{ route('admin.post.datatable', ':status') }}";
-        let urlGetDataTable = routePostDataTable.replace(':status', 'approve');
+        let urlGetDataTable = routePostDataTable.replace(':status', postStatus);
 
         console.log(urlGetDataTable);
 
