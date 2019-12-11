@@ -262,7 +262,9 @@
         if (postStatus === 'posts') postStatus = 'approved';
 
         let routePostDataTable = "{{ route('admin.post.datatable', ':status') }}";
-        let urlGetDataTable = routePostDataTable.replace(':status', postStatus);
+        let urlGetDataTable = routePostDataTable.replace(':status', 'approve');
+
+        console.log(urlGetDataTable);
 
         let titlePage = 'Bài viết';
 
@@ -401,7 +403,7 @@
                     serverFiltering: !0,
                     serverSorting: !0,
                     layout: {theme: "default", class: "", scroll: !1, footer: !1},
-                    sortable: !0,
+                    sortable: false,
                     pagination: !0,
                     search: {input: $("#generalSearch")},
                     columns: [
@@ -416,6 +418,7 @@
                         {
                             field: "title",
                             title: "Tiêu đề",
+                            ordering: false,
                             template: function (e) {
                                 let layoutReturn = `<p> ${e.title} </p>`;
 
@@ -463,8 +466,8 @@
                             }
                         },
                         {
-                            field: "postedBy",
-                            title: "Người đăng",
+                           field: "postedBy",
+                           title: "Người đăng",
                             template: function (e) {
                                 return e.posted_by.email;
                             }
@@ -476,14 +479,6 @@
                                 return e.approve_by != null ? e.approve_by.email : " {{ config("common.posts.approve.0") }} ";
                             }
                         },
-                        // {
-                        //     field: "message_reject",
-                        //     title: "Lí do",
-                        //     template: function (e) {
-                        //         // if(e.message_reject == null) { $(this) }
-                        //         return `<p class='text-danger'> ${e.message_reject} </p>`;
-                        //     }
-                        // },
                         {
                             field: "Actions",
                             width: 150,
