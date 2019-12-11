@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command(DailyInsertStatisticals::class)->dailyAt('00:05')->appendOutputTo(storage_path('logs/scheduler.log'));
         $schedule->command(ChangeSaleStatus::class)->everyMinute()->appendOutputTo(storage_path('logs/changeStatus.log'));
-        $schedule->command(changeStatusInvoice::class)->everyMinute()->appendOutputTo(storage_path('logs/invoices.log'));
+        $schedule->command(changeStatusInvoice::class)->dailyAt('00:05')->appendOutputTo(storage_path('logs/invoices.log'));
         $schedule->command(CheckExpireTokenActiveUser::class)->everyMinute()->appendOutputTo(storage_path('logs/checkExpire.log'));
 
     }
