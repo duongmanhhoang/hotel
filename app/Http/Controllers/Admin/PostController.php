@@ -172,12 +172,6 @@ class PostController extends Controller
             ]);
         }
 
-//        $dataToSendMail = new \stdClass();
-
-//        $dataToSendMail->postedBy = $data->postedBy->email;
-//        $dataToSendMail->postedBy->full_name = $data->postedBy->full_name;
-//        $dataToSendMail->title = $data->title;
-
         $storeData = [
             'postedBy' => [
                 'email' => $data->postedBy->email,

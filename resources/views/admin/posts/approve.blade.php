@@ -587,7 +587,7 @@
                     serverFiltering: !0,
                     serverSorting: !0,
                     layout: {theme: "default", class: "", scroll: !1, footer: !1},
-                    sortable: !0,
+                    sortable: false,
                     pagination: !0,
                     search: {input: $("#generalSearch")},
                     columns: [
@@ -681,14 +681,6 @@
                                 return e.posted_by.email;
                             }
                         },
-                        // {
-                        //     field: "message_reject",
-                        //     title: "Lí do",
-                        //     template: function (e) {
-                        //         // if(e.message_reject == null) { $(this) }
-                        //         return `<p class='text-danger'> ${e.message_reject} </p>`;
-                        //     }
-                        // },
                         {
                             field: "Actions",
                             width: 150,
