@@ -177,12 +177,13 @@ class PostController extends Controller
                 'email' => $data->postedBy->email,
                 'full_name' => $data->postedBy->full_name
             ],
-            'title' => $data->title
+            'title' => $data->title,
+            'posted_by' => $data->posted_by
         ];
 
         $dataToSendMail = json_decode(json_encode($storeData));
 
-        if ($data->posted_by != $user->id) {
+        if ($dataToSendMail->posted_by != $user->id) {
             if ($input['admin_delete'] == 'admin_delete') {
                 if (empty($input['message_deleted'])) {
                     return response()->json(['is_deleted' => false,
