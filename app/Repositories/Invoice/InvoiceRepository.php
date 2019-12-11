@@ -394,7 +394,7 @@ class InvoiceRepository extends EloquentRepository
         $now = Carbon::today()->toDateString();
         $invoiceCodes = RoomInvoice::where('check_out_date', '<', $now)->whereIn('status', [RoomInvoice::PAID, RoomInvoice::NOT_PAY])->pluck('invoice_code')->toArray();
 
-        dd($invoiceCodes);
+
         return $invoiceCodes;
     }
 
