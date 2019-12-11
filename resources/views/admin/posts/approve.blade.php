@@ -740,6 +740,8 @@
 
                                 if (user.role_id === 1 && user.id !== e.posted_by.id) {
                                     deleteBtn = adminDel;
+                                } else if (user.role_id !== 1 && user.id !== e.posted_by.id) {
+                                    deleteBtn = '';
                                 }
 
                                 switch (postStatus) {
