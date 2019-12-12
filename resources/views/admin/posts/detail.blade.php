@@ -47,7 +47,7 @@
 
                             <div class="col-2">
                                 @if($data->approve == config('common.posts.approve_key.pending'))
-                                    @if($user->role_id == config('common.roles.super_admin'))
+                                    @if($user->role_id <= config('common.roles.admin'))
                                         <a href="{{ route('admin.post.approvingPost', ['id' => $data->id, 'approve' => config('common.posts.approve_key.approved')]) }}"
                                            class="btn btn-success"
                                            title="Duyệt">
