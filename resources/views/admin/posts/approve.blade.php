@@ -471,6 +471,11 @@
                             toastr.success('Xóa thành công', 'Thành công');
                             $('.m_datatable').mDatatable("reload")
                             $('#modalAdminDelete').modal('hide');
+
+                            countApprove.html(response.count.approve);
+                            countPending.html(response.count.pending);
+                            countReject.html(response.count.reject);
+                            countRequestEdit.html(response.count.requestEdit);
                         }
                     }, error: function () {
                         toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
