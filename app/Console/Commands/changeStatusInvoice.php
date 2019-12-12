@@ -49,7 +49,6 @@ class changeStatusInvoice extends Command
         DB::beginTransaction();
         try {
             RoomInvoice::whereIn('invoice_code', $invoiceCodes)->update(['status' => RoomInvoice::PAID_AND_RETURN]);
-            Invoice::whereIn('code', $invoiceCodes)->update(['editable' => false]);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();

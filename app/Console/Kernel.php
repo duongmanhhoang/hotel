@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ChangeSaleStatus;
+use App\Console\Commands\changeStatusInvoice;
 use App\Console\Commands\CheckExpireTokenActiveUser;
 use App\Console\Commands\DailyInsertStatisticals;
 use App\Models\Statistical;
@@ -33,7 +34,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command(DailyInsertStatisticals::class)->dailyAt('00:05')->appendOutputTo(storage_path('logs/scheduler.log'));
         $schedule->command(ChangeSaleStatus::class)->everyMinute()->appendOutputTo(storage_path('logs/changeStatus.log'));
-        $schedule->command(ChangeSaleStatus::class)->dailyAt('00:05')->appendOutputTo(storage_path('logs/invoices.log'));
+        $schedule->command(changeStatusInvoice::class)->dailyAt('00:05')->appendOutputTo(storage_path('logs/invoices.log'));
         $schedule->command(CheckExpireTokenActiveUser::class)->everyMinute()->appendOutputTo(storage_path('logs/checkExpire.log'));
 
     }
