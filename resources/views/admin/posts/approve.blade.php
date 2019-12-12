@@ -11,7 +11,7 @@
                                    class="btn btn-success mr-1"
                                 >
                                     Đã được duyệt
-                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;" id="countApprove">
                                         {{ $countStatusPosts['approve'] }}
                                     </i>
                                 </a>
@@ -19,7 +19,7 @@
                                    class="btn btn-info mr-1"
                                 >
                                     Chờ phê duyệt
-                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;" id="countPending">
                                         {{ $countStatusPosts['pending'] }}
                                     </i>
                                 </a>
@@ -27,7 +27,7 @@
                                    class="btn btn-danger mr-1"
                                 >
                                     Không được duyệt
-                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;" id="countReject">
                                         {{ $countStatusPosts['reject'] }}
                                     </i>
                                 </a>
@@ -35,7 +35,7 @@
                                    class="btn btn-accent mr-1"
                                 >
                                     Yêu cầu chỉnh sửa
-                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;">
+                                    <i class="btn btn-primary m-btn--pill" style="font-style: unset; padding: 10px;" id="countRequestEdit">
                                         {{ $countStatusPosts['requestEdit'] }}
                                     </i>
                                 </a>
@@ -353,6 +353,10 @@
     <script>
         const userData = $('#user');
         const user = JSON.parse(userData.val());
+        const countApprove = $('#countApprove');
+        const countPending = $('#countPending');
+        const countReject = $('#countReject');
+        const countRequestEdit = $('#countRequestEdit');
 
         let currentUrl = "{{ url()->current() }}";
         let postStatus = currentUrl.substr(currentUrl.lastIndexOf('/') + 1);
@@ -508,7 +512,12 @@
                             toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');
                         } else {
                             toastr.success('Xóa thành công', 'Thành công');
-                            $('.m_datatable').mDatatable("reload")
+                            $('.m_datatable').mDatatable("reload");
+
+                            countApprove.html(response.count.approve);
+                            countPending.html(response.count.pending);
+                            countReject.html(response.count.reject);
+                            countRequestEdit.html(response.count.requestEdit);
                         }
                     }, error: function () {
                         toastr.error('Có lỗi xảy ra, xin vui lòng thử lại', 'Thất bại');

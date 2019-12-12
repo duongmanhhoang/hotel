@@ -35,6 +35,13 @@ class PostController extends Controller
         return view('admin.posts.index', compact('user', 'countStatusPosts'));
     }
 
+    public function countStatusPosts()
+    {
+        $countStatusPosts = $this->postRepo->countStatusPosts();
+
+        return $countStatusPosts;
+    }
+
     public function dataTable(Request $request, $status = 'approved')
     {
         $input = $request->all();
@@ -197,7 +204,9 @@ class PostController extends Controller
 
         $this->postRepo->deletePost($data);
 
-        return response()->json(['is_deleted' => true]);
+        $countStatusPosts = $this->countStatusPosts();
+
+        return response()->json(['is_deleted' => true, 'count' => $countStatusPosts]);
     }
 
     public function detailPost($id)
@@ -299,7 +308,7 @@ class PostController extends Controller
 
         if ($checkPost->parentEdited) {
             $checkPost->approve = $approve;
-            $checkPost->message_reject = $input['message_reject'];
+            $checkPost->message_reject = $input['message_reject'] ?? null;
             $dataApprove = $this->postRepo->approveFromPostApproved($checkPost);
         } else {
             $input['approve'] = $approve;
