@@ -96,7 +96,7 @@
                                             <li class="slide-item">
                                                 <a data-fancybox="gallery"
                                                    href="{{ asset(config('common.uploads.libraries') . '/' . $image->name) }}">
-                                                    <img src="{{ asset(config('common.uploads.libraries') . '/' . $image->name) }}" style="height: 200px; object-fit: cover">
+                                                    <img src="{{ asset(config('common.uploads.libraries') . '/' . $image->name) }}" style="height: 200px; object-fit: cover" >
                                                 </a>
                                             </li>
                                         @endforeach
