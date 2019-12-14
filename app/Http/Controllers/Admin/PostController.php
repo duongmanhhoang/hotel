@@ -324,7 +324,7 @@ class PostController extends Controller
 
         $request->session()->flash('success', $message);
 
-        return redirect()->back();
+        return redirect()->route('admin.post.approveList');
     }
 
     public function approveSelected(Request $request)
