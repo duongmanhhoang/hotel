@@ -161,6 +161,8 @@ class PropertyController extends Controller
             if (!$property) {
                 $request->session()->flash('error', 'Chưa có bản dịch');
                 Session::put('locale', $this->baseLang);
+
+                return redirect()->back();
             }
         }
 
