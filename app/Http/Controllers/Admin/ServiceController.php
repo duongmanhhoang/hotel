@@ -199,6 +199,11 @@ class ServiceController extends Controller
     public function update(\App\Http\Requests\Admin\Services\UpdateRequest $request, $id)
     {
         $data = $request->except('_token');
+
+        if ($request->image) {
+            $data['image'] = uploadImage('services', $data['image']);
+        }
+
         $this->serviceRepository->update($id, $data);
         $request->session()->flash('success', 'Sửa thành công');
 

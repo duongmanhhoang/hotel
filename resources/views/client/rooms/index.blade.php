@@ -5,7 +5,7 @@
         <div class="container">
             <div class="row">
                 <div class="page-head">
-                    <h2>{{ __('label.List_rooms') }}</h2>
+                    <h2>{{ __('label.List_rooms') }} {{ $locationName }}</h2>
                     <div class="head-title">
                         <div class="hl-1"></div>
                         <div class="hl-2"></div>

@@ -388,7 +388,7 @@
                         @foreach ($posts as $post)
                             <div class="col-md-3 n2-event">
                                 <div class="n21-event hovereffect">
-                                    <img src="{{ asset(config('common.uploads.posts')) }}/{{ $post->image }}" alt="">
+                                    <img src="{{ asset(config('common.uploads.posts')) }}/{{ $post->image }}" alt="" style="height: 200px; object-fit: cover ">
                                     <div class="overlay">
                                         <a href="{{ route('post.detail', $post->id) }}">
                                             <span class="ev-book">Xem ngay</span>

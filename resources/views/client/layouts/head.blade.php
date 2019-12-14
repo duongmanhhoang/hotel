@@ -15,5 +15,5 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 {{--    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5dd686a5e92719001233293b&product=inline-share-buttons" async="async"></script>
+    {{--<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5dd686a5e92719001233293b&product=inline-share-buttons" async="async"></script>--}}
 </head>
