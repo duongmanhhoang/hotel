@@ -95,14 +95,6 @@
                     search: {input: $("#generalSearch")},
                     columns: [
                         {
-                            field: "id",
-                            title: "#",
-                            width: 50,
-                            sortable: !1,
-                            textAlign: "center",
-                            selector: {class: "m-checkbox--solid m-checkbox--brand"}
-                        },
-                        {
                             field: "image",
                             title: "Ảnh dại diện",
                             template: function (e) {
