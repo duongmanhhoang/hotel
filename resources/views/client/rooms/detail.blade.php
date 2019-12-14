@@ -36,7 +36,7 @@
                                         <li>
                                             <img style="width: 60px; height: 60px; object-fit: cover"
                                                  src="{{ asset(config('common.uploads.properties')) . '/' . $property->image }}">
-                                            Máy sấy tóc
+                                            {{ $property->name }}
                                         </li>
                                     @endforeach
                                 </ul>
