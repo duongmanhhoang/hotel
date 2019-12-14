@@ -78,10 +78,18 @@ class RoomController extends Controller
             }
         }
         $propertyRepository = $this->propertyRepository;
+
+        if (session('locale') == $this->baseLang) {
+            $locationName = $location->name;
+        } else {
+            $locationByLang = $location->langChildren->where('lang_id', \session('locale'))->first();
+            $locationName = $locationByLang->name;
+        }
         $data = compact(
             'rooms',
             'location',
-            'propertyRepository'
+            'propertyRepository',
+            'locationName'
         );
 
         return view('client.rooms.index', $data);
@@ -90,6 +98,14 @@ class RoomController extends Controller
     public function detail(Request $request, $location_id, $id)
     {
         $location = $this->locationRepository->find($location_id);
+
+        if (session('locale') == $this->baseLang) {
+            $locationName = $location->name;
+        } else {
+            $locationByLang = $location->langChildren->where('lang_id', \session('locale'))->first();
+            $locationName = $locationByLang->name;
+        }
+
         $room = $this->roomRepository->findOrFail($id);
         $room->load(['properties']);
         if (session('locale') == $this->baseLang) {
@@ -145,7 +161,8 @@ class RoomController extends Controller
             'comments',
             'showEmail',
             'location',
-            'images'
+            'images',
+            'locationName'
         );
 
         return view('client.rooms.detail', $data);
@@ -193,6 +210,12 @@ class RoomController extends Controller
 
         if ($rooms) {
             $location = $this->locationRepository->find($request->location_id);
+
+            if ($request->checkIn && $request->checkOut) {
+                Session::put('checkInSearch', $request->checkIn);
+                Session::put('checkOutSearch', $request->checkOut);
+            }
+
 
             if (session('locale') != $this->baseLang) {
                 foreach ($rooms as $room) {

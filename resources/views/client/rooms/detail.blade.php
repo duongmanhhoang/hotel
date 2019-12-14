@@ -12,6 +12,7 @@
                         <div class="hp-section">
                             <div class="hp-sub-tit">
                                 <h4><span>{{ $name }}</span></h4>
+                                <p>{{ $locationName }}</p>
                                 <p>
                                     {{ __('label.Adults') }}: {{ $room->adults }}
                                 </p>
@@ -162,13 +163,13 @@
                             <a href="javascript:;" data-toggle="modal"
                                data-target="#booking">{{ __('label.Booking') }}</a></div>
                     </div>
-                    <div class="hp-book hp-right-com">
-                        <div class="hp-book-in">
-                            <button class="like-button"><i class="fa fa-heart-o"></i> Share room</button>
-                            <span>Atlantic Hotel</span>
-                            <div class="sharethis-inline-share-buttons"></div>
-                        </div>
-                    </div>
+                    {{--<div class="hp-book hp-right-com">--}}
+                        {{--<div class="hp-book-in">--}}
+                            {{--<button class="like-button"><i class="fa fa-heart-o"></i> Share room</button>--}}
+                            {{--<span>Atlantic Hotel</span>--}}
+                            {{--<div class="sharethis-inline-share-buttons"></div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                 </div>
             </div>
         </div>
@@ -245,11 +246,15 @@
                             <form class="col s12 custom-inn-com-form">
                                 @csrf
                                 <div class="input-field col s12 m4 l2">
-                                    <input type="text" id="from" name="checkIn" class="checkInBooking">
+                                    <input type="text" id="from" name="checkIn" class="checkInBooking"
+                                        value="{{ session('checkInSearch') ? session('checkInSearch') : '' }}"
+                                    >
                                     <label for="from">{{ __('label.Arrival_date') }}</label>
                                 </div>
                                 <div class="input-field col s12 m4 l2">
-                                    <input type="text" id="to" name="checkOut" class="checkOutBooking">
+                                    <input type="text" id="to" name="checkOut" class="checkOutBooking"
+                                           value="{{ session('checkOutSearch') ? session('checkOutSearch') : '' }}"
+                                    >
                                     <label for="to">{{ __('label.Departure_date') }}</label>
                                 </div>
                                 <input type="hidden" name="roomId" value="{{ $room->id }}" class="roomIdBooking">
